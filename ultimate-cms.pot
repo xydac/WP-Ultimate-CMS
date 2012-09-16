@@ -1,0 +1,1291 @@
+# Copyright (C) 2010 
+# This file is distributed under the same license as the  package.
+msgid ""
+msgstr ""
+"Project-Id-Version:  \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/ultimate-cms\n"
+"POT-Creation-Date: 2011-12-29 19:17:38+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2010-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: archiver/class-xydac-archiver.php:8 archiver/class-xydac-archiver.php:30
+msgid "Query"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:8
+msgid "The Main Query for WP_QUERY "
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:9 class-xydac-export.php:232
+#: post-type/class-xydac-post-type-manager.php:52
+#: post-type/class-xydac-post-type-manager.php:87
+#: page-type/class-xydac-page-type-manager.php:22
+#: page-type/class-xydac-page-type-manager.php:40
+msgid "Description"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:9
+msgid "A short descriptive summary of what the Archive is."
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:10
+msgid "Wrapper DIV  width"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:10
+msgid "The Width for Wrapper DIV"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:11
+msgid "Number of Columns"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:11
+msgid ""
+"Select The Number of Columns in the archive. (This works only with Table "
+"Mode in Flase)"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:12
+msgid "Number of Rows"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:12
+msgid ""
+"Select The Number of Rows in the archive (This works only with Table Mode in "
+"Flase)"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:13
+msgid "Before Loop HTML"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:13
+msgid "THE HTML Content to be displayed before loop"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:14
+msgid "Custom HTML"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:14
+msgid "THE HTML Content to be displayed in loop"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:15
+msgid "After Loop HTML"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:15
+msgid "THE HTML Content to be displayed After loop"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:16
+msgid "Table Mode "
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:16
+msgid "Display as Table ?"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:17
+msgid "Custom Css "
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:17
+msgid "Custom CSS Styles for archive"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:18
+msgid "Custom Java Script"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:18
+msgid "The custom Javascript to be used for archive"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:30
+#: taxonomy/class-xydac-taxonomy-fields.php:30
+#: taxonomy/class-xydac-taxonomy-manager.php:79
+#: class-xydac-ultimate-cms-core.php:323 class-xydac-export.php:189
+#: class-xydac-export.php:216 post-type/class-xydac-post-type-fields.php:31
+#: post-type/class-xydac-post-type-manager.php:87
+#: page-type/class-xydac-page-type-fields.php:31
+#: page-type/class-xydac-page-type-manager.php:40
+msgid "Name"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:30
+msgid "Table Mode"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:44
+#: taxonomy/class-xydac-taxonomy-manager.php:89
+#: class-xydac-ultimate-cms-core.php:304
+#: post-type/class-xydac-post-type-manager.php:104
+#: page-type/class-xydac-page-type-manager.php:52
+msgid "Delete"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:44
+#: taxonomy/class-xydac-taxonomy-manager.php:89
+#: post-type/class-xydac-post-type-manager.php:104
+#: page-type/class-xydac-page-type-manager.php:53
+msgid "Export"
+msgstr ""
+
+#: archiver/class-xydac-archiver.php:58
+#: taxonomy/class-xydac-taxonomy-manager.php:103
+#: post-type/class-xydac-post-type-manager.php:118
+#: page-type/class-xydac-page-type-manager.php:68
+msgid "Click Here to download the Export File"
+msgstr ""
+
+#: archiver/archiver.php:11
+msgid "XYDAC ARCHIVE MAKER"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:11
+#: post-type/class-xydac-post-type-fields.php:11
+#: page-type/class-xydac-page-type-fields.php:11
+msgid "Field Label"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:11
+#: post-type/class-xydac-post-type-fields.php:11
+#: page-type/class-xydac-page-type-fields.php:11
+msgid "Label used for Page type Field "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:12
+#: post-type/class-xydac-post-type-fields.php:12
+#: page-type/class-xydac-page-type-fields.php:12
+msgid "Field Type"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:12
+#: post-type/class-xydac-post-type-fields.php:12
+#: page-type/class-xydac-page-type-fields.php:12
+msgid "Field Type."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:13
+#: post-type/class-xydac-post-type-fields.php:14
+#: page-type/class-xydac-page-type-fields.php:14
+msgid "Description for Field"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:13
+#: post-type/class-xydac-post-type-fields.php:14
+#: page-type/class-xydac-page-type-fields.php:14
+msgid "Enter the short description for the field"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:14
+#: post-type/class-xydac-post-type-fields.php:15
+#: page-type/class-xydac-page-type-fields.php:15
+msgid "Field Value"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:14
+#: post-type/class-xydac-post-type-fields.php:15
+#: page-type/class-xydac-page-type-fields.php:15
+msgid "Please enter the values for the field (This is optional)"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:15
+#: post-type/class-xydac-post-type-fields.php:16
+#: page-type/class-xydac-page-type-fields.php:16
+msgid "Field Order "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:15
+#: post-type/class-xydac-post-type-fields.php:16
+#: page-type/class-xydac-page-type-fields.php:16
+msgid "Enter 1,2,3.. order in which you want the Custom Field to appear."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:21
+msgid "Taxonomy Type Field"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:30
+#: taxonomy/class-xydac-taxonomy-manager.php:79
+#: post-type/class-xydac-post-type-fields.php:31
+#: post-type/class-xydac-post-type-manager.php:87
+#: page-type/class-xydac-page-type-fields.php:31
+#: page-type/class-xydac-page-type-manager.php:40
+msgid "Label"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:30
+msgid "Order"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-fields.php:35
+msgid "Custom Taxonomy Type Name : "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:13
+#: taxonomy/class-xydac-taxonomy-manager.php:79 post-type/post-type.php:211
+msgid "Post Types"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:14
+msgid "Select the Post Types to associate the Taxonomy to"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:14
+msgid "Select all those Post Types where you want to use your Taxonomy."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:15
+#: post-type/class-xydac-post-type-manager.php:10
+msgid "Labels"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:16
+msgid "Label of Taxonomy "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:16
+msgid "A plural descriptive name for the taxonomy marked for translation."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:17
+msgid "Plural Name "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:17
+msgid "general name for the taxonomy, usually plural."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:18
+msgid "Singular Name "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:18
+msgid "name for one object of this taxonomy."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:19
+msgid "Search Item Label "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:19
+msgid "the search items text."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:20
+msgid "Popular Item Label "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:20
+msgid "the popular items text."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:21
+msgid "All Item Label "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:21
+msgid "the all items text."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:22
+msgid "Parent Item Label "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:22
+msgid ""
+"the parent item text. This string is not used on non-hierarchical taxonomies "
+"such as post tags."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:23
+msgid "Parent Item Label with colon "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:23
+msgid "The same as parent_item, but with colon : in the end."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:24
+msgid "Edit Item Label "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:24
+msgid "the edit item text."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:25
+msgid "Update Item Label "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:25
+msgid "the update item text."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:26
+msgid "Add New Item Label "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:26
+msgid "the add new item text."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:27
+msgid "New Item Label "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:27
+msgid "the new item name text."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:28
+msgid "Seperate Item With Commas Label "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:28
+msgid ""
+"the separate item with commas text used in the taxonomy meta box. This "
+"string isn't used on hierarchical taxonomies."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:29
+msgid "Add or Remove Items Label "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:29
+msgid ""
+"the add or remove items text and used in the meta box when JavaScript is "
+"disabled. This string isn't used on hierarchical taxonomies."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:30
+msgid "Choose From Most Used Label "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:30
+msgid ""
+"the choose from most used text used in the taxonomy meta box. This string "
+"isn't used on hierarchical taxonomies."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:31
+msgid "View Item Label "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:31
+msgid "The View Item Label used in Admin Panel,Admin Menu."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:32
+#: post-type/class-xydac-post-type-manager.php:25
+msgid "Options"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:33
+msgid "Show as ComboBox "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:33
+msgid "Show the Terms in Combo-box on the Add/Edit Post/Custom Post Page"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:34
+msgid "Public "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:34
+msgid "Should this taxonomy be exposed in the admin UI."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:35
+msgid "Show in Navigation Menu "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:35
+msgid ""
+"Selecting TRUE makes this Taxonomy available for selection in navigation "
+"menus."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:36
+msgid "Show UI "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:36
+msgid ""
+"Whether to generate a default User Interface for managing this taxonomy."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:37
+msgid "Show Tag Cloud "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:37
+msgid "Whether to show a tag cloud in the admin UI for this Taxonomy Name"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:38
+#: post-type/class-xydac-post-type-manager.php:36
+msgid "Hierarchical "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:38
+msgid ""
+"Is this taxonomy hierarchical (have descendants) like categories or not "
+"hierarchical like tags."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:39
+#: post-type/class-xydac-post-type-manager.php:56
+msgid "Rewrite Options"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:40
+msgid "Rewrite "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:40
+msgid ""
+"Set to false to prevent rewrite, or array to customize customize query var. "
+"Default will use Taxonomy Name as query var"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:41
+msgid "Slug "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:41
+msgid " prepend posts with this slug"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:42
+msgid "With-Front "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:42
+#: post-type/class-xydac-post-type-manager.php:60
+msgid "allowing permalinks to be prepended with front base"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:43
+#: taxonomy/class-xydac-taxonomy-manager.php:79
+#: post-type/class-xydac-post-type-manager.php:87
+msgid "Hierarchical"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:43
+msgid "Allows permalinks to be rewritten hierarchically(Works with WP-3.1)"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:44
+msgid "Query var "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:44
+msgid ""
+"False to prevent queries, or string to customize query var. Default will use "
+"Taxonomy Name as query var"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:45
+msgid "Update Count Callback function Name "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:45
+msgid ""
+"<strong>For Advanced Users only</strong> A function name that will be called "
+"to update the count of an associated $object_type, such as post, is updated."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:46
+msgid "Permission and Capabilities"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:47
+msgid "Manage Terms "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:47
+msgid "Assign the permissions. who can manage the Taxonomy Terms"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:48
+msgid "Edit Terms "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:48
+msgid "Assign the permissions. who can edit the Taxonomy Terms"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:49
+msgid "Delete Terms "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:49
+msgid "Assign the permissions. who can delete the Taxonomy Terms"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:50
+msgid "Assign Terms "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:50
+msgid "Assign the permissions. who can assign the Taxonomy Terms"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:51
+#: post-type/class-xydac-post-type-manager.php:63
+msgid "Content Details"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:52
+#: post-type/class-xydac-post-type-manager.php:64
+#: page-type/class-xydac-page-type-manager.php:23
+msgid "Content HTML"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:52
+msgid ""
+"Please Enter the default template for the content.You can use shortcodes."
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:53
+#: post-type/class-xydac-post-type-manager.php:65
+#: page-type/class-xydac-page-type-manager.php:24
+msgid "Content CSS"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:53
+msgid "Please Enter the Custom CSS Styles for this taxonomy "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:54
+#: post-type/class-xydac-post-type-manager.php:66
+#: page-type/class-xydac-page-type-manager.php:25
+msgid "Content Javascript"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:54
+msgid "Please Enter the Custom Java script for this taxonomy "
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:64
+msgid "Custom Taxonomy Type"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:89
+#: class-xydac-ultimate-cms-core.php:305
+#: post-type/class-xydac-post-type-manager.php:104
+#: page-type/class-xydac-page-type-manager.php:50
+msgid "Activate"
+msgstr ""
+
+#: taxonomy/class-xydac-taxonomy-manager.php:89
+#: class-xydac-ultimate-cms-core.php:305
+#: post-type/class-xydac-post-type-manager.php:104
+#: page-type/class-xydac-page-type-manager.php:51
+msgid "Deactivate"
+msgstr ""
+
+#: taxonomy/class-xydac-cms-taxonomy-function.php:142
+msgid "None"
+msgstr ""
+
+#: taxonomy/Taxonomy.php:200
+msgid "Taxonomy Types"
+msgstr ""
+
+#: taxonomy/Taxonomy.php:201
+msgid "Taxonomy Type Fields"
+msgstr ""
+
+#: taxonomy/Taxonomy.php:229
+msgid "Select the Custom Taxonomy Type To manage "
+msgstr ""
+
+#: taxonomy/class-field.php:51 taxonomy/class-field.php:58
+msgid "undefined"
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:173 class-xydac-ultimate-cms-core.php:272
+msgid " Deleted."
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:181
+msgid " Activated."
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:189
+msgid " Deactivated."
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:198
+msgid " Name is required to create "
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:200
+msgid " Name already registered !!!"
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:202
+msgid " Name Not allowed"
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:222
+msgid " Added."
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:233
+msgid "Changing "
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:233
+msgid " Name is not allowed !!!"
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:246
+msgid " Updated."
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:277
+msgid " Not Found"
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:301
+msgid "Bulk Actions"
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:410
+msgid "Edit "
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:410
+msgid "Add "
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:412
+msgid "The Name of the "
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:414
+msgid "Name identifies your "
+msgstr ""
+
+#: class-xydac-ultimate-cms-core.php:414
+msgid ""
+"among others. It is usually all lowercase and contains only letters, "
+"numbers, and hyphens."
+msgstr ""
+
+#: class-xydac-export.php:139
+msgid "Your Export File is Ready. Click Here to Download The Export File"
+msgstr ""
+
+#: class-xydac-export.php:143
+msgid "Your Need To Select atleast one item and provide package name"
+msgstr ""
+
+#: class-xydac-export.php:190 class-xydac-export.php:217
+#: post-type/class-xydac-post-type-fields.php:31
+msgid "Type"
+msgstr ""
+
+#: class-xydac-export.php:222
+msgid "Please Input Extra Details about the Package"
+msgstr ""
+
+#: class-xydac-export.php:224
+msgid "Package Name"
+msgstr ""
+
+#: class-xydac-export.php:226
+msgid "Developer Name"
+msgstr ""
+
+#: class-xydac-export.php:228
+msgid "Website"
+msgstr ""
+
+#: class-xydac-export.php:230
+msgid "E Mail"
+msgstr ""
+
+#: class-xydac-export.php:235
+msgid "Export Selected"
+msgstr ""
+
+#: fieldTypes/nivoslider/class-gallery.php:11
+msgid "Gallery"
+msgstr ""
+
+#: fieldTypes/class-nivoslider.php:11
+msgid "Nivo Slider"
+msgstr ""
+
+#: fieldTypes/class-radiobutton.php:11
+msgid "Radio Button"
+msgstr ""
+
+#: fieldTypes/class-checkbox.php:11
+msgid "Check Box"
+msgstr ""
+
+#: fieldTypes/class-text.php:11
+msgid "Text Box"
+msgstr ""
+
+#: fieldTypes/class-richtextarea.php:11
+msgid "Rich Text Area"
+msgstr ""
+
+#: fieldTypes/class-textarea.php:11
+msgid "Text Area"
+msgstr ""
+
+#: fieldTypes/class-textarea.php:52 fieldTypes/class-textarea.php:54
+#: class-field-type.php:105 class-field-type.php:107
+msgid "ADD MORE"
+msgstr ""
+
+#: fieldTypes/class-image.php:11
+msgid "Image"
+msgstr ""
+
+#: fieldTypes/class-link.php:11
+msgid "Link"
+msgstr ""
+
+#: fieldTypes/class-link.php:32 fieldTypes/class-xydactabs.php:44
+msgid " Title"
+msgstr ""
+
+#: fieldTypes/class-link.php:33
+msgid " Link"
+msgstr ""
+
+#: fieldTypes/class-combobox.php:11
+msgid "Combo Box"
+msgstr ""
+
+#: fieldTypes/class-xydactabs.php:13
+msgid "Xydac Tabs"
+msgstr ""
+
+#: fieldTypes/class-xydactabs.php:45
+msgid " Data"
+msgstr ""
+
+#: fieldTypes/class-sidebar.php:11
+msgid "Side Bar"
+msgstr ""
+
+#: post-type/class-xydac-post-type-fields.php:13
+#: page-type/class-xydac-page-type-fields.php:13
+msgid "Field Takes Multiple Input"
+msgstr ""
+
+#: post-type/class-xydac-post-type-fields.php:13
+#: page-type/class-xydac-page-type-fields.php:13
+msgid "Does this Field take multiple values."
+msgstr ""
+
+#: post-type/class-xydac-post-type-fields.php:22
+msgid "Post Type Field"
+msgstr ""
+
+#: post-type/class-xydac-post-type-fields.php:31
+#: page-type/class-xydac-page-type-fields.php:31
+msgid "Field Order"
+msgstr ""
+
+#: post-type/class-xydac-post-type-fields.php:36
+msgid "Custom Post Type Name : "
+msgstr ""
+
+#: post-type/post-type.php:93
+msgid "NONE"
+msgstr ""
+
+#: post-type/post-type.php:135
+msgid "Add New"
+msgstr ""
+
+#: post-type/post-type.php:212
+msgid "Post Type Fields"
+msgstr ""
+
+#: post-type/post-type.php:239
+msgid "Select the Custom Post Type To manage "
+msgstr ""
+
+#: post-type/class-xydac-post-type-use.php:57
+msgid "XYDAC Custom Fields"
+msgstr ""
+
+#: post-type/class-xydac-post-type-use.php:89
+msgid "Additional Information"
+msgstr ""
+
+#: post-type/class-xydac-post-type-use.php:111
+#: page-type/class-xydac-page-type-use.php:100
+msgid "Availaible Shortcodes For Use "
+msgstr ""
+
+#: post-type/class-xydac-post-type-use.php:113
+#: page-type/class-xydac-page-type-use.php:102
+msgid ""
+"You can use these shortcodes anywhere to get the values for them at used "
+"location."
+msgstr ""
+
+#: post-type/class-xydac-post-type-use.php:117
+#: page-type/class-xydac-page-type-use.php:106
+msgid "Field Name"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:11
+msgid "Label for Post Type "
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:11
+msgid "A plural descriptive name for the post type marked for translation."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:12
+msgid "Name of Post Type"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:12
+msgid ""
+"general name for the post type, usually plural. The same as, and overridden "
+"by Label "
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:13
+msgid "Singular Name of Post Type"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:13
+msgid "name for one object of this post type. Defaults to value of name "
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:14
+msgid "Add New Label of Post Type"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:14
+msgid ""
+"the add new text. The default is Add New for both hierarchical and non-"
+"hierarchical types."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:15
+msgid "Add New Item Label of Post Type"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:15
+msgid "the add new item text. Default is Add New Post/Add New Page"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:16
+msgid "Edit Item Label of Post Type"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:16
+msgid "the edit item text. Default is Edit Post/Edit Page"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:17
+msgid "New Item Label of Post Type"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:17
+msgid "the new item text. Default is New Post/New Page"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:18
+msgid "View Item Label of Post Type"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:18
+msgid "the view item text. Default is View Post/View Page"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:19
+msgid "Search Item Label of Post Type"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:19
+msgid "the search items text. Default is Search Posts/Search Pages"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:20
+msgid "Not Found Item Label of Post Type"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:20
+msgid "the not found text. Default is No posts found/No pages found"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:21
+msgid "Not Found in Thrash Label of Post Type"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:21
+msgid ""
+"the not found in trash text. Default is No posts found in Trash/No pages "
+"found in Trash"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:22
+msgid "Parent Item with Colon Label of Post Type"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:22
+msgid ""
+"the parent text. This string isn't used on non-hierarchical types. In "
+"hierarchical ones the default is Parent Page:"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:23
+msgid "Menu Name"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:23
+msgid "The menu name text. This string is the name to give menu items."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:24
+msgid "Enter Text Here Label"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:24
+msgid "The Enter Text Here title label for post type."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:26
+msgid "Public"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:26
+msgid ""
+"This field is used to define default values for publicly_queriable, show_ui, "
+"show_in_nav_menus and exclude_from_search, But since the values for these "
+"fields is already present so I think this won't be used, Better leave this "
+"as it is."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:27
+msgid "Publicly Queryable"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:27
+msgid ""
+"Allows advanced query based operations from themes based on variable "
+"post_type."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:28
+msgid "Exclude from search "
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:28
+msgid "Whether to exclude posts with this post type from search results."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:29
+msgid "Show UI"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:29
+msgid "Whether use the default User Interface for the this Post Type."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:30
+msgid "Query Var"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:30
+msgid ""
+"Use False to disable Querying, True sets the query_var to the name of Post "
+"Type."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:31
+msgid "Can Export"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:31
+msgid ""
+"Allow Exporting of Post Types's Content from EXPORT option of WordPress."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:32
+msgid "Show in Navigation Menu"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:32
+msgid "Whether post_type is available for selection in navigation menus."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:33
+msgid "Show in Menu"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:33
+msgid ""
+"Whether to show the post type in the admin menu and where to show that menu. "
+"Note that show_ui must be true. "
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:34
+msgid "Has Archive"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:34
+msgid ""
+"Enables post type archives. Will generate the proper rewrite rules if "
+"rewrite is enabled. "
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:35
+msgid "Map Meta Capabilities"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:35
+msgid ""
+"Whether to use the internal default meta capability handling.This is used "
+"for default handling of Capabilities and should be set to TRUE for proper "
+"use "
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:36
+msgid "Whether the post type is hierarchical. Allows Parent to be specified."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:37
+msgid "Menu Position"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:37
+msgid "The position in the menu order the post type should appear."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:38
+msgid "Features"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:39
+msgid "Support for Title"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:39
+#: post-type/class-xydac-post-type-manager.php:40
+#: post-type/class-xydac-post-type-manager.php:41
+#: post-type/class-xydac-post-type-manager.php:42
+#: post-type/class-xydac-post-type-manager.php:43
+#: post-type/class-xydac-post-type-manager.php:44
+#: post-type/class-xydac-post-type-manager.php:45
+#: post-type/class-xydac-post-type-manager.php:46
+#: post-type/class-xydac-post-type-manager.php:47
+#: post-type/class-xydac-post-type-manager.php:48
+msgid " "
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:40
+msgid "Support for  Editor"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:41
+msgid "Support for Author"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:42
+msgid "Support for Thumbnail"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:43
+msgid "Support for  Excerpt"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:44
+msgid "Support for Trackbacks"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:45
+msgid "Support for Custom Fields"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:46
+msgid "Support for Comments"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:47
+msgid "Support for Revisions"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:48
+msgid "Support for Page attributes"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:49
+msgid "Show Default Category"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:49
+msgid "Show the Default Categories for this Custom Post Type "
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:50
+msgid "Show Default Tags"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:50
+msgid "Show the Default Tags for this Custom Post Type "
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:51
+msgid "Advanced Options"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:52
+msgid "A short descriptive summary of what the post type is."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:53
+msgid "Capability Type"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:53
+msgid ""
+"The post type to use for checking read, edit, and delete capabilities.The "
+"Capabilities will be automatically created."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:54
+msgid "Register Meta Box CB"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:54
+msgid ""
+"Provide a callback function that will be called when setting up the meta "
+"boxes for the edit form. Do remove_meta_box() and add_meta_box() calls in "
+"the callback."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:55
+msgid "Menu Icon"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:55
+msgid "The url to the icon to be used for this menu."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:57
+msgid "Rewrite"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:57
+msgid "Do you Want the Permalinks ceated for this post-type to be Rewritten."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:58
+msgid "Slug"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:58
+msgid "Prepend posts with this slug. Uses Post-Type name if left blank."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:59
+msgid "Permalink_EPMASK"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:59
+msgid "The default rewrite endpoint bitmasks."
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:60
+msgid "With Front"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:61
+msgid "Feeds"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:62
+msgid "Pages"
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:65
+msgid "Please Enter the Custom CSS Styles for this post type "
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:66
+msgid "Please Enter the Custom Java script for this post type "
+msgstr ""
+
+#: post-type/class-xydac-post-type-manager.php:78
+msgid "Custom Post Type"
+msgstr ""
+
+#: page-type/page-type.php:78
+msgid "Page Types"
+msgstr ""
+
+#: page-type/page-type.php:79
+msgid "Page Type Fields"
+msgstr ""
+
+#: page-type/page-type.php:106
+msgid "Select the Custom Page Type To manage "
+msgstr ""
+
+#: page-type/class-xydac-page-type-fields.php:36
+msgid "Custom Page Type Name : "
+msgstr ""
+
+#: page-type/class-xydac-page-type-use.php:50
+msgid "XYDAC Page Custom Fields"
+msgstr ""
+
+#: page-type/class-xydac-page-type-use.php:84
+msgid "Shortcodes"
+msgstr ""
+
+#: page-type/class-xydac-page-type-use.php:85
+msgid "Page Type"
+msgstr ""
+
+#: page-type/class-xydac-page-type-use.php:113
+#: page-type/class-xydac-page-type-use.php:132
+msgid "Select Page Type"
+msgstr ""
+
+#: page-type/class-xydac-page-type-manager.php:21
+msgid "Label for Page Type "
+msgstr ""
+
+#: page-type/class-xydac-page-type-manager.php:21
+msgid "A plural descriptive name for the page type marked for translation."
+msgstr ""
+
+#: page-type/class-xydac-page-type-manager.php:22
+msgid "A short descriptive summary of what the page type is."
+msgstr ""
+
+#: page-type/class-xydac-page-type-manager.php:24
+msgid "Please Enter the Custom CSS Styles for this page type "
+msgstr ""
+
+#: page-type/class-xydac-page-type-manager.php:25
+msgid "Please Enter the Custom Java script for this page type "
+msgstr ""
