@@ -108,32 +108,35 @@ class xydac_post_type extends xydac_cms_module{
 	function get_xydac_cms_tax_combo($post_id)
 	{
 		$post = get_post($post_id);
-		$taxonomies = xydac()->modules->taxonomy_type->get_active();//array();//@todo: xydac_get_active_taxonomy();
-		$e = '';
-		foreach($taxonomies as $taxonomy)
-			if(isset($taxonomy['object_type']) && is_array($taxonomy['object_type']))
-			if(in_array($post->post_type,$taxonomy['object_type']) && $taxonomy['showascombobox']=='true')
-			{
-				$xy_terms = get_terms($taxonomy['name'], 'hide_empty=0');
-				$val = wp_get_object_terms($post_id, $taxonomy['name']);
-				wp_nonce_field( "XYDAC_CMS", 'xydac_cms_field_nonce' );
-				$e.="<div class='xydac_cms_field'>";
-				$e.="<label for='".$taxonomy['name']."' class='neo'>".$taxonomy['args']['label']."</label>";
-				$e.='<input type="hidden" name="xydac_taxonomy_hidden[]" value="'.$taxonomy["name"].'" />';
-				$e.='<select name='.$taxonomy['name'].' class="neo" id='.$taxonomy['name'].' >';
-				$e.='<option class="'.$taxonomy['name'].'-option" value="" >'.__('NONE',XYDAC_CMS_NAME).'</option>';
-				if(is_array($xy_terms))
-					foreach ($xy_terms as $xy_term) {
-					if (!is_wp_error($val) && !empty($val) && !strcmp($xy_term->slug, $val[0]->slug)  )
-						$e.="<option class='". $taxonomy['name']."-options' value='" . $xy_term->slug . "' selected>" . $xy_term->name . "</option>\n";
-					else
-						$e.="<option class='". $taxonomy['name']."-options' value='" . $xy_term->slug . "'>" . $xy_term->name . "</option>\n";
-				}
+		if(isset(xydac()->modules->taxonomy_type)){
+			$taxonomies = xydac()->modules->taxonomy_type->get_active();//array();//@todo: xydac_get_active_taxonomy();
+			$e = '';
+			if(is_array($taxonomies))
+				foreach($taxonomies as $taxonomy)
+				if(isset($taxonomy['object_type']) && is_array($taxonomy['object_type']))
+				if(in_array($post->post_type,$taxonomy['object_type']) && $taxonomy['showascombobox']=='true')
+				{
+					$xy_terms = get_terms($taxonomy['name'], 'hide_empty=0');
+					$val = wp_get_object_terms($post_id, $taxonomy['name']);
+					wp_nonce_field( "XYDAC_CMS", 'xydac_cms_field_nonce' );
+					$e.="<div class='xydac_cms_field'>";
+					$e.="<label for='".$taxonomy['name']."' class='neo'>".$taxonomy['args']['label']."</label>";
+					$e.='<input type="hidden" name="xydac_taxonomy_hidden[]" value="'.$taxonomy["name"].'" />';
+					$e.='<select name='.$taxonomy['name'].' class="neo" id='.$taxonomy['name'].' >';
+					$e.='<option class="'.$taxonomy['name'].'-option" value="" >'.__('NONE',XYDAC_CMS_NAME).'</option>';
+					if(is_array($xy_terms))
+						foreach ($xy_terms as $xy_term) {
+						if (!is_wp_error($val) && !empty($val) && !strcmp($xy_term->slug, $val[0]->slug)  )
+							$e.="<option class='". $taxonomy['name']."-options' value='" . $xy_term->slug . "' selected>" . $xy_term->name . "</option>\n";
+						else
+							$e.="<option class='". $taxonomy['name']."-options' value='" . $xy_term->slug . "'>" . $xy_term->name . "</option>\n";
+					}
 
-				$e.="</select>";
-				$e.="</div>";
-			}
-			return $e;
+					$e.="</select>";
+					$e.="</div>";
+				}
+				return $e;
+		}
 	}
 
 }

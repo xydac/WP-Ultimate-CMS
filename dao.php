@@ -53,6 +53,7 @@ class xydac_options_dao{
 		//Step 1: Define variables
 		$is_value_array = isset($args['is_value_array']) && 'true'===$args['is_value_array'] ? true :false;
 		$match_keys = isset($args['match_keys']) && 'true'===$args['match_keys'] ? true :false;
+		$final_val_array = isset($args['final_val_array']) && 'true'===$args['final_val_array'] ? true :false;
 		if(is_array($args)&& isset($args['fields']))
 			$fields = $args['fields'];
 		else $fields = null;
@@ -86,16 +87,16 @@ class xydac_options_dao{
 						if(is_array($val_val)){
 						foreach($val_val as $vall)
 							if($key==$val_key && $vall == $value)
-							if(count($values)>1)
-							$final[$k][$vall]=$option_value;
-						else
-							$final[$vall]=$option_value;
+								if(count($values)>1 || $final_val_array)
+									$final[$k][$vall]=$option_value;
+								else
+									$final[$vall]=$option_value;
 					}else{
 						if(($match_keys==true && $key==$val_key && $val_val == $value) || ($match_keys==false &&$val_val == $value))
-							if(count($values)>1)
-							$final[$k]=$option_value;
-						elseif(!is_array($option_value))
-						$final[$k]=$option_value;
+							if(count($values)>1 || $final_val_array)
+								$final[$k]=$option_value;
+							elseif(!is_array($option_value))
+								$final[$k]=$option_value;
 						else
 							$final=$option_value;
 					}
@@ -129,7 +130,7 @@ class xydac_options_dao{
 			$option_values = call_user_func(array($this,$filter.'_filter'),$option_values,$is_value_array);
 		}
 		/* if(is_array($option_values))
-			asort($option_values); */
+			asort($option_values); */			
 		return $option_values;
 	}
 

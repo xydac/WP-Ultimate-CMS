@@ -56,8 +56,8 @@ class ct_fields
 			{
 				if ( !$val )
 					$out .= '<em>' . __( 'undefined', XYDAC_CMS_NAME ) . '</em>';
-				else
-					$out .= "<img src='".$val."' alt=$this->ct_field_name width='75px' />";
+				else if(preg_match('/(http|https|ftp|ftps)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?\.(gif|jpg|jpeg|png|svg)/',$val,$match))
+					$out .= "<img src='".$match[0]."' alt=$this->ct_field_name width='75px' height='75px' />";
 			}
 		}
 
@@ -77,7 +77,8 @@ class ct_fields
 				'name_after' => '',
 				'description_before' => '',
 				'description_after' => '',
-				'field_term'=>''
+				'field_term'=>'',
+				'showall'=>''
 		), $atts));
 
 		$fields = xydac()->modules->taxonomy_type->get_field($this->ct_type);//get_taxonomy_fields($this->ct_type);
@@ -88,7 +89,9 @@ class ct_fields
 		{
 			$terms = get_terms($this->ct_type,array('slug'=>$field_term));
 				
-		}else{
+		}else if($showall=='true')
+			{$terms =  get_terms($this->ct_type,'hide_empty=0');}
+		else{
 			global $post;
 			$terms = wp_get_object_terms($post->ID, $this->ct_type);
 		}
@@ -109,7 +112,7 @@ class ct_fields
 					if(is_array($fields))
 						foreach($fields as $fielddata)
 						{
-							$f = new $fielddata['field_type']($fielddata['field_name'],array('label'=>$fielddata['field_label'],'desc'=>$fielddata['field_desc'],'val'=>$fielddata['field_val'],'fieldoptions'=>array('accesstype'=>'taxonomy')));
+							$f = new $fielddata['field_type']($fielddata['field_name'],array('label'=>$fielddata['field_label'],'desc'=>$fielddata['field_desc'],'val'=>$fielddata['field_val'],'fieldoptions'=>array('accesstype'=>'taxonomy'),'showall'=>'true'));
 							if(isset($field) && $field==$fielddata['field_name'])
 							{
 								$e.= $f->taxonomy_output(get_metadata("taxonomy", $v->term_id,$fielddata['field_name'] , TRUE),$atts);

@@ -146,7 +146,7 @@ abstract class xydac_cms_module{
 			return $this->_get_option('main',$args);
 		else{
 			if(null==$args)
-				return $this->_get_option('main',array('values'=>$this->_get_option('active'),'is_value_array'=>'true','match_keys'=>'false'));
+				return $this->_get_option('main',array('values'=>$this->_get_option('active'),'is_value_array'=>'true','match_keys'=>'false','final_val_array'=>'true'));
 			else
 				return $this->_get_option('active',$args);
 		}

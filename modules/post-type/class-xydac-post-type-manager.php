@@ -128,9 +128,9 @@ class xydac_post_type_manager extends xydac_ultimate_cms_core{
 	function xydac_core_insert($datas)
 	{
 		foreach($datas as $k=>$data){
-			$datas[$k]['args']['label'] = !empty($datas[$k]['args']['label']) ? $datas[$k]['args']['label'] : Inflect::pluralize($datas[$k]['name']);
+			$datas[$k]['args']['label'] = !empty($datas[$k]['args']['label']) ? $datas[$k]['args']['label'] : xydac_mods_inflect::pluralize($datas[$k]['name']);
 			$datas[$k]['args']['labels']['name'] = !empty($datas[$k]['args']['labels']['name']) ? $datas[$k]['args']['labels']['name'] : $datas[$k]['args']['label'];
-			$datas[$k]['args']['labels']['singular_name'] = !empty($datas[$k]['args']['labels']['singular_name']) ? $datas[$k]['args']['labels']['singular_name'] : Inflect::singularize($datas[$k]['args']['labels']['name']);
+			$datas[$k]['args']['labels']['singular_name'] = !empty($datas[$k]['args']['labels']['singular_name']) ? $datas[$k]['args']['labels']['singular_name'] : xydac_mods_inflect::singularize($datas[$k]['args']['labels']['name']);
 			$datas[$k]['args']['labels']['add_new'] = !empty($datas[$k]['args']['labels']['add_new']) ? $datas[$k]['args']['labels']['add_new'] : 'Add New';
 			$datas[$k]['args']['labels']['add_new_item'] = !empty($datas[$k]['args']['labels']['add_new_item']) ? $datas[$k]['args']['labels']['add_new_item'] : 'Add New '.$datas[$k]['args']['label'];
 			$datas[$k]['args']['labels']['edit_item'] = !empty($datas[$k]['args']['labels']['edit_item']) ? $datas[$k]['args']['labels']['edit_item'] : 'Edit '.$datas[$k]['args']['label'];

@@ -27,7 +27,8 @@ abstract class field_type{
 	{
 		global $post;
 		$x_field=array();
-		if(isset($post) && isset($post->post_type))
+		$x_multiple = null;
+		if(isset($post) && isset($post->post_type) &&(!isset($attr['showall']) || isset($attr['showall']) && $attr['showall']!="true"))
 		{
 			$fields='';
 			if('page'==$post->post_type)
@@ -47,6 +48,7 @@ abstract class field_type{
 					parse_str($x_field['field_val'],$x_field['field_val']);
 					break;
 				}
+				$x_multiple = (isset($field['field_has_multiple']) && $field['field_has_multiple']=='true') ?	true: false;
 			}
 		}
 		if(is_array($attr))
@@ -65,6 +67,9 @@ abstract class field_type{
 		isset($fieldoptions) ? $this->fieldoptions = $fieldoptions: $this->fieldoptions = array();
 		isset($compaitable) ? $this->compaitable = $compaitable: $this->compaitable = array('posttype','pagetype');
 		isset($hasmultiplefields) ? $this->hasmultiplefields = $hasmultiplefields: $this->hasmultiplefields = false;
+		
+		if(null!= $x_multiple)
+			$this->hasmultiple = $x_multiple;
 	}
 	/* The function for defining the input data for field type.
 	 * @post_id - Provide the Post id Under use, Use to fetch the post meta data.
@@ -125,8 +130,11 @@ abstract class field_type{
 			return;
 		if($this->hasmultiple)
 		{
-			if(empty($oval))
-				array_push($temp,add_post_meta($post_id, $this->name, esc_attr(stripslashes($val))));
+			$v= esc_attr(stripslashes($val));
+			if(empty($oval) && !empty($v))
+				array_push($temp,add_post_meta($post_id, $this->name, $v));
+			else if(!empty($oval) && empty($v))
+				array_push($temp,delete_post_meta($post_id, $this->name, $oval)); 
 			else
 				array_push($temp,update_post_meta($post_id, $this->name, esc_attr(stripslashes($val)),esc_attr(stripslashes($oval))));
 				
@@ -265,7 +273,7 @@ function xydac_fieldtypes_init()
 	//@todo: add a button on main page to do this as this creates a performance issue
 	xydac()->xydac_cms_build_active_field_types();
 	global $xydac_cms_fields,$wp_version;
-	$xydac_active_field_types = get_option("xydac_active_field_types");
+	//$xydac_active_field_types = get_option("xydac_active_field_types");
 	$xydac_fields = array();
 	$adminscript = "";
 	$adminstyle = "";
@@ -280,17 +288,17 @@ function xydac_fieldtypes_init()
 		if((isset($temp->minwpver) && !empty($temp->minwpver)) || (isset($temp->maxwpver) && !empty($temp->maxwpver)))
 			if(floatval($wp_version)<$temp->minwpver || floatval($wp_version)>$temp->maxwpver)
 			continue;
-			
-		if(is_array($xydac_active_field_types))
-			if(in_array($temp->ftype,$xydac_active_field_types))
-			{
+			//@todo: right now everything is being considered, active field types are not calculated.
+		//if(is_array($xydac_active_field_types))
+			//if(in_array($temp->ftype,$xydac_active_field_types))
+		//	{
 				$adminscript.= "\n/*============START $temp->ftype=============================*/\n".$temp->adminscript()."\n/*============END $temp->ftype=============================*/\n";
 				$adminstyle.= "\n/*============START $temp->ftype=============================*/\n".$temp->adminstyle()."\n/*============END $temp->ftype=============================*/\n";
 				$sitescript.= "\n/*============START $temp->ftype=============================*/\n".$temp->sitescript()."\n/*============END $temp->ftype=============================*/\n";
 				$sitestyle.= "\n/*============START $temp->ftype=============================*/\n".$temp->sitestyle()."\n/*============END $temp->ftype=============================*/\n";
 
 				add_action('admin_head', array($temp,"wp_admin_head"));
-			}
+			//}
 			if(is_array($temp->compaitable) && in_array('posttype',$temp->compaitable))
 				$xydac_fields['fieldtypes']['posttype'][$temp->ftype] = $temp->flabel;
 			if(is_array($temp->compaitable) && in_array('pagetype',$temp->compaitable))

@@ -40,6 +40,14 @@ class xydac_archive_type extends xydac_cms_module{
 		$args = array_merge($args_default,$args);
 		extract(stripslashes_deep($args));
 		//query_posts(do_shortcode($query));
+		
+		//--new code
+		if(substr($query,0,5)=='array')
+			$arr = eval('return serialize('. $query . ');');
+		$arr = unserialize($arr);
+		if(is_array($arr))
+			$query = urldecode(http_build_query($arr));
+		//--new code
 		$xydac_query = new WP_Query(do_shortcode($query));
 		if(!is_wp_error($xydac_query)){
 			if('false'==$tablemode)

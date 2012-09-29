@@ -42,6 +42,7 @@ class nivoslider extends field_type{
 			$theme = $this->value['theme'];
 		else
 			$theme = 'default';
+		if(is_array($vals) && count($vals)>1){
 		$s= '
 
 		<div class="slider-wrapper theme-'.$theme.'">
@@ -55,7 +56,7 @@ class nivoslider extends field_type{
 
 		 
 		</div>';
-
+		}
 		return $s;
 
 	}

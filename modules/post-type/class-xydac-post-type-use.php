@@ -135,7 +135,7 @@ class xydac_post_type_use{
 	  	foreach($_POST['xydac_custom'] as $a=>$t)
 				{
 					$b=explode('-',$a);
-					if(count($b)>2)
+					if(count($b)>=2)
 					{
 						unset($b[count($b)-1]);
 						$field_name = implode('-',$b);

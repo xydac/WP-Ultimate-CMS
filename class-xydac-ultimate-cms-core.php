@@ -234,7 +234,7 @@ abstract class xydac_ultimate_cms_core{
 			}
 			
 		}
-		do_action('xydac_core_bulkaction',$_POST); 
+		do_action('xydac_core_bulkaction',$_POST,$this); 
 	}
 	function insert()
 	{
@@ -503,7 +503,9 @@ abstract class xydac_ultimate_cms_core{
 										<input type='text' name='<?php echo $this->xydac_core_name.$name ?>' class='name' id='<?php echo $this->xydac_core_name.$name ?>' value="<?php if($this->xydac_core_editmode) { echo $this->get_array_val($this->xydac_editdata,$name);} ?>"/>
 									
 									<?php } elseif($type=='checkbox') { ?><label for='<?php echo $this->xydac_core_name.$name ?>' style="font-weight:bold;"><?php echo $arr_label ?></label>
-										<?php $_checkboxeditdata = $this->get_array_val($this->xydac_editdata,$name);$_i=0; foreach($values as $val_name=>$val_label){ ?>
+										<?php $_checkboxeditdata = $this->get_array_val($this->xydac_editdata,$name);$_i=0; 
+										if(!is_array($_checkboxeditdata)) {$_checkboxeditdata= array($_checkboxeditdata);}
+										foreach($values as $val_name=>$val_label){ ?>
 											<div style="width:180px;float:left;"><input type='checkbox' style="width:15px;margin-left:20px" name="<?php echo $this->xydac_core_name.$name."[]"; ?>" id="<?php echo $this->xydac_core_name.$name; ?>" value="<?php _e($val_name,'xydac'); ?>" <?php if($this->xydac_core_editmode && in_array($val_name,$_checkboxeditdata)) echo "checked=checked"; ?>  />&nbsp;<?php _e($val_label,'xydac'); ?></div><?php if($_i==1) {$_i=0;echo "<br />";}else $_i++; ?>
 										<?php } ?>
 									<?php } elseif($type=='textarea') { ?><label for='<?php echo $this->xydac_core_name.$name ?>' style="font-weight:bold;"><?php echo $arr_label ?></label>

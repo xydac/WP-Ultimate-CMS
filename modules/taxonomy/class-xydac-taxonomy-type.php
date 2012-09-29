@@ -32,7 +32,7 @@ class xydac_taxonomy_type extends xydac_cms_module{
 		));
 		new xydac_taxonomy_functions();
 
-
+		add_action( 'xydac_cms_activate', array($this,'xydac_taxonomy_activate'));
 	}
 
 
@@ -93,6 +93,28 @@ class xydac_taxonomy_type extends xydac_cms_module{
 				$taxonomies[$k]['args']['rewrite']['slug'] = $xy_tax['args']['rewrite']['slug'];
 					
 			}
+	}
+	
+	function xydac_taxonomy_activate()
+	{
+		global $wpdb;
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		$charset_collate = '';
+		if (!empty ($wpdb->charset))
+			$charset_collate = "DEFAULT CHARACTER SET {$wpdb->charset}";
+		if (!empty ($wpdb->collate))
+			$charset_collate .= " COLLATE {$wpdb->collate}";
+		$sql = "CREATE TABLE IF NOT EXISTS {$wpdb->prefix}taxonomymeta (
+		meta_id bigint(20) unsigned NOT NULL auto_increment,
+		taxonomy_id bigint(20) unsigned NOT NULL default '0',
+		meta_key varchar(255) default NULL,
+		meta_value longtext,
+		PRIMARY KEY  (meta_id),
+		KEY taxonomy_id (taxonomy_id),
+		KEY meta_key (meta_key)
+		) $charset_collate;";
+		$wpdb->query($sql);
+
 	}
 
 

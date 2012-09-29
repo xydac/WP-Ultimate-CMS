@@ -114,9 +114,9 @@ class xydac_taxonomy_type_manager extends xydac_ultimate_cms_core{
 	function xydac_core_insert($datas)
 	{
 		foreach($datas as $k=>$data){
-			$datas[$k]['args']['labels']['name'] = Inflect::pluralize($datas[$k]['name']);
-			$datas[$k]['args']['label'] = (isset($datas[$k]['args']['labels']['name']) && !empty($datas[$k]['args']['labels']['name']))? $datas[$k]['args']['labels']['name']: Inflect::pluralize($datas[$k]['name']);
-			$datas[$k]['args']['labels']['singular_name'] = ( isset($datas[$k]['args']['labels']["singular_label"]) && !empty($datas[$k]['args']['labels']["singular_label"])) ? $datas[$k]['args']['labels']["singular_label"] :  Inflect::singularize($datas[$k]['args']['labels']['name']);
+			$datas[$k]['args']['labels']['name'] = xydac_mods_inflect::pluralize($datas[$k]['name']);
+			$datas[$k]['args']['label'] = (isset($datas[$k]['args']['labels']['name']) && !empty($datas[$k]['args']['labels']['name']))? $datas[$k]['args']['labels']['name']: xydac_mods_inflect::pluralize($datas[$k]['name']);
+			$datas[$k]['args']['labels']['singular_name'] = ( isset($datas[$k]['args']['labels']["singular_label"]) && !empty($datas[$k]['args']['labels']["singular_label"])) ? $datas[$k]['args']['labels']["singular_label"] :  xydac_mods_inflect::singularize($datas[$k]['args']['labels']['name']);
 			$datas[$k]['args']['labels']['search_items'] = ( isset($datas[$k]['args']['labels']["search_items"]) && !empty($datas[$k]['args']['labels']["search_items"])) ? $datas[$k]['args']['labels']["search_items"] : 'Search ' .$datas[$k]['args']['label'];
 			$datas[$k]['args']['labels']['popular_items'] = ( isset($datas[$k]['args']['labels']["popular_items"]) && !empty($datas[$k]['args']['labels']["popular_items"]) ) ? $datas[$k]['args']['labels']["popular_items"] : 'Popular ' .$datas[$k]['args']['label'];
 			$datas[$k]['args']['labels']['all_items'] = ( isset($datas[$k]['args']['labels']["all_items"]) && !empty($datas[$k]['args']['labels']["all_items"]) ) ? $datas[$k]['args']['labels']["all_items"] : 'All ' .$datas[$k]['args']['label'];
