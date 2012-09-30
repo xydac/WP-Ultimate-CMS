@@ -101,6 +101,10 @@ abstract class xydac_ultimate_cms_core{
 			{
 				$this->delete($_GET[$this->xydac_core_name."_name"]);
 			}
+		elseif(isset($_GET["sync_".$this->xydac_core_name]) && isset($_GET[$this->xydac_core_name."_name"]))
+			{
+				$this->sync($_GET[$this->xydac_core_name."_name"]);
+			}
 		do_action('xydac_core_gethandler'); 
 		
 	}
@@ -322,6 +326,38 @@ abstract class xydac_ultimate_cms_core{
 		return false;
 	}
 
+	function sync($name)
+	{
+		if(xydac()->apikey){
+		$xydac_options = get_option($this->option_name);
+		foreach($xydac_options as $k=>$xydac_option)
+			if($xydac_option[$this->namefield_name]==$name)
+			{
+				if(isset($xydac_option['sync_id']) && $xydac_option['sync_id']>0)
+					$content['id'] = $xydac_option['sync_id'];
+				$content['title'] = $xydac_option[$this->namefield_name];
+				$content['post_type'] = $xydac_core_name;
+				$content['description'] = '<p>'.$xydac_option['description'].'</p>';
+				$content['custom_fields'] = array( array('key' => 'actual_code','value'=>maybe_serialize($xydac_option)));
+
+				$post_id = xydac()->xml_rpc_client('xydac.newPost', $content);
+				$xydac_options[$k]['sync_id'] = $post_id;
+				update_option($this->option_name,$xydac_options);
+				$this->xydac_core_message = $this->xydac_core_label.__(' Synced '.$post_id.' .',XYDAC_CMS_NAME);
+				do_action('xydac_core_sync',$name);
+				return true;
+			}
+	
+			$this->xydac_core_error = new WP_Error('err', $this->xydac_core_label.__(" Not Found",XYDAC_CMS_NAME));
+			return false;
+		}else {
+			$this->xydac_core_error = new WP_Error('err', $this->xydac_core_label.__(" Api key is not defined",XYDAC_CMS_NAME));
+			return false;
+		}
+			
+			
+	}
+	
 	function init()
 	{ 
 	$xydac_rowdata = !is_array($this->option_name)?get_option($this->option_name):($this->option_name);
@@ -409,6 +445,7 @@ abstract class xydac_ultimate_cms_core{
 													foreach($rowactions as $actionname=>$actionlink)
 														echo '<span class="'.strtolower($actionname).'"> | <a href="'.$actionlink.$name.'">'.$actionname.'</a></span>';
 													echo '<span class="delete"> | <a href="'.$this->baselink."&delete_".$this->xydac_core_name."=true&".$this->xydac_core_name."_name=".$name.'">'."Delete".'</a></span>';
+													echo '<span class="sync"> | <a href="'.$this->baselink."&sync_".$this->xydac_core_name."=true&".$this->xydac_core_name."_name=".$name.'">'."Sync".'</a></span>';
 													echo '</div>';
 											    }?>
 										</td>

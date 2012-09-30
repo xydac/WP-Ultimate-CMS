@@ -22,7 +22,7 @@ include 'class-xydac-export.php';
 include "class-xydac-cms-module.php";
 
 include 'class-xydac-cms-home.php';
-
+include ABSPATH.'wp-includes/class-IXR.php';
 function xydac()
 {
 	return xydac_ultimate_cms::cms();
@@ -31,6 +31,7 @@ function xydac()
 class xydac_ultimate_cms{
 
 	protected static $instance;
+	public static $apikey;
 	public static $active;
 	public static $modules;
 	public static $allModules;//doesn't have core modules
@@ -56,6 +57,7 @@ class xydac_ultimate_cms{
 			self::cms()->dao->register_option(XYDAC_CMS_ACTIVEM_OPTIONS);
 			self::cms()->active = self::cms()->dao->get_options(XYDAC_CMS_ACTIVEM_OPTIONS);
 			self::cms()->allModules = array();
+			self::cms()->apikey = get_option(XYDAC_CMS_USER_API_KEY);
 			self::load_modules();
 			
 
@@ -144,6 +146,17 @@ class xydac_ultimate_cms{
 				}
 			}
 		}
+	}
+	public function xml_rpc_client($method,$args=array()) {
+		$nonce =  wp_create_nonce($_SERVER['HTTP_HOST']);
+		set_transient( 'xydac_ultimate_cms_nonce',$nonce, 1000 );
+		$log =  plugins_url( 'xydacverify.php?nonce='.$nonce , dirname(__FILE__) );
+		$pwd =  xydac()->apikey;
+		$xmlrpc = 'http://www.xydac.com/xmlrpc.php';
+		$client = new IXR_Client($xmlrpc);
+		$res = $client->query($method, '', $log, $pwd,$args);
+		return $res;
+		
 	}
 	/*------------------------------------------MODULES SECTION-----------------------------*/
 	//@todo: handle ajax 

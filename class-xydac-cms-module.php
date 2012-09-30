@@ -27,6 +27,8 @@ abstract class xydac_cms_module{
 	private $tabs;
 	//Position of menu on plugin page valid option : top/sub
 	private $menu_position;
+	//XydacSync Module
+	private $xydac_sync;
 
 	/*----------------------------Constructor---------------------*/
 	//array('module_label'=>'','has_custom_fields'=>,'uses_active'=>,'registered_option'=>array('main'=>'','active'=>'','field'=>''),'base_path'=>'','menu_position'=>'top/sub')
@@ -40,6 +42,8 @@ abstract class xydac_cms_module{
 		$this->registered_option = (!empty($args) && is_array($args) && isset($args['registered_option']) && !empty($args['registered_option'])) ? $args['registered_option'] : null;
 		$this->base_path = (!empty($args) && is_array($args) && isset($args['base_path']) && !empty($args['base_path'])) ? $args['base_path'] : null;
 		$this->menu_position = (!empty($args) && is_array($args) && isset($args['menu_position']) && !empty($args['menu_position'])) ? $args['menu_position'] : null;
+		$this->xydac_sync = (!empty($args) && is_array($args) && isset($args['xydac_sync']) && !empty($args['xydac_sync'])) ? true : false;
+		$this->xydac_sync = true;
 		// @todo: path has not been defined.
 		$this->dao = xydac()->dao;
 		//Create an array to hold dao option
@@ -69,6 +73,12 @@ abstract class xydac_cms_module{
 				$this->tabs['fields']=array('name'=>$this->module_name.'_fields',
 						'href'=>$this->base_path.'&sub='.$this->module_name.'_fields',
 						'label'=>$this->module_label.' Fields',
+						'default'=>false) ;
+			}
+			if($this->xydac_sync){
+				$this->tabs['xydac_sync']=array('name'=>$this->module_name.'_xydac_sync',
+						'href'=>$this->base_path.'&sub='.$this->module_name.'_xydac_sync',
+						'label'=>$this->module_label.' Sync',
 						'default'=>false) ;
 			}
 		}else if(isset($args["tabs"]) && !empty($args["tabs"]) && is_array($args["tabs"]))
@@ -327,6 +337,15 @@ else
 	new $method($_GET['manage_'.$this->module_name]);
 }
 	
+	}
+	//default sync page
+	function view_xydac_sync_func($tab)
+	{
+		
+		if(xydac()->apikey){
+			var_dump(xydac()->xml_rpc_client('xydac.getPost', $content));
+			
+		}
 	}
 }
 ?>

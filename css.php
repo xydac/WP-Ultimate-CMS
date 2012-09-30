@@ -1,4 +1,5 @@
 <?php
+error_reporting('E_NONE');
 require_once("../../../wp-config.php");
 
 header('Content-type: text/css');

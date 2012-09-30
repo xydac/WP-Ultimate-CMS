@@ -1,5 +1,5 @@
 <?php
-error_reporting(0);
+error_reporting('E_NONE');
 require_once("../../../wp-config.php");
 header('Content-type: text/javascript');
 $script='; ';
