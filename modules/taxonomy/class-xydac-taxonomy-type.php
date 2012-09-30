@@ -32,7 +32,7 @@ class xydac_taxonomy_type extends xydac_cms_module{
 		));
 		new xydac_taxonomy_functions();
 
-		add_action( 'xydac_cms_activate', array($this,'xydac_taxonomy_activate'));
+		//add_action( 'xydac_cms_activate', array($this,'xydac_taxonomy_activate'));
 	}
 
 
@@ -94,7 +94,7 @@ class xydac_taxonomy_type extends xydac_cms_module{
 					
 			}
 	}
-	
+	//this is not working sumhow
 	function xydac_taxonomy_activate()
 	{
 		global $wpdb;

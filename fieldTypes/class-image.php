@@ -86,7 +86,7 @@ class image extends field_type{
 		foreach($vals as $val)
 		{
 			$val = wp_specialchars_decode($val,ENT_QUOTES);
-			if (preg_match('/\A(?:\b(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)[-A-Z0-9+&@#\/%=~_|$?!:,.]*[A-Z0-9+&@#\/%=~_|$])\Z/i', $val['img_url']))
+			if (preg_match('/\A(?:\b(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)[-A-Z0-9+&@#\/%=~_|$?!:,.]*[A-Z0-9+&@#\/%=~_|$])\Z/i', $val))
 				$val='<img src="'.$val.'" />';
 			else
 				$val=do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES));
@@ -94,6 +94,24 @@ class image extends field_type{
 		}
 		return wp_specialchars_decode($pre).$s.wp_specialchars_decode($post);
 
+	}
+	public function taxonomy_output($val,$atts)
+	{
+		//$atts = wp_specialchars_decode(stripslashes_deep($atts),ENT_QUOTES);
+	 extract(shortcode_atts(array(
+	 		$this->name.'_before'=>'',
+	 		$this->name.'_after'=>'',
+	 ), $atts));
+	 	
+		$s = "";
+		if(empty($val))return;
+		if (preg_match('/\A(?:\b(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)[-A-Z0-9+&@#\/%=~_|$?!:,.]*[A-Z0-9+&@#\/%=~_|$])\Z/i', $val))
+				$val='<img src="'.$val.'" />';
+		else
+			$val=do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES));
+		$s.=wp_specialchars_decode($before_element).do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES)).wp_specialchars_decode($after_element);
+		
+		return wp_specialchars_decode($pre).$s.wp_specialchars_decode($post);
 	}
 	public function adminscript()
 	{

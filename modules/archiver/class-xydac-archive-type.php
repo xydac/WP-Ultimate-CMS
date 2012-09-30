@@ -118,6 +118,7 @@ class xydac_archive_type extends xydac_cms_module{
 						$out .= '<div class="xydac_clear"></div>';
 					echo $out;
 					$list = ob_get_clean();
+					wp_reset_postdata();
 					return $list;
 
 
