@@ -62,7 +62,7 @@ class xydac_taxonomy_type_manager extends xydac_ultimate_cms_core{
 		add_filter('xydac_core_rowactions',array($this,'xydac_core_rowactions'));
 		add_filter('xydac_core_doactions',array($this,'xydac_core_doactions'));
 		add_filter('xydac_core_insert',array($this,'xydac_core_insert'),10,1);
-		parent::__construct("xydac_taxonomy",xydac()->modules->taxonomy_type->get_module_label(),xydac()->modules->taxonomy_type->get_base_path(),xydac()->modules->taxonomy_type->get_registered_option('main'),$form_variables,true,false);
+		parent::__construct(xydac()->modules->taxonomy_type->get_module_name(),xydac()->modules->taxonomy_type->get_module_label(),xydac()->modules->taxonomy_type->get_base_path(),xydac()->modules->taxonomy_type->get_registered_option('main'),$form_variables,true,false);
 		//parent::__construct("xydac_taxonomy",__("Custom Taxonomy Type",XYDAC_CMS_NAME),XYDAC_CMS_TAXONOMY_TYPE_PATH,XYDAC_CMS_TAXONOMY_TYPE_OPTION,$form_variables,true,false);
 	}
 	function xydac_core_leftdiv()

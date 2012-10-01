@@ -325,7 +325,7 @@ abstract class xydac_ultimate_cms_core{
 		$this->xydac_core_error = new WP_Error('err', $this->xydac_core_label.__(" Not Found",XYDAC_CMS_NAME));
 		return false;
 	}
-
+	//@todo: Code clean up required on this function	
 	function sync($name)
 	{
 		if(xydac()->apikey){
@@ -334,18 +334,61 @@ abstract class xydac_ultimate_cms_core{
 			if($xydac_option[$this->namefield_name]==$name)
 			{
 				if(isset($xydac_option['sync_id']) && $xydac_option['sync_id']>0)
-					$content['id'] = $xydac_option['sync_id'];
-				$content['title'] = $xydac_option[$this->namefield_name];
-				$content['post_type'] = $xydac_core_name;
-				$content['description'] = '<p>'.$xydac_option['description'].'</p>';
-				$content['custom_fields'] = array( array('key' => 'actual_code','value'=>maybe_serialize($xydac_option)));
-
-				$post_id = xydac()->xml_rpc_client('xydac.newPost', $content);
-				$xydac_options[$k]['sync_id'] = $post_id;
-				update_option($this->option_name,$xydac_options);
-				$this->xydac_core_message = $this->xydac_core_label.__(' Synced '.$post_id.' .',XYDAC_CMS_NAME);
-				do_action('xydac_core_sync',$name);
-				return true;
+					$xy_rpc_post = xydac()->xml_rpc_client('wp.getPost',$xydac_option['sync_id'], array('custom_fields'));
+				$actual_code_id =-1;
+				$field_code_id =-1;
+				if(isset($xy_rpc_post) && $xy_rpc_post->isError()){
+					if(404==$xy_rpc_post->getErrorCode())
+						{
+							unset($xydac_options[$k]['sync_id']);
+							update_option($this->option_name,$xydac_options);
+						}
+					$this->xydac_core_error = new WP_Error($xy_rpc_post->getErrorCode(), $xy_rpc_post->getErrorMessage().' Sync ID:'.$xydac_option['sync_id']);
+					return false;
+				}else if(isset($xy_rpc_post) && !$xy_rpc_post->isError()) {
+					$xy_rpc_post = $xy_rpc_post->getResponse(); 
+					foreach($xy_rpc_post['custom_fields'] as $arr)
+						{
+							if($arr['key']=='actual_code')
+								$actual_code_id = (int)$arr['id'];
+							else if($arr['key']=='field_code')
+								$field_code_id = (int)$arr['id'];
+						}
+				}
+				$content['post_title'] = $xydac_option[$this->namefield_name];
+				$content['post_type'] = 'xydac_'.$this->xydac_core_name;
+				$content['post_content'] = '<p>'.$xydac_option['description'].'</p>';
+				if($actual_code_id>0 && $field_code_id>0)
+					$content['custom_fields'] = array( array('id'=>$actual_code_id,'key' => 'actual_code','value'=>base64_encode(maybe_serialize($xydac_option))),array('id'=>$field_code_id,'key' => 'field_code','value'=>base64_encode(maybe_serialize(''))));
+				else
+					$content['custom_fields'] = array( array('key' => 'actual_code','value'=>base64_encode(maybe_serialize($xydac_option))),
+													array('key' => 'field_code','value'=>base64_encode(maybe_serialize(''))));
+				
+				
+				 if(isset($xydac_option['sync_id']) && (int)$xydac_option['sync_id']>0)
+					  $result = xydac()->xml_rpc_client('wp.editPost',$xydac_option['sync_id'], $content);
+				  else
+					$result = xydac()->xml_rpc_client('wp.newPost', $content);
+				
+				if($result->isError()){
+					if(404==$result->getErrorCode())
+						{
+							unset($xydac_options[$k]['sync_id']);
+							update_option($this->option_name,$xydac_options);
+						}
+					$this->xydac_core_error = new WP_Error($result->getErrorCode(), $result->getErrorMessage().' Sync ID:'.$xydac_option['sync_id']);
+					return false;
+				}else{
+					$result = $result->getResponse();
+					if(!isset($xydac_option['sync_id']) && $result!='1')
+					{
+						$xydac_options[$k]['sync_id'] = $result;
+						update_option($this->option_name,$xydac_options);
+					}
+					$this->xydac_core_message = $this->xydac_core_label.__(' Synced '.$result.' .',XYDAC_CMS_NAME);
+					do_action('xydac_core_sync',$name);
+					return true;
+				}
 			}
 	
 			$this->xydac_core_error = new WP_Error('err', $this->xydac_core_label.__(" Not Found",XYDAC_CMS_NAME));
@@ -363,7 +406,7 @@ abstract class xydac_ultimate_cms_core{
 	$xydac_rowdata = !is_array($this->option_name)?get_option($this->option_name):($this->option_name);
 	$this->xydac_editdata = stripslashes_deep($this->xydac_editdata);
 	?>
-		<?php if(!xydac()->is_xydac_ucms_pro())xydac()->xydac_show_donate_link(); ?>
+		<?php //if(!xydac()->is_xydac_ucms_pro())xydac()->xydac_show_donate_link(); ?>
 		<?php do_action('xydac_core_head'); ?>
 		<?php if(!empty($this->xydac_core_message)) { ?>
 		<div id="message" class="updated below-h2"><p><?php echo $this->xydac_core_message; ?></p></div>
@@ -567,7 +610,7 @@ abstract class xydac_ultimate_cms_core{
 			</div>
 		</div>
 		<?php do_action('xydac_core_foot'); ?>
-	<?php if(!xydac()->is_xydac_ucms_pro())xydac()->xydac_show_donate_link(false); ?>
+	<?php //if(!xydac()->is_xydac_ucms_pro())xydac()->xydac_show_donate_link(false); ?>
 	
 	<?php }
 	

@@ -76,7 +76,7 @@ class xydac_post_type_manager extends xydac_ultimate_cms_core{
 		add_filter('xydac_core_doactions',array($this,'xydac_core_doactions'));
 		add_filter('xydac_core_insert',array($this,'xydac_core_insert'),10,1);
 		//parent::__construct("xydac_post_type",__("Custom Post Type",XYDAC_CMS_NAME),XYDAC_CMS_POST_TYPE_PATH,XYDAC_CMS_POST_TYPE_OPTION,$form_variables,true,false);
-		parent::__construct("xydac_post_type",xydac()->modules->post_type->get_module_label(),xydac()->modules->post_type->get_base_path(),xydac()->modules->post_type->get_registered_option('main'),$form_variables,true,false);
+		parent::__construct(xydac()->modules->post_type->get_module_name(),xydac()->modules->post_type->get_module_label(),xydac()->modules->post_type->get_base_path(),xydac()->modules->post_type->get_registered_option('main'),$form_variables,true,false);
 		//if you make the call to constructor before adding filters and action then action and filters will not be enabled
 	}
 	function xydac_core_leftdiv()

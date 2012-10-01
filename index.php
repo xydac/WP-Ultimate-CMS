@@ -148,15 +148,19 @@ class xydac_ultimate_cms{
 			}
 		}
 	}
-	public function xml_rpc_client($method,$args=array()) {
+	public function xml_rpc_client($method,$id=null,$args=array()) {
 		$nonce =  wp_create_nonce($_SERVER['HTTP_HOST']);
 		set_transient( 'xydac_ultimate_cms_nonce',$nonce, 1000 );
-		$log =  plugins_url( 'xydacverify.php?nonce='.$nonce , dirname(__FILE__) );
+		$log =  plugins_url( 'ultimate-cms/xydacverify.php?nonce='.$nonce , dirname(__FILE__) );
 		$pwd =  xydac()->apikey;
 		$xmlrpc = 'http://www.xydac.com/xmlrpc.php';
 		$client = new IXR_Client($xmlrpc);
-		$res = $client->query($method, '', $log, $pwd,$args);
-		return $res;
+		//$client->debug = true;
+		if(!$id)
+			$client->query($method, '', $log, $pwd,$args);
+		else
+			$client->query($method, '', $log, $pwd,$id,$args);
+		return $client;
 		
 	}
 	/*------------------------------------------MODULES SECTION-----------------------------*/
@@ -317,23 +321,7 @@ class xydac_ultimate_cms{
 			return true;
 	}
 	//include 'dao.php';
-	function xydac_show_donate_link($showimage=true){
-		echo '
-		<p class="xydacdonation">
-		<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=nikhilseth1989%40gmail%2ecom&item_name=WordPress%20Plugin%20(Ultimate%20CMS)&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8">
-		';
-		if($showimage)
-			echo '<img src="http://www.paypal.com/en_US/i/btn/btn_donate_LG.gif"/>';
-		echo 'You might want to help building this plugin with some Donations. Please Click here to Donate';
-		if($showimage)
-			echo '<img src="http://www.paypal.com/en_US/i/btn/btn_donate_LG.gif"/>';
-		echo'
-		</a>
-		</p>
-		';
-
-
-	}
+	
 	//-ERROR LOGGING AND HANDLING BEGIN
 	function xydac_cms_display_logs($type='WARNING')
 	{

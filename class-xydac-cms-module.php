@@ -343,7 +343,17 @@ else
 	{
 		
 		if(xydac()->apikey){
-			var_dump(xydac()->xml_rpc_client('xydac.getPost', $content));
+			$result = xydac()->xml_rpc_client('wp.getPosts',array('post_type'=>'xydac_'.$this->module_name,));
+			//var_dump($result->getResponse());
+			$resultsarr = $result->getResponse();
+			if(is_array($resultsarr)){
+				foreach($resultsarr as $resultarr){
+					echo "Post Title : ".$resultarr['post_title'].'<br/>';
+					$cont = $resultarr['custom_fields'][0]['id'];
+					echo "Post Code : ".base64_decode($cont).'<br/>';
+				}
+			echo "<br/><br/>";
+			}
 			
 		}
 	}
