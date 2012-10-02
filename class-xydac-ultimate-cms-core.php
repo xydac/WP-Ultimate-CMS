@@ -157,6 +157,7 @@ abstract class xydac_ultimate_cms_core{
 			return false;
 	}
 
+	//can be user directly now 
 	function get_data_byname($name)
 	{
 		$xydac_options = get_option($this->option_name);

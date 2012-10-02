@@ -24,11 +24,35 @@ class xydac_ultimate_cms_home extends xydac_cms_module{
 				'tabs'=>$this->tabs
 		));
 		$this->view_main();
+		
 	}
 	function xydac_cms_module_view_main_func($tabname){
 		if($tabname == 'home'){
-			
-			echo "<h2>This Page is not Availaible in this version</h2>";
+			if(isset($_POST) && !empty($_POST) && wp_verify_nonce($_POST['xydac_cms_home_form_nonce'], __FILE__))
+			{
+				if(isset($_POST[XYDAC_CMS_USER_API_KEY]))
+					update_option(XYDAC_CMS_USER_API_KEY,$_POST[XYDAC_CMS_USER_API_KEY]);
+				do_action('xydac_cms_homeprocessform');
+				
+			}
+			echo "<h3>Xydac Ultimate-CMS Options</h3>";
+			//array('name'=>'','label'=>'','description'=>'');
+			$formcontents = apply_filters('xydac_cms_homeformoption', array('0'=>array('name'=>XYDAC_CMS_USER_API_KEY,'label'=>'API Key','description'=>'Please enter your API Key from Xydac.com','value'=>get_option(XYDAC_CMS_USER_API_KEY))));
+			echo '<form method="post" name="xydac_cms_home_option" action="'.$this->base_path.'">';
+			echo '<table class="form-table"><tbody>';
+			foreach($formcontents as $formcontent){
+			extract($formcontent);
+				echo "
+			<tr>
+				<th><label for='$name'>$label</label></th>
+				<td><input type='text' name='$name' id='$name' value='$value'/><br>
+				<span class='$name'>$description.</span></td>
+			</tr>";
+			}
+			echo '</tbody></table>';
+			echo '<input type="hidden" name="xydac_cms_home_form_nonce" value="'.wp_create_nonce(__FILE__).'"/>';
+			echo '<input type="submit" value="Submit"/>';
+			echo '</form>';
 			echo "
 			<script type='text/javascript'>
 			WebFontConfig = {

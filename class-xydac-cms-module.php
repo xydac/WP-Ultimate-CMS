@@ -94,8 +94,14 @@ abstract class xydac_cms_module{
 	public function get_module_name(){
 		return $this->module_name;
 	}
+	public function get_field_name(){
+		return $this->module_name.'_field';
+	}
 	public function get_module_label(){
 		return $this->module_label;
+	}
+	public function get_field_label(){
+		return $this->module_label.' Fields';
 	}
 	public function get_path(){
 		return $this->path;
@@ -148,7 +154,110 @@ abstract class xydac_cms_module{
 		else
 			return null;
 	}
+	private function _set_option($type,$args=null){
+		return $this->dao->set_options($this->registered_option[$type],$args);
+	}
 	/*----------------------------End FInal Functions---------------------*/
+	
+	/*----------------------------START NEW FUNCTIONS---NOT IMPLEMENTED------------------*/
+	function is_main_active($name){
+		$arr = $this->get_active_names();
+		if(!empty($arr) && is_array($arr) && in_array($name,$arr))
+			return true;
+		else
+			return false;
+	}
+
+	
+	public function insert_object($type,$name,$args){
+		if($type!='main' || $type!='active')return false;
+		$message='';
+		$name = sanitize_title_with_dashes($name);
+		if(empty($name))
+			$message = new WP_Error('err', $this->module_label.__(" Name is required to create ",XYDAC_CMS_NAME).$this->module_label);
+		elseif(in_array($name,$this->get_main_names()))
+		$message = new WP_Error('err', $this->module_label.__(" Name already registered !!!",XYDAC_CMS_NAME));
+		elseif($name=="active"){
+			$message = new WP_Error('err', $this->module_label.__(" Name Not allowed",XYDAC_CMS_NAME));
+		}
+		else{
+			if($this->dao->insert_object($this->get_registered_option($type),$args))
+				$message = $this->module_label.__(' Inserted.',XYDAC_CMS_NAME);
+			else
+				$message = new WP_Error('err', __("Not Insterted",XYDAC_CMS_NAME));
+
+		}
+		return $message;
+	}
+	public function update_object($type,$name,$args,$oldname,$namefieldname){
+		if($type!='main' || $type!='active')return false;
+		$message='';
+		$name = sanitize_title_with_dashes($name);
+		$oldname = sanitize_title_with_dashes($oldname);
+		if(empty($name))
+			$message = new WP_Error('err', $this->module_label.__(" Name is required to create ",XYDAC_CMS_NAME).$this->module_label);
+		elseif(!in_array($name,$this->get_main_names()))
+		$message = new WP_Error('err', $this->module_label.__(" Name not registered !!!",XYDAC_CMS_NAME));
+		elseif($name=="active"){
+			$message = new WP_Error('err', $this->module_label.__(" Name Not allowed",XYDAC_CMS_NAME));
+		}elseif($name!=$oldname){
+			$message = new WP_Error('err', __("Changing Name is Not allowed",XYDAC_CMS_NAME));
+		}
+		else{
+			if($this->dao->update_object($this->get_registered_option($type),$args,$oldname,$namefieldname))
+			{
+				$message = $this->module_label.__(' Updated.',XYDAC_CMS_NAME);
+			}else
+				$message = new WP_Error('err', __("Not Updated",XYDAC_CMS_NAME));
+			
+		}
+		return $message;
+	}
+	public function delete_object($type,$name,$namefieldname){
+		if($type!='main' || $type!='active')return false;
+		if($this->dao->delete_object($this->get_registered_option($type),$name,$namefieldname))
+		{
+			$this->deactivate_main($name);
+			return $this->module_label.__(' Deleted.',XYDAC_CMS_NAME);
+		}
+		else
+			return new WP_Error('err', $this->module_label.__(" Not Found",XYDAC_CMS_NAME));
+	}
+
+	public function activate_main($name){
+		$xydac_active_options = !is_array($this->get_active())?array(): $this->get_active();
+		if(!in_array($name,$this->get_active_names()))
+			array_push($xydac_active_options,$name);
+		$this->_set_option('active',$xydac_active_options );
+		$message = $this->module_label.__(' Deactivated.',XYDAC_CMS_NAME);
+	}
+	public function deactivate_main($name){
+		if(!is_array($this->get_active()))
+			$message = new WP_Error('err', $this->module_label.__(" Not Found",XYDAC_CMS_NAME));
+		$xydac_active_options = $this->get_active();
+		if(in_array($name,$this->get_active_names()))
+			foreach($xydac_active_options as $k=>$xydac_option)
+				if($xydac_option==$name)
+					{unset($xydac_active_options[$k]);break;}
+		$this->_set_option('active',$xydac_active_options );
+		$message = $this->module_label.__(' Deactivated.',XYDAC_CMS_NAME);
+	}
+	function sync_main($name){
+	}
+	
+	public function insert_main();
+	public function update_main();
+	public function delete_main();
+	public function activate_main();
+	public function deactivate_main();
+	public function sync_main();
+	
+	public function insert_field();
+	public function update_field();
+	public function delete_field();
+	
+	/*----------------------------END NEW FUNCTIONS---------------------*/
+	
 	/*----------------------------Start Major Getters---------------------*/
 	/* This function returns the array of active items */
 	function get_active($args=null){
@@ -238,7 +347,20 @@ abstract class xydac_cms_module{
 	{
 		return ((substr($name,-1)=='s') ? substr($name,0,-1) : $name);
 	}
-
+	//Supporting function used for usort
+	private function xy_cmp($a, $b)
+	{
+		if(isset($a['field_order']) && isset($b['field_order']))
+			$k = 'field_order';
+		else
+			$k = $this->namefield_name;
+		if($a[$k]> $b[$k])
+			return 1;
+		elseif($a[$k]< $b[$k])
+		return -1;
+		else
+			return 0;
+	}
 	/*----------------------------View Components---------------------*/
 	/*Main View Function :  view_main()*/
 	/* $tabs = array ('name'=>array('label','href','default'))*/
@@ -341,21 +463,68 @@ else
 	//default sync page
 	function view_xydac_sync_func($tab)
 	{
-		
-		if(xydac()->apikey){
-			$result = xydac()->xml_rpc_client('wp.getPosts',array('post_type'=>'xydac_'.$this->module_name,));
-			//var_dump($result->getResponse());
-			$resultsarr = $result->getResponse();
-			if(is_array($resultsarr)){
-				foreach($resultsarr as $resultarr){
-					echo "Post Title : ".$resultarr['post_title'].'<br/>';
-					$cont = $resultarr['custom_fields'][0]['id'];
-					echo "Post Code : ".base64_decode($cont).'<br/>';
+		echo '<h1>Xydac.com Remote</h1>';
+		if($_GET['activate']=='true' && wp_verify_nonce($_GET['nonce'], __FILE__) && !empty($_GET['id']))
+		{
+			//installation process...
+			$namearr = $this->get_main_names();
+			$result = xydac()->xml_rpc_client('wp.getPost',$_GET['id'],array());
+			if(!$result->isError() && is_array($result->getResponse())){
+				if((is_array($namearr) && !in_array($resultarr['post_title'],$namearr)) || !is_array($namearr))
+				{
+					//can be added directly	
+					echo "can be added directly";
 				}
-			echo "<br/><br/>";
+				else if(is_array($namearr) && in_array($resultarr['post_title'],$namearr))
+				{
+					//name has to changed before adding.
+					echo "name has to changed before adding.";
+				}
 			}
-			
+				
+		}else{
+			$formaction = $tab['href'];
+			if(xydac()->apikey){
+				$result = xydac()->xml_rpc_client('wp.getPosts',array('post_type'=>'xydac_'.$this->module_name,));
+				if(!$result->isError() && is_array($result->getResponse())){
+					$resultsarr = $result->getResponse();
+					echo '
+					<table class="wp-list-table widefat fixed posts" cellspacing="0">
+					<thead>
+					<tr>
+					<th scope="col" class="manage-column column-cb name-column" style="">Name</th>
+					<th scope="col" class="manage-column column-cb desc-column" style="">Description</th>
+					<th scope="col" class="manage-column column-cb install-column" style="">Install</th>
+					</tr>
+					</thead>
+
+					<tfoot>
+					<tr>
+					<th scope="col" class="manage-column column-cb name-column" style="">Name</th>
+					<th scope="col" class="manage-column column-cb desc-column" style="">Description</th>
+					<th scope="col" class="manage-column column-cb install-column" style="">Install</th>
+					</tr>
+					</tfoot>
+					<tbody id="the-list">';
+					foreach($resultsarr as $resultarr){
+						echo '<tr id="'.$resultarr['ID'].'" valign="top">
+						<td class="column-name">'.$resultarr['post_title'].'</td>
+						<td class="column-desc">'.$resultarr['post_content'].'</td>
+						<td class="column-install"><a href="'.$formaction.'&activate=true&id='.$resultarr['ID'].'&nonce='.wp_create_nonce(__FILE__).'" title="Activate" class="edit">Activate</a></td>
+						</tr>';
+						//$cont = $resultarr['custom_fields'][0]['id'];
+						//echo "Post Code : ".base64_decode($cont).'<br/>';
+					}
+					echo "<br/><br/>";
+					echo '
+					</tbody>
+					</table>';
+
+				}
+					
+			}
 		}
+
 	}
 }
 ?>

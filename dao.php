@@ -30,7 +30,7 @@ class xydac_options_dao{
 
 	private function is_option_registered($option)
 	{
-		if(empty($option) || !in_array($option,array_keys($this->registered_option)))
+		if(is_array($option) || empty($option) || !in_array($option,array_keys($this->registered_option)))
 			return false;
 		else
 			return true;
@@ -133,7 +133,83 @@ class xydac_options_dao{
 			asort($option_values); */			
 		return $option_values;
 	}
-
+	
+	public function insert_object($option,$data){
+		if(!$this->is_option_registered($option))
+			return false;
+		$xydac_options = get_option($option);;
+	
+		if(!$xydac_options)
+		{
+			$temp = array();
+			array_push($temp,$args);
+			update_option($option,$temp);
+			return true;
+		}
+		if(is_array($xydac_options))
+		{
+			array_push($xydac_options,$args);
+			usort($xydac_options, array($this,'xy_cmp'));
+			update_option($option,$xydac_options);
+			return true;
+		}
+		return false;
+	}
+	public function update_object($option,$data,$oldname,$namefieldname){
+		if(!$this->is_option_registered($option))
+			return false;;
+		$xydac_options = get_option($option);;
+	
+		if(is_array($xydac_options))
+		{
+			foreach($xydac_options as $k=>$xydac_option){
+				if($xydac_option[$namefieldname]==$oldname)
+				{
+					unset($xydac_options[$k]);break;
+				}
+			}
+			array_push($xydac_options,$args);
+			usort($xydac_options, array($this,'xy_cmp'));
+			update_option($option,$xydac_options);
+			return true;
+		}
+		else
+			return false;
+	}
+	public function delete_object($option,$name,$namefieldname){
+		if(!$this->is_option_registered($option))
+			return false;
+		$xydac_options = get_option($option);
+	
+		$name = sanitize_title_with_dashes($name);
+		foreach($xydac_options as $k=>$xydac_option)
+			if($xydac_option[$namefieldname]==$name)
+			{
+				unset($xydac_options[$k]);
+				usort($xydac_options, array($this,'xy_cmp'));
+				$this->deactivate_main($name);
+				update_option($option,$xydac_options);
+				return true;
+			}
+			else
+				return false;
+		return false;
+	}
+	
+	//--------
+	private function xy_cmp($a, $b)
+	{
+		if(isset($a['field_order']) && isset($b['field_order']))
+			$k = 'field_order';
+		else
+			$k = $this->namefield_name;
+		if($a[$k]> $b[$k])
+			return 1;
+		elseif($a[$k]< $b[$k])
+		return -1;
+		else
+			return 0;
+	}
 	private function value_filter($data,$is_value_array)
 	{
 		$output = array();
