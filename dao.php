@@ -41,7 +41,7 @@ class xydac_options_dao{
 	 * @param array $args['values'] This the the array from which some key value pair can be compared with the key value pair of the object fetched.
 	 * @param String $args['match_keys'] if you want to match both key and value from the $values array to fetched $option_values array then set this to true, else only value will be compared
 	 * @param array $args['fields'] This the the array of fields
-	 * @param String $args['is_value_array'] Defines if the fetched $option_values array has its value equal to an array.
+	 * @param String $args['is_value_array'] Defines if the fetched $option_values array has its value equal to an array of array.
 	 * @return void|Ambigous <mixed, boolean>|Ambigous <multitype:unknown , mixed, boolean>
 	 */
 	public function get_options($option,$args=null){
@@ -76,30 +76,30 @@ class xydac_options_dao{
 			return $option_values;
 
 		//Step 4: If values is given then handle values
-		if(isset($values) && is_array($values)){
+		if(isset($values) && is_array($values)){//'values'=>array('name'=>'hhh')
 			$final = array();
 			//values is array from which we get known values
-			foreach($values as $val_key=>$val_val)
+			foreach($values as $val_key=>$val_val)//$val_key=name $val_val = 'hhh'
 			{
 				if($is_value_array){
 					foreach($option_values as $k=>$option_value)//[1]=>array('name'=>'abc')
 						foreach($option_value as $key=>$value)//$key = name $value=abc
 						if(is_array($val_val)){
-						foreach($val_val as $vall)
-							if($key==$val_key && $vall == $value)
+							foreach($val_val as $vall)
+								if($key==$val_key && $vall == $value)
+									if(count($values)>1 || $final_val_array)
+										$final[$k][$vall]=$option_value;
+									else
+										$final[$vall]=$option_value;
+						}else{
+							if(($match_keys==true && $key==$val_key && $val_val == $value) || ($match_keys==false &&$val_val == $value))
 								if(count($values)>1 || $final_val_array)
-									$final[$k][$vall]=$option_value;
-								else
-									$final[$vall]=$option_value;
-					}else{
-						if(($match_keys==true && $key==$val_key && $val_val == $value) || ($match_keys==false &&$val_val == $value))
-							if(count($values)>1 || $final_val_array)
-								$final[$k]=$option_value;
-							elseif(!is_array($option_value))
-								$final[$k]=$option_value;
-						else
-							$final=$option_value;
-					}
+									$final[$k]=$option_value;
+								elseif(!is_array($option_value))
+									$final[$k]=$option_value;
+							else
+								$final=$option_value;
+						}
 				}
 			}
 			$option_values = $final;
@@ -110,12 +110,12 @@ class xydac_options_dao{
 		if(isset($fields) && !empty($fields)){
 			if(!is_array($fields))
 				$fields = array($fields);
-			if($is_value_array){
+			if($is_value_array && is_array($option_values)){
 				foreach($option_values as $k=>$option_value)
 					foreach($option_value as $key=>$value)
 					if(!in_array($key,$fields))
 					unset($option_values[$k][$key]);
-			}else{
+			}else if( is_array($option_values)){
 				foreach($option_values as $k=>$option_value)
 					if(!in_array($k,$fields))
 					unset($option_values[$k]);
@@ -142,13 +142,13 @@ class xydac_options_dao{
 		if(!$xydac_options)
 		{
 			$temp = array();
-			array_push($temp,$args);
+			array_push($temp,$data);
 			update_option($option,$temp);
 			return true;
 		}
 		if(is_array($xydac_options))
 		{
-			array_push($xydac_options,$args);
+			array_push($xydac_options,$data);
 			usort($xydac_options, array($this,'xy_cmp'));
 			update_option($option,$xydac_options);
 			return true;
@@ -168,7 +168,7 @@ class xydac_options_dao{
 					unset($xydac_options[$k]);break;
 				}
 			}
-			array_push($xydac_options,$args);
+			array_push($xydac_options,$data);
 			usort($xydac_options, array($this,'xy_cmp'));
 			update_option($option,$xydac_options);
 			return true;
@@ -180,20 +180,23 @@ class xydac_options_dao{
 		if(!$this->is_option_registered($option))
 			return false;
 		$xydac_options = get_option($option);
-	
 		$name = sanitize_title_with_dashes($name);
 		foreach($xydac_options as $k=>$xydac_option)
 			if($xydac_option[$namefieldname]==$name)
 			{
+				
 				unset($xydac_options[$k]);
 				usort($xydac_options, array($this,'xy_cmp'));
-				$this->deactivate_main($name);
 				update_option($option,$xydac_options);
 				return true;
 			}
 			else
 				return false;
 		return false;
+	}
+	public function delete_all_object($option){
+		update_option($option, '');
+		return true;
 	}
 	
 	//--------

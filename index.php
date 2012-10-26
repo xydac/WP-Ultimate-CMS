@@ -11,18 +11,17 @@ License: GPL2*/
 if ( !defined( 'XYDAC_CMS_NAME' ) )define('XYDAC_CMS_NAME',"ultimate-cms");
 if ( !defined( 'XYDAC_CMS_USER_API_KEY' ) )define('XYDAC_CMS_USER_API_KEY',"xydac_cms_api_key");
 if ( !defined( 'XYDAC_CMS_OPTIONS' ) )define('XYDAC_CMS_OPTIONS',"XYDAC_CMS_OPTIONS");
-if ( !defined( 'XYDAC_CMS_ACTIVEM_OPTIONS' ) )define('XYDAC_CMS_ACTIVEM_OPTIONS',"XYDAC_CMS_ACTIVEM_OPTIONS");
+if ( !defined( 'XYDAC_CMS_MODULES' ) )define('XYDAC_CMS_MODULES',"xydac_cms_modules");
 
 global $xydac_cms_fields;
 //File includes
 require_once 'class-field-type.php';
 require_once 'class-xydac-ultimate-cms-core.php';
 require_once 'dao.php';
-include 'class-xydac-export.php';
-include "class-xydac-cms-module.php";
+require_once 'class-xydac-cms-module.php';
+require_once 'class-xydac-cms-home.php';
+require_once ABSPATH.'wp-includes/class-IXR.php';
 
-include 'class-xydac-cms-home.php';
-include ABSPATH.'wp-includes/class-IXR.php';
 function xydac()
 {
 	return xydac_ultimate_cms::cms();
@@ -54,8 +53,9 @@ class xydac_ultimate_cms{
 			self::$menu_slug = 'xydac_ultimate_cms';
 			self::cms()->dao = new xydac_options_dao();
 			self::cms()->modules = new stdClass();
-			self::cms()->dao->register_option(XYDAC_CMS_ACTIVEM_OPTIONS);
-			self::cms()->active = self::cms()->dao->get_options(XYDAC_CMS_ACTIVEM_OPTIONS);
+			self::cms()->dao->register_option(XYDAC_CMS_MODULES);
+			self::cms()->dao->register_option(XYDAC_CMS_MODULES.'_active');
+			self::cms()->active = self::cms()->dao->get_options(XYDAC_CMS_MODULES.'_active');
 			self::cms()->allModules = array();
 			self::cms()->apikey = get_option(XYDAC_CMS_USER_API_KEY);
 			self::load_modules();
@@ -77,15 +77,19 @@ class xydac_ultimate_cms{
 	/*------------------------------------------MODULES SECTION-----------------------------*/
 	private static function load_modules(){
 		self::get_module_data();
+		self::cms()->dao->delete_all_object(XYDAC_CMS_MODULES);
 		foreach(self::cms()->allModules as $k=>$module){
+				
 				require_once $module['file']['dirpath'].$module['file']['filename'];
 				if ( substr($module['file']['filename'], -4) == '.php' )
 					$classname = str_replace('-','_',substr($module['file']['filename'],strlen($module['file']['dirname'])+7,-4));
 				if(class_exists($classname) && (($module['type']!='Core-Module' && is_array(self::cms()->active) && in_array($module['name'],self::cms()->active)) ||$module['type']=='Core-Module')){
 					new $classname();
 				}
-				if($module['type']=='Core-Module')
-					unset(self::cms()->allModules[$k]);
+				//if($module['type']=='Core-Module')
+					//unset(self::cms()->allModules[$k]);
+				//else
+					self::cms()->dao->insert_object(XYDAC_CMS_MODULES,array('name'=>$module['name'],'type'=>$module['type'],'author'=>$module['author'],'description'=>$module['description']));
 		}
 
 	}
@@ -156,8 +160,10 @@ class xydac_ultimate_cms{
 		$xmlrpc = 'http://www.xydac.com/xmlrpc.php';
 		$client = new IXR_Client($xmlrpc);
 		//$client->debug = true;
-		if(!$id)
+		if($id==null)
 			$client->query($method, '', $log, $pwd,$args);
+		else if(empty($args))
+			$client->query($method, '', $log, $pwd,$id);
 		else
 			$client->query($method, '', $log, $pwd,$id,$args);
 		return $client;
@@ -198,6 +204,7 @@ class xydac_ultimate_cms{
 
 	function xydac_cms_main1(){
 		new xydac_ultimate_cms_home();
+		
 	}
 	function xydac_cms_admin_menu()
 	{
@@ -205,38 +212,29 @@ class xydac_ultimate_cms{
 	}
 	function xydac_cms_build_active_field_types()
 	{
-		$cpts=array();
-		$cpts['posttype'] = '';//xydac_get_active_cpt();
-		$cpts['pagetype'] = '';//get_active_page_types();
-		$cpts['taxtype'] = '';//xydac_get_active_taxonomy();
-
-		$xydac_active_field_types = array();
-		if(is_array($cpts))
-			foreach($cpts as $k=>$cpt)
+		$active = array();
+		foreach (self::cms()->modules as $module)
+		{
+			if($module->has_custom_fields())
 			{
-				if(is_array($cpt))
-					foreach($cpt as $cp)
-					{
-						if('posttype'==$k)
-							$fields = getCptFields($cp['name']);
-						else if('pagetype'==$k)
-							$fields = get_page_type_fields($cp['name']);
-						else if('pagetype'==$k)
-							$fields = get_taxonomy_fields($cp['name']);
-							
-						if(is_array($fields) && !empty($fields))
-							foreach($fields as $field)
-							{
-								if(!in_array($field['field_type'],$xydac_active_field_types))
-									array_push($xydac_active_field_types,$field['field_type']);
-							}
-					}
+				$names = $module->get_active_names();
+				foreach($names as $name)
+				{
+					$types = $module->get_active_fieldtypes($name);
+					if(is_array($types))
+						foreach ($types as $type)
+							if(!in_array($type, $active))
+								array_push($active,$type);
+				}
 			}
-
-			update_option('xydac_active_field_types',$xydac_active_field_types);
-
+		}
+		//update_option('xydac_active_field_types',$active);
+		return $active; 
 	}
 
+	/**
+	 * Not used now....cleanup required.
+	 */
 	function xydac_cms_cpt_field_convert()
 	{
 		global $wpdb;
@@ -320,9 +318,8 @@ class xydac_ultimate_cms{
 		else
 			return true;
 	}
-	//include 'dao.php';
 	
-	//-ERROR LOGGING AND HANDLING BEGIN
+	//-ERROR LOGGING AND HANDLING BEGIN --NOT being used anywhere currently
 	function xydac_cms_display_logs($type='WARNING')
 	{
 		if(false){
@@ -364,4 +361,5 @@ DEBUG;
 
 }
 xydac();
+
 ?>

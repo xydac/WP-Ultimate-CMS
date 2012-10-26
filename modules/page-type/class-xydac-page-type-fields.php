@@ -21,12 +21,12 @@ class xydac_page_type_fields extends xydac_ultimate_cms_core{
 		add_filter('xydac_core_field_name',array($this,'field_name'));
 		add_filter('xydac_core_headfootcolumn',array($this,'headfootcolumn'));
 
-		parent::__construct($mod_name,
+		/* parent::__construct($mod_name,
 				xydac()->modules->page_type->get_module_label().__(" Field",XYDAC_CMS_NAME),
 				xydac()->modules->page_type->get_base_path()."&manage_".xydac()->modules->page_type->get_module_name()."=".$name,
 				xydac()->modules->page_type->get_registered_option('field')."_".$name,
-				$form_variables);
-
+				$form_variables); */
+		parent::__construct(xydac()->modules->page_type,'field',$form_variables);
 	}
 
 	function field_name()

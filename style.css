@@ -540,3 +540,29 @@ p.xydacdonation a {
 	text-align: left;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
+
+/* Admin table used on Ultimate CMS module page */
+.admin-table {margin-bottom:10px;}
+.admin-table tr {
+    border: 1px solid #bfbfbf;
+}
+.admin-table th {
+    background: #dfdfdf;
+    border-right: 1px solid #bfbfbf;
+    vertical-align: middle;
+    font-size: 130%;
+}
+.admin-table td {
+    background: #f2f2f2;
+}
+.admin-table input[type="text"]{
+    min-width: 50%;
+    padding: 5px;
+}
+.admin-table span {
+    color: #666;
+    padding-left: 5px;
+}
+.admin-table .button-primary{
+	padding: 5px 50px;
+}

@@ -271,7 +271,7 @@ abstract class field_type{
 function xydac_fieldtypes_init()
 {
 	//@todo: add a button on main page to do this as this creates a performance issue
-	xydac()->xydac_cms_build_active_field_types();
+	$xydac_active_field_types = xydac()->xydac_cms_build_active_field_types();
 	global $xydac_cms_fields,$wp_version;
 	//$xydac_active_field_types = get_option("xydac_active_field_types");
 	$xydac_fields = array();
@@ -288,17 +288,16 @@ function xydac_fieldtypes_init()
 		if((isset($temp->minwpver) && !empty($temp->minwpver)) || (isset($temp->maxwpver) && !empty($temp->maxwpver)))
 			if(floatval($wp_version)<$temp->minwpver || floatval($wp_version)>$temp->maxwpver)
 			continue;
-			//@todo: right now everything is being considered, active field types are not calculated.
-		//if(is_array($xydac_active_field_types))
-			//if(in_array($temp->ftype,$xydac_active_field_types))
-		//	{
+		if(is_array($xydac_active_field_types))
+			if(in_array($temp->ftype,$xydac_active_field_types))
+			{
 				$adminscript.= "\n/*============START $temp->ftype=============================*/\n".$temp->adminscript()."\n/*============END $temp->ftype=============================*/\n";
 				$adminstyle.= "\n/*============START $temp->ftype=============================*/\n".$temp->adminstyle()."\n/*============END $temp->ftype=============================*/\n";
 				$sitescript.= "\n/*============START $temp->ftype=============================*/\n".$temp->sitescript()."\n/*============END $temp->ftype=============================*/\n";
 				$sitestyle.= "\n/*============START $temp->ftype=============================*/\n".$temp->sitestyle()."\n/*============END $temp->ftype=============================*/\n";
 
 				add_action('admin_head', array($temp,"wp_admin_head"));
-			//}
+			}
 			if(is_array($temp->compaitable) && in_array('posttype',$temp->compaitable))
 				$xydac_fields['fieldtypes']['posttype'][$temp->ftype] = $temp->flabel;
 			if(is_array($temp->compaitable) && in_array('pagetype',$temp->compaitable))

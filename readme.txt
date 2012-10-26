@@ -3,7 +3,7 @@ Contributors: deepak.seth
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=nikhilseth1989%40gmail%2ecom&item_name=WordPress%20Plugin%20(Ultimate%20CMS)&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 Tags: Custom Post Type,CPT,Ultimate Post Type,Post Type,Post,Post Type Manager,Page Type,Page Type Manager,Archive,Archive Manager,Taxonomy,Taxonomy Manager
 Requires at least: 3.0
-Tested up to: 3.3
+Tested up to: 3.5
 Stable tag: trunk
 
 
@@ -49,6 +49,8 @@ The automatic plugin installer should work for most people. Manual installation 
 2. Upload 'ultimate-cms' directory to the `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
 4. Navigate to Ultimate CMS Menu
+5. Goto Modules Sum Menu
+6. Activate required module.
 
 
 == Screenshots ==
@@ -64,6 +66,12 @@ The automatic plugin installer should work for most people. Manual installation 
 
 
 == Changelog ==
+
+= 1.0 =
+* Lots of enhancements
+* Updated and removed many bugs
+* Improved performance.
+
 
 = 0.2 =
 * added a term list widget
@@ -91,6 +99,9 @@ The automatic plugin installer should work for most people. Manual installation 
 Please let me know if you have any problem.
 
 == Upgrade Notice == 
+
+= 0.1 = 
+Improved version
 
 = 0.1 = 
 Fresh Plugin in BETA

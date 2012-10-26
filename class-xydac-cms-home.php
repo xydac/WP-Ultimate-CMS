@@ -39,7 +39,7 @@ class xydac_ultimate_cms_home extends xydac_cms_module{
 			//array('name'=>'','label'=>'','description'=>'');
 			$formcontents = apply_filters('xydac_cms_homeformoption', array('0'=>array('name'=>XYDAC_CMS_USER_API_KEY,'label'=>'API Key','description'=>'Please enter your API Key from Xydac.com','value'=>get_option(XYDAC_CMS_USER_API_KEY))));
 			echo '<form method="post" name="xydac_cms_home_option" action="'.$this->base_path.'">';
-			echo '<table class="form-table"><tbody>';
+			echo '<table class="form-table admin-table"><tbody>';
 			foreach($formcontents as $formcontent){
 			extract($formcontent);
 				echo "
@@ -49,9 +49,11 @@ class xydac_ultimate_cms_home extends xydac_cms_module{
 				<span class='$name'>$description.</span></td>
 			</tr>";
 			}
-			echo '</tbody></table>';
+			echo '<tr><th></th><td>';
 			echo '<input type="hidden" name="xydac_cms_home_form_nonce" value="'.wp_create_nonce(__FILE__).'"/>';
-			echo '<input type="submit" value="Submit"/>';
+			echo '<input type="submit" class="button-primary" value="Submit"/>';
+			echo '</td></tr>';
+			echo '</tbody></table>';
 			echo '</form>';
 			echo "
 			<script type='text/javascript'>
@@ -67,13 +69,7 @@ class xydac_ultimate_cms_home extends xydac_cms_module{
 			var s = document.getElementsByTagName('script')[0];
 			s.parentNode.insertBefore(wf, s);
 			})(); </script>
-			<h3>Important Links</h3>
-			<ul>
-			<li>Plugin Home Page : <a href='http://www.xydac.com/'>http://www.xydac.com/</a></li>
-			<li>Post Types on WordPress: <a href='http://codex.wordpress.org/Function_Reference/register_post_type'>WordPress Codex refrence for Post Types</a></li>
-			<li>Plugin Page on WordPress : <a href='http://wordpress.org/extend/plugins/ultimate-cms/'>http://wordpress.org/extend/plugins/ultimate-cms/</a></li>
-			
-			</ul><br/><br/><br/>
+			<br/><br/><br/>
 			";
 			//update_option('xydac_cms_api_key','e83d1d2d159733c72d');
 			$this->xydac_show_donate_link(false);

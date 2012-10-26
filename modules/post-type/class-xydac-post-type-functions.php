@@ -8,7 +8,8 @@ class xydac_post_type_functions{
 		add_action( 'right_now_content_table_end', array($this,'xydac_right_now'));
 		add_filter ('the_content',array($this,'the_content_manager'));
 		add_filter ('enter_title_here',array($this,'xydac_enter_title_here_manager'));
-		add_filter( 'pre_get_posts', array($this,'xydac_posts_home') );
+		//@todo: enabling this creates problem with xml rpc
+		//add_filter( 'pre_get_posts', array($this,'xydac_posts_home') );
 		add_filter('xydac_cms_site_style',array($this,'xydac_cms_site_style_func'),10,1);
 		add_filter('xydac_cms_site_script',array($this,'xydac_cms_site_script_func'),10,1);
 		add_filter('xydac_cms_admin_style',array($this,'xydac_cms_admin_style_func'),10,1);

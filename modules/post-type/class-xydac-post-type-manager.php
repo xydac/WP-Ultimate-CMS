@@ -72,11 +72,13 @@ class xydac_post_type_manager extends xydac_ultimate_cms_core{
 		add_action('xydac_core_insert_update',array($this,'xydac_core_insert_update'));
 		add_filter('xydac_core_headfootcolumn',array($this,'headfootcolumn'));
 		add_filter('xydac_core_leftdiv',array($this,'xydac_core_leftdiv'));
-		add_filter('xydac_core_rowactions',array($this,'xydac_core_rowactions'));
+		//add_filter('xydac_core_rowactions',array($this,'xydac_core_rowactions'));
 		add_filter('xydac_core_doactions',array($this,'xydac_core_doactions'));
 		add_filter('xydac_core_insert',array($this,'xydac_core_insert'),10,1);
 		//parent::__construct("xydac_post_type",__("Custom Post Type",XYDAC_CMS_NAME),XYDAC_CMS_POST_TYPE_PATH,XYDAC_CMS_POST_TYPE_OPTION,$form_variables,true,false);
-		parent::__construct(xydac()->modules->post_type->get_module_name(),xydac()->modules->post_type->get_module_label(),xydac()->modules->post_type->get_base_path(),xydac()->modules->post_type->get_registered_option('main'),$form_variables,true,false);
+		//parent::__construct(xydac()->modules->post_type->get_module_name(),xydac()->modules->post_type->get_module_label(),xydac()->modules->post_type->get_base_path(),xydac()->modules->post_type->get_registered_option('main'),$form_variables,true,false);
+		$args = array('enableactivation'=>false,'xydac_core_show_additional' => true);
+		parent::__construct(xydac()->modules->post_type,'main',$form_variables,$args);
 		//if you make the call to constructor before adding filters and action then action and filters will not be enabled
 	}
 	function xydac_core_leftdiv()
@@ -102,7 +104,7 @@ class xydac_post_type_manager extends xydac_ultimate_cms_core{
 	}
 	function xydac_core_doactions()
 	{
-		$action = array('activate'=>__("Activate",XYDAC_CMS_NAME),'deactivate'=>__("Deactivate",XYDAC_CMS_NAME),'delete'=>__("Delete",XYDAC_CMS_NAME),'export'=>__("Export",XYDAC_CMS_NAME));
+		$action = array('activate'=>__("Activate",XYDAC_CMS_NAME),'deactivate'=>__("Deactivate",XYDAC_CMS_NAME),'delete'=>__("Delete",XYDAC_CMS_NAME)/* ,'export'=>__("Export",XYDAC_CMS_NAME) */);
 		return $action;
 	}
 	function xydac_core_bulkaction($post)
@@ -127,6 +129,7 @@ class xydac_post_type_manager extends xydac_ultimate_cms_core{
 	}
 	function xydac_core_insert($datas)
 	{
+		$datas = array(0=>$datas);
 		foreach($datas as $k=>$data){
 			$datas[$k]['args']['label'] = !empty($datas[$k]['args']['label']) ? $datas[$k]['args']['label'] : xydac_mods_inflect::pluralize($datas[$k]['name']);
 			$datas[$k]['args']['labels']['name'] = !empty($datas[$k]['args']['labels']['name']) ? $datas[$k]['args']['labels']['name'] : $datas[$k]['args']['label'];
@@ -169,7 +172,7 @@ class xydac_post_type_manager extends xydac_ultimate_cms_core{
 			$datas[$k]['def']['cat']= "false";
 			$datas[$k]['def']['tag']= "false";
 		}
-		return $datas;
+		return $datas[0];
 	}
 }
 
