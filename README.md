@@ -1,6 +1,5 @@
 === Ultimate CMS ===
 Contributors: deepak.seth
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=nikhilseth1989%40gmail%2ecom&item_name=WordPress%20Plugin%20(Ultimate%20CMS)&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 Tags: Custom Post Type,CPT,Ultimate Post Type,Post Type,Post,Post Type Manager,Page Type,Page Type Manager,Archive,Archive Manager,Taxonomy,Taxonomy Manager
 Requires at least: 3.0
 Tested up to: 3.5
