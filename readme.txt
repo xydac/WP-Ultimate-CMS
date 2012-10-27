@@ -34,12 +34,6 @@ Some Features
 You'll need to check out the plugin website to have a better look
 **[[Plugin URL]](http://www.xydac.com/)** 
 
-**THE PLUGIN IS IN BETA SO PLEASE TEST IT BEFORE USING.**
-
-Also for users upgrading from Ultimate Post Type Manager/ Ultimate Taxonomy Manager :
-
-* The plugin no more uses arrays for storing the data. Your data stored in arrays will automatically be converted.
-
 
 == Installation ==
 
@@ -71,6 +65,7 @@ The automatic plugin installer should work for most people. Manual installation 
 * Lots of enhancements
 * Updated and removed many bugs
 * Improved performance.
+* Made the Code modular, Easy addition, removal, activation,deactivation of modules.
 
 
 = 0.2 =
