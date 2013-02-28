@@ -1,8 +1,9 @@
 <?php
 error_reporting('E_NONE');
-require_once("../../../wp-config.php");
-
 header('Content-type: text/css');
+ob_start();
+require_once("../../../wp-config.php");
+ob_clean();
 include 'style.css';
 $style='';
 if(isset($_GET['type'])&& ('admin'==$_GET['type'])){

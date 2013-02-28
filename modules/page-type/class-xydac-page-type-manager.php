@@ -27,7 +27,7 @@ class xydac_page_type_manager extends xydac_ultimate_cms_core{
 		add_filter('xydac_core_headfootcolumn',array($this,'headfootcolumn'));
 		add_filter('xydac_core_leftdiv',array($this,'xydac_core_leftdiv'));
 		add_action('xydac_core_bulkaction',array($this,'xydac_core_bulkaction'));
-		add_filter('xydac_core_rowactions',array($this,'xydac_core_rowactions'));
+		//add_filter('xydac_core_rowactions',array($this,'xydac_core_rowactions'));
 		add_filter('xydac_core_doactions',array($this,'xydac_core_doactions'));
 		//parent::__construct(xydac()->modules->page_type->get_module_name(),xydac()->modules->page_type->get_module_label(),xydac()->modules->page_type->get_base_path(),xydac()->modules->page_type->get_registered_option('main'),$form_variables,true,false);
 		$args = array('enableactivation'=>false,'xydac_core_show_additional' => true);
@@ -51,8 +51,7 @@ class xydac_page_type_manager extends xydac_ultimate_cms_core{
 	{
 		$action = array('activate'=>__("Activate",XYDAC_CMS_NAME),
 				'deactivate'=>__("Deactivate",XYDAC_CMS_NAME),
-				'delete'=>__("Delete",XYDAC_CMS_NAME),
-				'export'=>__("Export",XYDAC_CMS_NAME)
+				'delete'=>__("Delete",XYDAC_CMS_NAME)
 		);
 		return $action;
 	}

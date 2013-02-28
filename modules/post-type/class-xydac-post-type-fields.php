@@ -19,6 +19,7 @@ class xydac_post_type_fields extends xydac_ultimate_cms_core{
 		add_action('xydac_core_righthead',array($this,'right_head'));
 		add_filter('xydac_core_field_name',array($this,'field_name'));
 		add_filter('xydac_core_headfootcolumn',array($this,'headfootcolumn'));
+		add_filter('xydac_core_editlink',array($this,'xydac_core_editlink_func'));
 		//parent::__construct(xydac()->modules->post_type->get_module_name().__("_field",XYDAC_CMS_NAME),xydac()->modules->post_type->get_module_label().__(" Field",XYDAC_CMS_NAME),xydac()->modules->post_type->get_base_path()."&manage_".xydac()->modules->post_type->get_module_name()."=".$name,xydac()->modules->post_type->get_registered_option('field')."_".$name,$form_variables);
 		$args = array('field_val' => $name);
 		parent::__construct(xydac()->modules->post_type,'field',$form_variables,$args);
@@ -27,6 +28,10 @@ class xydac_post_type_fields extends xydac_ultimate_cms_core{
 	function field_name()
 	{
 		return "field_name";
+	}
+	function xydac_core_editlink_func($str)
+	{
+		return $str.'&manage_post_type='.$this->name;
 	}
 	function headfootcolumn()
 	{

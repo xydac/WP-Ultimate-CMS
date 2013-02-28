@@ -9,6 +9,7 @@
 class xydac_options_dao{
 	private $registered_option = array();
 	private $backup_option;
+	private $namefield_name;
 
 
 	public function set_backup_option($option){
@@ -149,6 +150,7 @@ class xydac_options_dao{
 		if(is_array($xydac_options))
 		{
 			array_push($xydac_options,$data);
+				$this->namefield_name = 'name';
 			usort($xydac_options, array($this,'xy_cmp'));
 			update_option($option,$xydac_options);
 			return true;
@@ -169,6 +171,7 @@ class xydac_options_dao{
 				}
 			}
 			array_push($xydac_options,$data);
+				$this->namefield_name = $namefieldname;
 			usort($xydac_options, array($this,'xy_cmp'));
 			update_option($option,$xydac_options);
 			return true;
@@ -186,6 +189,7 @@ class xydac_options_dao{
 			{
 				
 				unset($xydac_options[$k]);
+				$this->namefield_name = $namefieldname;
 				usort($xydac_options, array($this,'xy_cmp'));
 				update_option($option,$xydac_options);
 				return true;

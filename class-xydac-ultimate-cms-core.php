@@ -9,6 +9,7 @@
 abstract class xydac_ultimate_cms_core{
 	var $parent_class; // The main class that uses object of this class
 	var $type; //used in parent class; 
+	var $field_val; //this has the name of type of which field is being edited.
 	
 		var $xydac_core_name;
 		var $xydac_core_label;
@@ -44,12 +45,12 @@ abstract class xydac_ultimate_cms_core{
 		extract($args);
 		$this->parent_class = $obj;
 		$this->xydac_core_name = $obj->get_module_name();
-		$this->xydac_core_label = $obj->get_module_label();
+		$this->xydac_core_label = ($type=='main') ? $obj->get_module_label() : $obj->get_module_label().' Fields';
 		$this->type = $type;
 		$tab = (($this->type=='main')?'modules':(($this->type=='field')?'fields':'xydac_sync'));
-		$this->baselink = $obj->get_base_path($tab);
+		$this->baselink = apply_filters( 'xydac_core_editlink',$obj->get_base_path($tab));
 			$this->xydac_core_form_array = apply_filters('xydac_core_form_array', $formarray,$this->xydac_core_name);
-			$field_val = isset($field_val)?$field_val:'';
+			$this->field_val = $field_val = isset($field_val)?$field_val:'';
 		/* if(isset($optionname) && isset($optionvalue) && is_array($optionvalue)){
 			$this->option_value = $optionvalue;
 		} */
@@ -63,7 +64,7 @@ abstract class xydac_ultimate_cms_core{
 			$this->xydac_core_show_sync = false;
 			
 		$this->activation = $obj->uses_active($this->type);
-		$this->xydac_core_form_action =  $obj->get_base_path($tab);
+		$this->xydac_core_form_action =  apply_filters( 'xydac_core_editlink',$obj->get_base_path($tab));
 			$this->namefield_name = apply_filters( 'xydac_core_field_name', 'name' );
 			$this->args = $args;
 		if(isset($_POST[$this->xydac_core_name.'_doaction_submit']) || isset($_POST[$this->xydac_core_name.'_update_submit']) || isset($_POST[$this->xydac_core_name.'_add_submit']))
@@ -79,6 +80,7 @@ abstract class xydac_ultimate_cms_core{
 	
 	function postHandler()
 	{
+
 		if(isset($_POST[$this->xydac_core_name.'_doaction_submit'])&& isset($_POST['action']))
 			$this->bulk_action();
 		else if(isset($_POST[$this->xydac_core_name.'_update_submit']))
@@ -92,7 +94,14 @@ abstract class xydac_ultimate_cms_core{
 		if(isset($_GET["edit_".$this->xydac_core_name]) && 'true'==$_GET["edit_".$this->xydac_core_name] && isset($_GET[$this->xydac_core_name."_name"]))
 			{
 				$this->xydac_core_editmode = true;
-				$this->xydac_editdata = $this->parent_class->get_main_by_name($_GET[$this->xydac_core_name."_name"]);
+				$this->xydac_editdata = ($this->type=='main')? $this->parent_class->get_main_by_name($_GET[$this->xydac_core_name."_name"]) : $this->parent_class->get_field_by_name($this->field_val,$_GET[$this->xydac_core_name."_name"]) ;
+				//if manage is set it means we are at fields
+				if(isset($_GET["manage_".$this->xydac_core_name])){
+					$key = $_GET[$this->xydac_core_name."_name"];
+					$this->xydac_editdata = $this->xydac_editdata[$key];
+				}
+				
+				//$this->xydac_editdata = $this->parent_class->get_main_by_name($_GET[$this->xydac_core_name."_name"]);
 				$this->xydac_editdata[$this->xydac_core_name.'_old'] = $_GET[$this->xydac_core_name."_name"];
 			}
 		elseif(isset($_GET["activate_".$this->xydac_core_name]) && isset($_GET[$this->xydac_core_name."_name"]))
@@ -179,7 +188,8 @@ abstract class xydac_ultimate_cms_core{
 	}
 	function insert()
 	{
-		$msg = $this->parent_class->insert_object($this->type, $_POST[$this->xydac_core_name][$this->namefield_name], apply_filters( 'xydac_core_insert',$_POST[$this->xydac_core_name]),$this->namefield_name);
+		
+		$msg = $this->parent_class->insert_object($this->type, $_POST[$this->xydac_core_name][$this->namefield_name],$_GET['manage_'.$this->xydac_core_name], apply_filters( 'xydac_core_insert',$_POST[$this->xydac_core_name]),$this->namefield_name);
 		if(is_wp_error(($msg)))
 			$this->xydac_core_error= $msg;
 		else{
@@ -190,8 +200,9 @@ abstract class xydac_ultimate_cms_core{
 	}
 	function update()
 	{
+	
 		$this->xydac_core_editmode = true;
-		$msg= $this->parent_class->update_object($this->type, $_POST[$this->xydac_core_name][$this->namefield_name], apply_filters( 'xydac_core_update',$_POST[$this->xydac_core_name]),$_POST[$this->xydac_core_name."_old"],$this->namefield_name);
+		$msg= $this->parent_class->update_object($this->type, $_POST[$this->xydac_core_name][$this->namefield_name],$_GET['manage_'.$this->xydac_core_name], apply_filters( 'xydac_core_update',$_POST[$this->xydac_core_name]),$_POST[$this->xydac_core_name."_old"],$this->namefield_name);
 		if(is_wp_error(($msg))){
 			$this->xydac_core_error= $msg;
 			$this->xydac_core_editmode = true;
@@ -208,7 +219,7 @@ abstract class xydac_ultimate_cms_core{
 	*/
 	function delete($name)
 	{
-		$msg = $this->parent_class->delete_object($this->type, $name, $this->namefield_name);
+		$msg = $this->parent_class->delete_object($this->type, $name,$_GET['manage_'.$this->xydac_core_name], $this->namefield_name);
 		if(is_wp_error(($msg))){
 			$this->xydac_core_error= $msg;
 			do_action('xydac_core_insert_update');
@@ -307,10 +318,10 @@ abstract class xydac_ultimate_cms_core{
 	
 	function init()
 	{ 
-	$xydac_rowdata = apply_filters( 'xydac_core_rowdata', $this->parent_class->get_main() );//!is_array($this->option_name)?get_option($this->option_name):($this->option_name);
+	$xydac_rowdata = apply_filters( 'xydac_core_rowdata', ($this->type=='main')? $this->parent_class->get_main() : $this->parent_class->get_field($this->field_val) );//!is_array($this->option_name)?get_option($this->option_name):($this->option_name);
 	$this->xydac_editdata = stripslashes_deep($this->xydac_editdata);
 	?>
-		<?php //if(!xydac()->is_xydac_ucms_pro())xydac()->xydac_show_donate_link(); ?>
+		<?php if(!xydac()->is_xydac_ucms_pro())xydac()->xydac_show_donate_link(); ?>
 		<?php do_action('xydac_core_head'); ?>
 		<?php if(!empty($this->xydac_core_message)) { ?>
 		<div id="message" class="updated below-h2"><p><?php echo $this->xydac_core_message; ?></p></div>
@@ -329,7 +340,7 @@ abstract class xydac_ultimate_cms_core{
 				<?php do_action('xydac_core_righthead'); ?>
 				
 					<form id="form_edit_doaction" action="<?php if($this->xydac_core_editmode) echo $this->xydac_core_form_action.'&edit_'.$this->xydac_core_name.'=true&'.$this->xydac_core_name.'_name='.$this->xydac_editdata[$this->namefield_name]; else echo $this->xydac_core_form_action; ?>" method="post">
-					<?php if($xydac_core_show_doaction){ ?>
+					<?php if($this->xydac_core_show_doaction){ ?>
 						<div class="tablenav">
 							<select name="action">
 								<option value=""><?php _e('Bulk Actions',XYDAC_CMS_NAME); ?></option>
@@ -448,7 +459,7 @@ abstract class xydac_ultimate_cms_core{
 						<form <?php if($this->xydac_core_editmode) echo "id='form_edit_".$this->xydac_core_name."'"; else echo "id='form_create_".$this->xydac_core_name."'"; ?> action='<?php if($this->xydac_core_editmode) echo $this->xydac_core_form_action.'&edit_'.$this->xydac_core_name.'=true&'.$this->xydac_core_name.'_name='.$this->xydac_editdata[$this->namefield_name]; else echo $this->xydac_core_form_action; ?>' method='post'>
 							<div class="xydacfieldform">
 							<h3><?php if($this->xydac_core_editmode) echo __('Edit ',XYDAC_CMS_NAME).$this->xydac_core_label; else echo __('Add ',XYDAC_CMS_NAME).$this->xydac_core_label; ?>
-							<?php if($this->xydac_core_editmode) echo "<a  style='color:red;float:right;'  href='".$this->xydac_core_form_action."&edit_".$this->xydac_core_name."=false'>Cancel Edit</a>";  ?>
+							<?php if($this->xydac_core_editmode) echo "<a  style='color:red;float:right;'  href='".$this->xydac_core_form_action."&edit_".$this->xydac_core_name."=false"."'>Cancel Edit</a>";  ?>
 							</h3>
 							<div class="form-field form-required <?php if(isset($_POST[$this->xydac_core_name.'_update_submit']) || isset($_POST[$this->xydac_core_name.'_add_submit'])) if(isset($_POST[$this->xydac_core_name][$this->namefield_name]) && empty($_POST[$this->xydac_core_name][$this->namefield_name])) echo 'form-invalid';?>"  >
 								<label for='<?php echo $this->xydac_core_name.'['.$this->namefield_name.']'; ?>'><?php _e('The Name of the ',XYDAC_CMS_NAME);?><?php echo $this->xydac_core_label; ?></label>
@@ -524,7 +535,7 @@ abstract class xydac_ultimate_cms_core{
 			</div>
 		</div>
 		<?php do_action('xydac_core_foot'); ?>
-	<?php //if(!xydac()->is_xydac_ucms_pro())xydac()->xydac_show_donate_link(false); ?>
+	<?php if(!xydac()->is_xydac_ucms_pro())xydac()->xydac_show_donate_link(false); ?>
 	
 	<?php }
 	

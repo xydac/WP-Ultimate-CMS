@@ -57,7 +57,7 @@ abstract class xydac_cms_module{
 		}
 		if($this->has_custom_fields){
 			$active_opt_arr = array();
-			$active_names = $this->get_active_names();
+			$active_names = $this->get_main_names();
 			if(is_array($active_names))
 				foreach($active_names as $opt=>$val)
 				$active_opt_arr[$this->get_registered_option('field').'_'.$val]=$module_name." ".$val;
@@ -176,20 +176,21 @@ abstract class xydac_cms_module{
 	}
 
 	
-	public function insert_object($type,$name,$args,$namefieldname){
+	public function insert_object($type,$name,$fieldmaster,$args,$namefieldname){
 		if($type=='main' || $type=='field'){
 			$message='';
 			$name = sanitize_title_with_dashes($name);
 			if(empty($name))
 				$message = new WP_Error('err', $this->module_label.__(" Name is required to create ",XYDAC_CMS_NAME).$this->module_label);
-			elseif(in_array($name,$this->get_main_names()))
-			$message = new WP_Error('err', $this->module_label.__(" Name already registered !!!",XYDAC_CMS_NAME));
+			elseif(($type=='main' && in_array($name,(array)$this->get_main_names())) || ($type=='field' && in_array($name,(array)$this->get_field_names($fieldmaster))))
+				$message = new WP_Error('err', $this->module_label.__(" Name already registered !!!",XYDAC_CMS_NAME));
 			elseif($name=="active"){
 				$message = new WP_Error('err', $this->module_label.__(" Name Not allowed",XYDAC_CMS_NAME));
 			}
 			else{
 				$args[$namefieldname] = sanitize_title_with_dashes($args[$namefieldname]);
-				if($this->dao->insert_object($this->get_registered_option($type),$args))
+				$opt = ($type=='main')?$this->get_registered_option($type):$this->get_registered_option($type).'_'.$fieldmaster;
+				if($this->dao->insert_object($opt,$args))
 					$message = $this->module_label.__(' Inserted.',XYDAC_CMS_NAME);
 				else
 					$message = new WP_Error('err', __("Not Insterted",XYDAC_CMS_NAME));
@@ -197,14 +198,15 @@ abstract class xydac_cms_module{
 			return $message;
 		}else return new WP_Error('err', $this->module_label.__(" Name Not allowed",XYDAC_CMS_NAME));
 	}
-	public function update_object($type,$name,$args,$oldname,$namefieldname){
+	//-fieldmaster : the object of whose field has to updated
+	public function update_object($type,$name,$fieldmaster,$args,$oldname,$namefieldname){
 		if($type=='main' || $type=='field'){
 			$message='';
 			$name = sanitize_title_with_dashes($name);
 			$oldname = sanitize_title_with_dashes($oldname);
 			if(empty($name))
 				$message = new WP_Error('err', $this->module_label.__(" Name is required to create ",XYDAC_CMS_NAME).$this->module_label);
-			elseif(!in_array($name,$this->get_main_names()))
+			elseif(($type=='main' && !in_array($name,$this->get_main_names())) || ($type=='field' && !in_array($name,$this->get_field_names($fieldmaster))))
 			$message = new WP_Error('err', $this->module_label.__(" Name not registered !!!",XYDAC_CMS_NAME));
 			elseif($name=="active"){
 				$message = new WP_Error('err', $this->module_label.__(" Name Not allowed",XYDAC_CMS_NAME));
@@ -212,7 +214,8 @@ abstract class xydac_cms_module{
 				$message = new WP_Error('err', __("Changing Name is Not allowed",XYDAC_CMS_NAME));
 			}
 			else{
-				if($this->dao->update_object($this->get_registered_option($type),$args,$oldname,$namefieldname))
+				$opt = ($type=='main')?$this->get_registered_option($type):$this->get_registered_option($type).'_'.$fieldmaster;
+				if($this->dao->update_object($opt,$args,$oldname,$namefieldname))
 				{
 					$message = $this->module_label.__(' Updated.',XYDAC_CMS_NAME);
 				}else
@@ -222,9 +225,10 @@ abstract class xydac_cms_module{
 			return $message;
 		}else return new WP_Error('err', $this->module_label.__(" Name Not allowed",XYDAC_CMS_NAME));
 	}
-	public function delete_object($type,$name,$namefieldname){
+	public function delete_object($type,$name,$fieldmaster,$namefieldname){
 		if($type=='main' || $type=='field'){
-			if($this->dao->delete_object($this->get_registered_option($type),$name,$namefieldname))
+			$opt = ($type=='main')?$this->get_registered_option($type):$this->get_registered_option($type).'_'.$fieldmaster;
+			if($this->dao->delete_object($opt,$name,$namefieldname))
 			{
 				$this->deactivate_main($name);
 				return $this->module_label.__(' Deleted.',XYDAC_CMS_NAME);
@@ -309,6 +313,20 @@ abstract class xydac_cms_module{
 			return;
 		return $this->_get_option('field',$args,$name);
 	}
+	function get_field_by_name($name,$field_name,$fieldname_colname=null){
+		if(!$this->has_custom_fields || !isset($this->registered_option['field']))
+			return;
+		if(!empty($fieldname_colname)&&!empty($fieldtype_colname))
+			return $this->_get_option('field',array(
+					'is_value_array'=>'true','match_keys'=>'true',
+					'values'=>array($fieldname_colname=>array($field_name))
+			),$name);
+		else
+			return $this->_get_option('field',array(
+					'is_value_array'=>'true','match_keys'=>'true',
+					'values'=>array('field_name'=>array($field_name))
+			),$name);
+	}
 	/* This function returns the array of field items which are active
 	 ^ $name: specifies the object name of which field is to be fetched.
 	*/
@@ -329,9 +347,9 @@ abstract class xydac_cms_module{
 		if(!$this->has_custom_fields || !isset($this->registered_option['field']))
 			return;
 		if(!empty($fieldname_colname))
-			return $this->_get_option('field',array('fields'=>array($fieldname_colname)),$name);
+			return $this->_get_option('field',array('fields'=>array($fieldname_colname),'is_value_array'=>'true','filter'=>array('value')),$name);
 		else
-			return $this->_get_option('field',array('fields'=>array('field_name')),$name);
+			return $this->_get_option('field',array('fields'=>array('field_name'),'is_value_array'=>'true','filter'=>array('value')),$name);
 	}
 	/* This function returns the string of field's type
 	 ^ $name: specifies the object name(post_type) of which field is to be fetched.
@@ -449,7 +467,7 @@ abstract class xydac_cms_module{
 		if(!isset($_GET['manage_'.$this->module_name]))
 		{
 			$formaction = $tab['href'];
-			$selectdata = $this->get_active_names();
+			$selectdata = $this->get_main_names();
 			xydac()->log('view_fields_func',$selectdata);
 			?>
 <form name='manage_<?php echo $this->module_name ?>_fields'
@@ -482,7 +500,7 @@ else
 	}
 	private function show_sync_page($arr,$formaction)
 	{
-	$getCustomField = function($resultarr,$var){foreach($resultarr['custom_fields'] as $v)if($v['key']==$var)return $v['value'];};
+	$getCustomField = create_function('$resultarr,$var',"foreach({$resultarr['custom_fields']} as {$v})if( {$v['key']} == {$var})return {$v['value']};");
 	echo '
 	<table class="wp-list-table widefat fixed posts" cellspacing="0">
 	<thead>

@@ -1,7 +1,9 @@
 <?php
 error_reporting('E_NONE');
-require_once("../../../wp-config.php");
 header('Content-type: text/javascript');
+ob_start();
+require_once("../../../wp-config.php");
+ob_clean();
 $script='; ';
 include 'script.js';
 

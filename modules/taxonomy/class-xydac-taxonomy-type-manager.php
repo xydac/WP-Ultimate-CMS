@@ -59,7 +59,7 @@ class xydac_taxonomy_type_manager extends xydac_ultimate_cms_core{
 		add_action('xydac_core_insert_update',array($this,'xydac_core_insert_update'));
 		add_action('xydac_core_delete',array($this,'xydac_core_delete'));
 		add_action('xydac_core_bulkaction',array($this,'xydac_core_bulkaction'));
-		add_filter('xydac_core_rowactions',array($this,'xydac_core_rowactions'));
+		//add_filter('xydac_core_rowactions',array($this,'xydac_core_rowactions'));
 		add_filter('xydac_core_doactions',array($this,'xydac_core_doactions'));
 		add_filter('xydac_core_insert',array($this,'xydac_core_insert'),10,1);
 		//parent::__construct(xydac()->modules->taxonomy_type->get_module_name(),xydac()->modules->taxonomy_type->get_module_label(),xydac()->modules->taxonomy_type->get_base_path(),xydac()->modules->taxonomy_type->get_registered_option('main'),$form_variables,true,false);
@@ -95,7 +95,7 @@ class xydac_taxonomy_type_manager extends xydac_ultimate_cms_core{
 	}
 	function xydac_core_doactions()
 	{
-		$action = array('activate'=>__("Activate",XYDAC_CMS_NAME),'deactivate'=>__("Deactivate",XYDAC_CMS_NAME),'delete'=>__("Delete",XYDAC_CMS_NAME),'export'=>__("Export",XYDAC_CMS_NAME));
+		$action = array('activate'=>__("Activate",XYDAC_CMS_NAME),'deactivate'=>__("Deactivate",XYDAC_CMS_NAME),'delete'=>__("Delete",XYDAC_CMS_NAME));
 		return $action;
 	}
 	function xydac_core_bulkaction($taxonomy)
@@ -115,6 +115,7 @@ class xydac_taxonomy_type_manager extends xydac_ultimate_cms_core{
 	}
 	function xydac_core_insert($datas)
 	{
+		$datas = array(0=>$datas);
 		foreach($datas as $k=>$data){
 			$datas[$k]['args']['labels']['name'] = xydac_mods_inflect::pluralize($datas[$k]['name']);
 			$datas[$k]['args']['label'] = (isset($datas[$k]['args']['labels']['name']) && !empty($datas[$k]['args']['labels']['name']))? $datas[$k]['args']['labels']['name']: xydac_mods_inflect::pluralize($datas[$k]['name']);
@@ -140,7 +141,7 @@ class xydac_taxonomy_type_manager extends xydac_ultimate_cms_core{
 			$datas[$k]['args']['show_tagcloud']= "true";
 			$datas[$k]['args']['hierarchical']= "false";
 		}
-		return $datas;
+		return $datas[0];
 	}
 }
 

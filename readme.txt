@@ -3,7 +3,7 @@ Contributors: deepak.seth
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=nikhilseth1989%40gmail%2ecom&item_name=WordPress%20Plugin%20(Ultimate%20CMS)&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 Tags: Custom Post Type,CPT,Ultimate Post Type,Post Type,Post,Post Type Manager,Page Type,Page Type Manager,Archive,Archive Manager,Taxonomy,Taxonomy Manager
 Requires at least: 3.0
-Tested up to: 3.5
+Tested up to: 3.5.1
 Stable tag: trunk
 
 
@@ -61,6 +61,28 @@ The automatic plugin installer should work for most people. Manual installation 
 
 == Changelog ==
 
+= 1.0.5 =
+* Revert to Jquery UI 1.9 to fix jQuery COnflict.
+* SOme minor bug fixes
+
+= 1.0.4 =
+* Fixed WP3.5.1 javascript issues
+* Some other minor issues
+
+= 1.0.3 =
+* Fixed some warnings on accessing Ultimate CMS
+* Fixed Post type manager field options
+
+= 1.0.2 =
+* Fixed issue occuring on windows due to directory.
+* Fixed issue due to dao.
+
+= 1.0.1 =
+* Fixed the fatal error issue, The error still persists if using ultimate taxonomy manager, but goes away on refresh.
+* Fixed Taxonomies and page types issues.
+* Fixed Taxonomy Manager to Ultimate CMS transition
+* Fixed Some style issue.
+
 = 1.0 =
 * Lots of enhancements
 * Updated and removed many bugs
@@ -93,7 +115,29 @@ The automatic plugin installer should work for most people. Manual installation 
 
 Please let me know if you have any problem.
 
+= I get fatal Error when using Ultimate Taxonomy Manager or Ultimate Post type manager =
+Deactivate Ultimate taxonomy manager or Ultimate Post type manager you are using and activate Ultimate CMS.Your data will be restored.
+
+= Do i need the API key to run this plugin =
+No currently the API functionality is under development. the plugin will be updated to provide more functionality. Till then you can use the plugin without API key.
+
+
 == Upgrade Notice == 
+
+= 1.0.5 =
+* Revert to Jquery UI 1.9 to fix jQuery COnflict and some minor bug fixes.
+
+= 1.0.4 =
+Fixed WP3.5.1 javascript issues and Some other minor issues.
+
+= 1.0.3 =
+Fixed some warnings on accessing Ultimate CMS,Fixed Post type manager field options
+
+= 1.0.2 =
+Fixed issue occuring on windows due to directory.Fixed issue due to dao.
+
+= 1.0.1 =
+Fixed the fatal error issue, The error still persists if using ultimate taxonomy manager, but goes away on refresh.Fixed Taxonomies and page types issues.Fixed Taxonomy Manager to Ultimate CMS transition
 
 = 0.1 = 
 Improved version

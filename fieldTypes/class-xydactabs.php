@@ -71,8 +71,8 @@ class xydactabs extends field_type{
 			{
 				if($new)
 					add_post_meta($post_id, $this->name, $key);
-				$this->temp_title->saving(&$temp,$post_id,esc_attr(stripslashes($val[$this->temp_title->name])),$oval);
-				$this->temp_data->saving(&$temp,$post_id,esc_attr(stripslashes($val[$this->temp_data->name])),$oval);
+				$this->temp_title->saving($temp,$post_id,esc_attr(stripslashes($val[$this->temp_title->name])),$oval);
+				$this->temp_data->saving($temp,$post_id,esc_attr(stripslashes($val[$this->temp_data->name])),$oval);
 			}
 		}
 	}

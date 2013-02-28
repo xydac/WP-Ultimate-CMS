@@ -19,6 +19,7 @@ class xydac_page_type_fields extends xydac_ultimate_cms_core{
 		add_filter('xydac_core_leftdiv',array($this,'xydac_core_leftdiv'));
 		add_action('xydac_core_righthead',array($this,'right_head'));
 		add_filter('xydac_core_field_name',array($this,'field_name'));
+		add_filter('xydac_core_editlink',array($this,'xydac_core_editlink_func'));
 		add_filter('xydac_core_headfootcolumn',array($this,'headfootcolumn'));
 
 		/* parent::__construct($mod_name,
@@ -26,12 +27,17 @@ class xydac_page_type_fields extends xydac_ultimate_cms_core{
 				xydac()->modules->page_type->get_base_path()."&manage_".xydac()->modules->page_type->get_module_name()."=".$name,
 				xydac()->modules->page_type->get_registered_option('field')."_".$name,
 				$form_variables); */
-		parent::__construct(xydac()->modules->page_type,'field',$form_variables);
+		$args = array('field_val' => $name);
+		parent::__construct(xydac()->modules->page_type,'field',$form_variables,$args);
 	}
 
 	function field_name()
 	{
 		return "field_name";
+	}
+	function xydac_core_editlink_func($str)
+	{
+		return $str.'&manage_page_type='.$this->name;
 	}
 	function headfootcolumn()
 	{

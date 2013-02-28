@@ -18,15 +18,21 @@ class xydac_taxonomy_type_fields extends xydac_ultimate_cms_core{
 		add_filter('xydac_core_leftdiv',array($this,'xydac_core_leftdiv'));
 		add_action('xydac_core_righthead',array($this,'right_head'));
 		add_filter('xydac_core_field_name',array($this,'field_name'));
+		add_filter('xydac_core_editlink',array($this,'xydac_core_editlink_func'));
 		add_filter('xydac_core_headfootcolumn',array($this,'headfootcolumn'));
 		//parent::__construct(xydac()->modules->taxonomy_type->get_module_name().__("_field",XYDAC_CMS_NAME),xydac()->modules->taxonomy_type->get_module_label().__(" Field",XYDAC_CMS_NAME),xydac()->modules->taxonomy_type->get_base_path()."&manage_".xydac()->modules->taxonomy_type->get_module_name()."=".$name,xydac()->modules->taxonomy_type->get_registered_option('field')."_".$name,$form_variables);
 		//parent::__construct("xydac_page_type_custom_field",__("Taxonomy Type Field",XYDAC_CMS_NAME),XYDAC_CMS_TAXONOMY_TYPE_FIELDS_PATH."&manage_taxonomy_type=".$name,XYDAC_CMS_TAXONOMY_TYPE_OPTION."_".$name,$form_variables);
-		parent::__construct(xydac()->modules->taxonomy_type,'field',$form_variables);
+		$args = array('field_val' => $name);;
+		parent::__construct(xydac()->modules->taxonomy_type,'field',$form_variables,$args);
 	}
 
 	function field_name()
 	{
 		return "field_name";
+	}
+	function xydac_core_editlink_func($str)
+	{
+		return $str.'&manage_taxonomy_type='.$this->name;
 	}
 	function headfootcolumn()
 	{

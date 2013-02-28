@@ -1,26 +1,29 @@
 <?php
 /*
 Plugin Name: Ultimate CMS
-Plugin URI: http://xydac.com/
-Description: Ultimate CMS
+Plugin URI: http://xydac.com/ultimate-cms/
+Description: This is an Easy to use Plugin to Create, Customize, Manage Custom Post Type,Custom Page Type, Custom Archives, Custom Taxonomies.
 Author: XYDAC
 Author URI: http://xydac.com/
-Version: 0.21 beta
+Version: 1.0.5
 License: GPL2*/
 
 if ( !defined( 'XYDAC_CMS_NAME' ) )define('XYDAC_CMS_NAME',"ultimate-cms");
 if ( !defined( 'XYDAC_CMS_USER_API_KEY' ) )define('XYDAC_CMS_USER_API_KEY',"xydac_cms_api_key");
 if ( !defined( 'XYDAC_CMS_OPTIONS' ) )define('XYDAC_CMS_OPTIONS',"XYDAC_CMS_OPTIONS");
 if ( !defined( 'XYDAC_CMS_MODULES' ) )define('XYDAC_CMS_MODULES',"xydac_cms_modules");
-
+if ( !defined( 'DS' ) )define('DS', DIRECTORY_SEPARATOR);
 global $xydac_cms_fields;
+
+require_once ABSPATH . 'wp-admin'.DS.'includes'.DS.'plugin.php' ;
+add_action('plugins_loaded', create_function('','deactivate_plugins("ultimate-taxonomy-manager'.DS.'ultimate-taxonomy-manager.php");'));
 //File includes
 require_once 'class-field-type.php';
 require_once 'class-xydac-ultimate-cms-core.php';
 require_once 'dao.php';
 require_once 'class-xydac-cms-module.php';
 require_once 'class-xydac-cms-home.php';
-require_once ABSPATH.'wp-includes/class-IXR.php';
+require_once ABSPATH.'wp-includes'.DS.'class-IXR.php';
 
 function xydac()
 {
@@ -45,11 +48,14 @@ class xydac_ultimate_cms{
 		if(!(self::$instance instanceof self)){
 			self::$instance = new self();
 			self::$dirpath	= array(	
-					'modules'=>dirname(__FILE__).'/modules/',
-					'mods'=> dirname(__FILE__).'/mods/',
-					'fieldTypes'=>dirname(__FILE__).'/fieldTypes/',
-					'userMods'=> ABSPATH.'/wp-content/ultimate_cms/'
+					'modules'=>dirname(__FILE__).DS.'modules'.DS.'',
+					'mods'=> dirname(__FILE__).DS.'mods'.DS.'',
+					'fieldTypes'=>dirname(__FILE__).DS.'fieldTypes'.DS.'',
+					'userMods'=> ABSPATH.DS.'wp-content'.DS.'ultimate_cms'.DS.''
 			);
+			
+			
+			
 			self::$menu_slug = 'xydac_ultimate_cms';
 			self::cms()->dao = new xydac_options_dao();
 			self::cms()->modules = new stdClass();
@@ -93,7 +99,7 @@ class xydac_ultimate_cms{
 		}
 
 	}
-	private function get_module_data(){
+	private static function get_module_data(){
 		foreach (self::$dirpath as $mname=>$path){
 			$modules = array();
 			$module_headers = array(
@@ -105,49 +111,51 @@ class xydac_ultimate_cms{
 					'version'		=> 'Version',
 			);
 	
-			$modules_root = $path;
-			$modules_dir = @opendir($modules_root);
-			$module_files = array();
-	
-			if($modules_dir)
-			{
-				while (($file = readdir( $modules_dir ) ) !== false ) {
-					if ( substr($file, 0, 1) == '.' )
-						continue;
-					if ( is_dir( $modules_root.'/'.$file ) ) {
-						$modules_subdir = @ opendir( $modules_root.'/'.$file );
-						if ( $modules_subdir ) {
-							while (($subfile = readdir( $modules_subdir ) ) !== false ) {
-								if ( substr($subfile, 0, 1) == '.' )
-									continue;
-								if ( substr($subfile, -4) == '.php' )
-									$module_files[] = "$file/$subfile";
+			$modules_root = rtrim( $path, '\\' );//Knut Sparhell patch.
+			if(is_dir($modules_root)){
+				$modules_dir = @opendir($modules_root);
+				$module_files = array();
+		
+				if($modules_dir)
+				{
+					while (($file = readdir( $modules_dir ) ) !== false ) {
+						if ( substr($file, 0, 1) == '.' )
+							continue;
+						if ( is_dir( $modules_root.DS.$file ) ) {
+							$modules_subdir = @ opendir( $modules_root.DS.$file );
+							if ( $modules_subdir ) {
+								while (($subfile = readdir( $modules_subdir ) ) !== false ) {
+									if ( substr($subfile, 0, 1) == '.' )
+										continue;
+									if ( substr($subfile, -4) == '.php' )
+										$module_files[] = "$file".DS."$subfile";
+								}
+								closedir( $modules_subdir );
 							}
-							closedir( $modules_subdir );
+						} else {
+							if ( substr($file, -4) == '.php' )
+								$module_files[] = $file;
 						}
-					} else {
-						if ( substr($file, -4) == '.php' )
-							$module_files[] = $file;
 					}
-				}
-				closedir( $modules_dir );
-				@closedir($modules_dir);
-				@closedir($module_dir);
-				
-				foreach($module_files as $file){
-					if(!is_readable($modules_root.'/'.$file)) continue;
-					$data = get_file_data($modules_root.'/'.$file, $module_headers);
-				
-					if(empty($data['name'])) continue;
-					if(($mname!='userMods' && $data['type']!='Core-Module') || ($mname=='userMods' && $data['type']!='Core-Module'))
-						$data['type'] = $mname;
-					else if($mname=='userMods' && $data['type']=='Core-Module')
-						continue;
-					$data['file']['filename'] = $file;
-					$data['file']['dirpath'] = $path;
-					$data['file']['dirname'] = dirname($file);
-					array_push(self::cms()->allModules,$data);
-					//$modules[dirname($file)] = $data;
+					@closedir( $modules_dir );
+					@closedir($modules_dir);
+					@closedir($modules_dir);
+					
+					foreach($module_files as $file){
+						if(!is_readable($modules_root.'/'.$file)) continue;
+						$data = get_file_data($modules_root.'/'.$file, $module_headers);
+					
+						if(empty($data['name'])) continue;
+						if(($mname!='userMods' && $data['type']!='Core-Module') || ($mname=='userMods' && $data['type']!='Core-Module'))
+							$data['type'] = $mname;
+						else if($mname=='userMods' && $data['type']=='Core-Module')
+							continue;
+						$data['file']['filename'] = $file;
+						$data['file']['dirpath'] = $path;
+						$data['file']['dirname'] = dirname($file);
+						array_push(self::cms()->allModules,$data);
+						//$modules[dirname($file)] = $data;
+					}
 				}
 			}
 		}
@@ -218,6 +226,7 @@ class xydac_ultimate_cms{
 			if($module->has_custom_fields())
 			{
 				$names = $module->get_active_names();
+				if(is_array($names))
 				foreach($names as $name)
 				{
 					$types = $module->get_active_fieldtypes($name);
@@ -281,14 +290,40 @@ class xydac_ultimate_cms{
 				foreach ($blogids as $blog_id) {
 					switch_to_blog($blog_id);
 					//$this->xydac_cms_cpt_field_convert();
+					$this->xydac_taxonomy_fix();
 					do_action('xydac_cms_activate');
 				}
 				switch_to_blog($old_blog);
 				return;
 			}
 		}
+		$this->xydac_taxonomy_fix();
 		//$this->xydac_cms_cpt_field_convert();
 		do_action('xydac_cms_activate');
+	}
+	public static function xydac_taxonomy_fix(){
+	global $wpdb;
+		$fields = $wpdb->get_results($wpdb->prepare("SELECT tax_name,field_name,field_label,field_type,field_desc,field_val FROM {$wpdb->prefix}taxonomyfield order by tax_name"));
+		if(isset(self::cms()->modules->taxonomy_type)){
+			$field_option = self::cms()->modules->taxonomy_type->get_registered_option('field');
+			$tax_names = array();
+			foreach($fields as $field){
+				
+				$tax_option = $field_option.'_'.$field->tax_name;
+				
+				self::cms()->dao->register_option($tax_option);
+				$tax_field_data = self::cms()->dao->get_options($tax_option);
+
+				if(!isset($tax_names[$field->tax_name]) && !$tax_field_data)
+					$tax_names[$field->tax_name] = true;
+				if(isset($tax_names[$field->tax_name]) && $tax_names[$field->tax_name])
+				{
+					$field_arr = array('field_name'=>$field->field_name,'field_label'=>$field->field_label,'field_type'=>$field->field_type,'field_desc'=>$field->field_desc,'field_val'=>$field->field_val,'field_order'=>0);
+					self::cms()->dao->insert_object($tax_option,$field_arr);
+				
+				}
+			}
+		}
 	}
 	function xydac_taxonomy_activate()
 	{
@@ -312,6 +347,7 @@ class xydac_ultimate_cms{
 
 	}
 	function is_xydac_ucms_pro(){
+	return false;
 		$k = get_option(XYDAC_CMS_USER_API_KEY);
 		if(empty($k))
 			return false;
@@ -357,9 +393,26 @@ DEBUG;
 		return $obj;
 	}
 	//-ERROR LOGGING AND HANDLING END
-
+	public function xydac_show_donate_link($showimage=true){
+		echo '
+		<p class="xydacdonation">
+		<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=nikhilseth1989%40gmail%2ecom&item_name=WordPress%20Plugin%20(Ultimate%20CMS)&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8">
+		';
+		if($showimage)
+			echo '<img src="http://www.paypal.com/en_US/i/btn/btn_donate_LG.gif"/>';
+		echo 'You might want to help building this plugin with some Donations. Please Click here to Donate';
+		if($showimage)
+			echo '<img src="http://www.paypal.com/en_US/i/btn/btn_donate_LG.gif"/>';
+		echo'
+		</a>
+		</p>
+		';
+	
+	
+	}
 
 }
+
 xydac();
 
 ?>

@@ -83,21 +83,7 @@ class xydac_ultimate_cms_home extends xydac_cms_module{
 	}
 	
 	function xydac_show_donate_link($showimage=true){
-		echo '
-		<p class="xydacdonation">
-		<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=nikhilseth1989%40gmail%2ecom&item_name=WordPress%20Plugin%20(Ultimate%20CMS)&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8">
-		';
-		if($showimage)
-			echo '<img src="http://www.paypal.com/en_US/i/btn/btn_donate_LG.gif"/>';
-		echo 'You might want to help building this plugin with some Donations. Please Click here to Donate';
-		if($showimage)
-			echo '<img src="http://www.paypal.com/en_US/i/btn/btn_donate_LG.gif"/>';
-		echo'
-		</a>
-		</p>
-		';
-	
-	
+		xydac()->xydac_show_donate_link();
 	}
 }
 
