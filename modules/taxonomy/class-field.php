@@ -78,7 +78,8 @@ class ct_fields
 				'description_before' => '',
 				'description_after' => '',
 				'field_term'=>'',
-				'showall'=>''
+				'showall'=>'',
+				'fieldcode'=>''
 		), $atts));
 
 		$fields = xydac()->modules->taxonomy_type->get_field($this->ct_type);//get_taxonomy_fields($this->ct_type);
@@ -96,6 +97,7 @@ class ct_fields
 			$terms = wp_get_object_terms($post->ID, $this->ct_type);
 		}
 
+		//$field is the field defined in shortcode.
 		if(!empty($field))
 		{
 			//if field is given
@@ -131,7 +133,8 @@ class ct_fields
 				$result.="";
 
 		}else{
-			if($this->name!=null && $this->type!=null){
+			
+			if(isset($this->ct_field_name) && $this->ct_field_name!=null && $this->ct_field_type!=null){
 				//HAS FIELDS handle fields also
 				$e= wp_specialchars_decode($start);
 				if(!empty($terms))
@@ -139,11 +142,21 @@ class ct_fields
 					$x_name = wp_specialchars_decode($name_before).do_shortcode(wp_specialchars_decode(stripslashes_deep($v->name),ENT_QUOTES)).wp_specialchars_decode($name_after);
 					$x_description = wp_specialchars_decode($description_before).do_shortcode(wp_specialchars_decode(stripslashes_deep($v->description),ENT_QUOTES)).wp_specialchars_decode($description_after);
 					$x_permalink = get_term_link(get_term($v->term_id,$this->ct_type));
-					$x_fielddata = array();
-					foreach($fields as $fielddata)
-					{
-						$f = new $fielddata['field_type']($fielddata['field_name'],array('label'=>$fielddata['field_label'],'desc'=>$fielddata['field_desc'],'val'=>$fielddata['field_val'],'fieldoptions'=>array('accesstype'=>'taxonomy')));
-						$x_fielddata[$f->name]= $f->taxonomy_output(get_metadata("taxonomy", $v->term_id,$fielddata['field_name'] , TRUE),$atts);
+					if(empty($fieldcode)){
+						$e.=  "<a href='".$x_permalink."' rel=".$x_description.">".$x_name."</a>";
+					}else{
+						$x_permalink =  "<a href='".$x_permalink."' rel=".$x_description.">".$x_name."</a>";
+						$x_fielddata = array();
+						foreach($fields as $fielddata)
+						{
+							$f = new $fielddata['field_type']($fielddata['field_name'],array('label'=>$fielddata['field_label'],'desc'=>$fielddata['field_desc'],'val'=>$fielddata['field_val'],'fieldoptions'=>array('accesstype'=>'taxonomy')));
+							$x_fielddata['/#'.$f->name.'/']= $f->taxonomy_output(get_metadata("taxonomy", $v->term_id,$fielddata['field_name'] , TRUE),array_merge($atts,array('rawdata'=>'1')));
+						}
+						$patterns = array_keys($x_fielddata);
+						$replacements = array_values($x_fielddata);
+						$r= preg_replace($patterns, $replacements, wp_specialchars_decode($fieldcode));
+						$e.= preg_replace('/#x_permalink/', $x_permalink, $r);
+						
 					}
 
 				}
@@ -153,15 +166,24 @@ class ct_fields
 			}
 			else{
 				//HAS NO FIELDS only handle name,description
-				if(!empty($terms))
-					foreach($terms as $term)
+				if(!empty($terms)){
+					$e= wp_specialchars_decode($start);
 					if(isset($start) && !empty($start))
-					$result.=  "<p>".$pre." ".$term->name."</p>";
-				else
-					$result.=  "<p>".$this->ct_type." ".$term->name."</p>";
+						$e.="<p>".$this->ct_type." ";
+					foreach($terms as $term){
+						$x_name = wp_specialchars_decode($name_before).do_shortcode(wp_specialchars_decode(stripslashes_deep($term->name),ENT_QUOTES)).wp_specialchars_decode($name_after);
+						$x_description = wp_specialchars_decode($description_before).do_shortcode(wp_specialchars_decode(stripslashes_deep($term->description),ENT_QUOTES)).wp_specialchars_decode($description_after);
+						$x_permalink = get_term_link(get_term($term->term_id,$this->ct_type));
+						$e.=  "<a href='".$x_permalink."' rel=".$x_description.">".$x_name."</a>";
+					}
+					if(isset($start) && !empty($start))
+						$e.="</p>";
+					$e.= wp_specialchars_decode($end);
+					$result.=$e;
+				}
+				
 			}
 		}
-
 		echo $result;
 		$res = ob_get_clean();
 		return $res;
