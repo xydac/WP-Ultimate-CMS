@@ -101,15 +101,25 @@ class image extends field_type{
 	 extract(shortcode_atts(array(
 	 		$this->name.'_before'=>'',
 	 		$this->name.'_after'=>'',
+	 		'pre' =>'',
+	 		'post'=>'',
+	 		'rawdata'=>'0'
 	 ), $atts));
 	 	
 		$s = "";
 		if(empty($val))return;
+		if($rawdata=='1')
+		{	
+			$arr = array();
+			preg_match( '/src="([^"]*)"/i', wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES), $arr ) ;
+			if(isset($arr[1]))
+				return $arr[1];		
+		}
 		if (preg_match('/\A(?:\b(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)[-A-Z0-9+&@#\/%=~_|$?!:,.]*[A-Z0-9+&@#\/%=~_|$])\Z/i', $val))
-				$val='<img src="'.$val.'" />';
+			$val='<img src="'.$val.'" />';
 		else
 			$val=do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES));
-		$s.=wp_specialchars_decode($before_element).do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES)).wp_specialchars_decode($after_element);
+		$s.=wp_specialchars_decode(${$this->name.'_before'}).do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES)).wp_specialchars_decode(${$this->name.'_after'});
 		
 		return wp_specialchars_decode($pre).$s.wp_specialchars_decode($post);
 	}
