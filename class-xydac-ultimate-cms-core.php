@@ -189,7 +189,7 @@ abstract class xydac_ultimate_cms_core{
 	function insert()
 	{
 		
-		$msg = $this->parent_class->insert_object($this->type, $_POST[$this->xydac_core_name][$this->namefield_name],$_GET['manage_'.$this->xydac_core_name], apply_filters( 'xydac_core_insert',$_POST[$this->xydac_core_name]),$this->namefield_name);
+		$msg = $this->parent_class->insert_object($this->type, $_POST[$this->xydac_core_name][$this->namefield_name],isset($_GET['manage_'.$this->xydac_core_name])?$_GET['manage_'.$this->xydac_core_name]:'', apply_filters( 'xydac_core_insert',$_POST[$this->xydac_core_name]),$this->namefield_name);
 		if(is_wp_error(($msg)))
 			$this->xydac_core_error= $msg;
 		else{
@@ -202,7 +202,7 @@ abstract class xydac_ultimate_cms_core{
 	{
 	
 		$this->xydac_core_editmode = true;
-		$msg= $this->parent_class->update_object($this->type, $_POST[$this->xydac_core_name][$this->namefield_name],$_GET['manage_'.$this->xydac_core_name], apply_filters( 'xydac_core_update',$_POST[$this->xydac_core_name]),$_POST[$this->xydac_core_name."_old"],$this->namefield_name);
+		$msg= $this->parent_class->update_object($this->type, $_POST[$this->xydac_core_name][$this->namefield_name],isset($_GET['manage_'.$this->xydac_core_name])?$_GET['manage_'.$this->xydac_core_name]:'', apply_filters( 'xydac_core_update',$_POST[$this->xydac_core_name]),$_POST[$this->xydac_core_name."_old"],$this->namefield_name);
 		if(is_wp_error(($msg))){
 			$this->xydac_core_error= $msg;
 			$this->xydac_core_editmode = true;
@@ -219,7 +219,7 @@ abstract class xydac_ultimate_cms_core{
 	*/
 	function delete($name)
 	{
-		$msg = $this->parent_class->delete_object($this->type, $name,$_GET['manage_'.$this->xydac_core_name], $this->namefield_name);
+		$msg = $this->parent_class->delete_object($this->type, $name,isset($_GET['manage_'.$this->xydac_core_name])?$_GET['manage_'.$this->xydac_core_name]:'', $this->namefield_name);
 		if(is_wp_error(($msg))){
 			$this->xydac_core_error= $msg;
 			do_action('xydac_core_insert_update');

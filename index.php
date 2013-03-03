@@ -33,11 +33,7 @@ function xydac()
 class xydac_ultimate_cms{
 
 	protected static $instance;
-	public static $apikey;
-	public static $active;
-	public static $modules;
-	public static $allModules;//doesn't have core modules
-	public static $dao;
+
 	//has path of all important directories
 	protected static $dirpath = array();
 	protected static $menu_slug;
@@ -84,6 +80,7 @@ class xydac_ultimate_cms{
 	private static function load_modules(){
 		self::get_module_data();
 		self::cms()->dao->delete_all_object(XYDAC_CMS_MODULES);
+		$module_insert = array();
 		foreach(self::cms()->allModules as $k=>$module){
 				
 				require_once $module['file']['dirpath'].$module['file']['filename'];
@@ -95,9 +92,10 @@ class xydac_ultimate_cms{
 				//if($module['type']=='Core-Module')
 					//unset(self::cms()->allModules[$k]);
 				//else
-					self::cms()->dao->insert_object(XYDAC_CMS_MODULES,array('name'=>$module['name'],'type'=>$module['type'],'author'=>$module['author'],'description'=>$module['description']));
-		}
+					array_push($module_insert,array('name'=>$module['name'],'type'=>$module['type'],'author'=>$module['author'],'description'=>$module['description']));
 
+		}
+		self::cms()->dao->insert_object(XYDAC_CMS_MODULES,$module_insert,true);
 	}
 	private static function get_module_data(){
 		foreach (self::$dirpath as $mname=>$path){

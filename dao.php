@@ -135,7 +135,11 @@ class xydac_options_dao{
 		return $option_values;
 	}
 	
-	public function insert_object($option,$data){
+	/***
+	 * This method is used to insert an object into WordPress Options.
+	 * added support to insert multiple object at once by sending the object as array and setting isDataArray as true;
+	 */
+	public function insert_object($option,$data,$isDataArray=false){
 		if(!$this->is_option_registered($option))
 			return false;
 		$xydac_options = get_option($option);;
@@ -143,14 +147,22 @@ class xydac_options_dao{
 		if(!$xydac_options)
 		{
 			$temp = array();
-			array_push($temp,$data);
+			if($isDataArray)
+				foreach($data as $v)
+					array_push($temp,$v);
+			else
+				array_push($temp,$data);
 			update_option($option,$temp);
 			return true;
 		}
 		if(is_array($xydac_options))
 		{
-			array_push($xydac_options,$data);
-				$this->namefield_name = 'name';
+			if($isDataArray)
+				foreach($data as $v)
+				array_push($xydac_options,$v);
+			else
+				array_push($xydac_options,$data);
+			$this->namefield_name = 'name';
 			usort($xydac_options, array($this,'xy_cmp'));
 			update_option($option,$xydac_options);
 			return true;

@@ -1,5 +1,5 @@
 <?php 
-// class field
+// Abstract class for field type 
 abstract class field_type{
 	public $abspath;
 	public $ftype; //class name of extension
