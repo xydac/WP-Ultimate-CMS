@@ -190,15 +190,17 @@ abstract class xydac_cms_module{
 			else{
 				$args[$namefieldname] = sanitize_title_with_dashes($args[$namefieldname]);
 				$opt = ($type=='main')?$this->get_registered_option($type):$this->get_registered_option($type).'_'.$fieldmaster;
-				if($this->dao->insert_object($opt,$args))
+				$this->dao->namefield_name = $namefieldname;
+				$ins = $this->dao->insert_object($opt,$args);
+				if($ins)
 					$message = $this->module_label.__(' Inserted.',XYDAC_CMS_NAME);
 				else
-					$message = new WP_Error('err', __("Not Insterted",XYDAC_CMS_NAME));
+					$message = (is_wp_error($ins))?$ins:new WP_Error('err', __("Not Insterted",XYDAC_CMS_NAME));
 			}
 			return $message;
 		}else return new WP_Error('err', $this->module_label.__(" Name Not allowed",XYDAC_CMS_NAME));
 	}
-	//-fieldmaster : the object of whose field has to updated
+	//-fieldmaster : the object of whose field has to updated required only for fiields
 	public function update_object($type,$name,$fieldmaster,$args,$oldname,$namefieldname){
 		if($type=='main' || $type=='field'){
 			$message='';
@@ -225,11 +227,15 @@ abstract class xydac_cms_module{
 			return $message;
 		}else return new WP_Error('err', $this->module_label.__(" Name Not allowed",XYDAC_CMS_NAME));
 	}
+	/** For 1.0.7 all field objects are deleted when main object is deleted.
+	*/
 	public function delete_object($type,$name,$fieldmaster,$namefieldname){
 		if($type=='main' || $type=='field'){
 			$opt = ($type=='main')?$this->get_registered_option($type):$this->get_registered_option($type).'_'.$fieldmaster;
 			if($this->dao->delete_object($opt,$name,$namefieldname))
 			{
+				if($type=='main')
+					$this->dao->delete_all_object($this->get_registered_option($type).'_'.$name);//deleting all fields
 				$this->deactivate_main($name);
 				return $this->module_label.__(' Deleted.',XYDAC_CMS_NAME);
 			}
@@ -258,7 +264,91 @@ abstract class xydac_cms_module{
 		$message = $this->module_label.__(' Deactivated.',XYDAC_CMS_NAME);
 		return $message;
 	}
-	function sync_main($name){
+	function sync_object($type,$name,$namefieldname){
+		if ($type!='main')
+			return;
+		if(xydac()->apikey){
+			$xydac_option = $this->get_main_by_name($name);
+			$xydac_option_field = $this->get_field($name);
+			$option_name = $this->get_registered_option('main');
+			//--Begin indentifying the id's for actual code and field code
+			$actual_code_id =-1;
+			$field_code_id =-1;
+			$blog_url_id =-1;
+			$syncid = xydac()->cms()->synkeys->get($this->get_module_name(),$name);
+			if(xydac()->cms()->synkeys->isValid($this->get_module_name(),$name)){
+				$xy_rpc_post = xydac()->xml_rpc_client('wp.getPost',$syncid, array('custom_fields'));
+				if(isset($xy_rpc_post) && $xy_rpc_post->isError()){
+					if(404==$xy_rpc_post->getErrorCode())//no remote data
+					{
+						xydac()->cms()->synkeys->remove($this->get_module_name(),$name);
+					}
+					$xydac_core_error = new WP_Error($xy_rpc_post->getErrorCode(), $xy_rpc_post->getErrorMessage().' Sync ID:'.$syncid);
+					xydac()->cms()->synkeys->update();
+					return 	$xydac_core_error;	//return false;
+				}else if(isset($xy_rpc_post) && !$xy_rpc_post->isError()) {
+					$xy_rpc_post = $xy_rpc_post->getResponse();
+					foreach($xy_rpc_post['custom_fields'] as $arr)
+					{
+						if($arr['key']=='actual_code')
+							$actual_code_id = (int)$arr['id'];
+						else if($arr['key']=='field_code')
+							$field_code_id = (int)$arr['id'];
+						else if($arr['key']=='blog_url')
+							$blog_url_id = (int)$arr['id'];
+					}
+				}
+			}
+			//--End indentifying the id's for actual code and field code
+			//--Begin send Preparation
+			$content['post_title'] = $xydac_option[$namefieldname];
+			$content['post_type'] = 'xydac_'.$this->get_module_name();
+			$content['post_content'] = '<p>'.empty($xydac_option['description'])?"":$xydac_option['description'].'</p>';
+				$arr_actualcode = array('key' => 'actual_code','value'=>base64_encode(maybe_serialize($xydac_option)));
+				$arr_fieldcode = array('key' => 'field_code','value'=>base64_encode(maybe_serialize($xydac_option_field)));
+				$arr_blogurlcode = array('key' => 'import_blog_url','value'=>get_bloginfo('url'));
+				if($actual_code_id>0)
+					$arr_actualcode['id'] = $actual_code_id;
+				if($field_code_id>0)
+					$arr_fieldcode['id'] = $field_code_id;
+				if($blog_url_id>0)
+					$arr_blogurlcode['id'] = $blog_url_id;
+			$content['custom_fields'] = array($arr_actualcode,$arr_fieldcode,$arr_blogurlcode);
+			//--End send Preparation
+			//--Begin Send the data for add or edit
+			if($syncid)
+				$result = xydac()->xml_rpc_client('wp.editPost',$syncid, $content);
+			else
+				$result = xydac()->xml_rpc_client('wp.newPost', $content);
+			//--End Send the data for add or edit
+			//--Begin Process Received Data
+			if($result->isError()){
+				if(404==$result->getErrorCode())
+				{
+					xydac()->cms()->synkeys->remove($this->get_module_name(),$name);
+				}
+				$xydac_core_error = new WP_Error($result->getErrorCode(), $result->getErrorMessage().' Sync ID:'.$syncid);
+				xydac()->cms()->synkeys->update();
+				return 	$xydac_core_error;	//return false;
+			}else{
+				$result = $result->getResponse();
+				if($result!='-1')
+				{
+					xydac()->cms()->synkeys->add($this->get_module_name(),$name,$result);
+				}
+				$xydac_core_error = $this->get_module_label().__(' Synced '.$result.' .',XYDAC_CMS_NAME);
+				do_action('xydac_core_sync',$name);
+				xydac()->cms()->synkeys->update();
+				return 	$xydac_core_error;	//return true;
+			}
+			//--End Process Received Data
+			xydac()->cms()->synkeys->update();
+			$xydac_core_error = new WP_Error('err', $this->get_module_label().__(" Not Found",XYDAC_CMS_NAME));
+			return $xydac_core_error ;//return false;
+		}else {
+			$this->xydac_core_error = new WP_Error('err', $this->get_module_label().__(" Api key is not defined",XYDAC_CMS_NAME));
+			return $xydac_core_error ;//return false;
+		}
 	}
 
 	
@@ -313,6 +403,7 @@ abstract class xydac_cms_module{
 			return;
 		return $this->_get_option('field',$args,$name);
 	}
+	/* This function returns the array of main items */
 	function get_field_by_name($name,$field_name,$fieldname_colname=null){
 		if(!$this->has_custom_fields || !isset($this->registered_option['field']))
 			return;
@@ -498,9 +589,14 @@ else
 }
 	
 	}
+	private function getCustomField($resultarr,$var){
+		foreach($resultarr['custom_fields'] as $v)
+			if( $v['key'] == $var)
+				return $v['value'];
+	}
 	private function show_sync_page($arr,$formaction)
 	{
-	$getCustomField = create_function('$resultarr,$var',"foreach({$resultarr['custom_fields']} as {$v})if( {$v['key']} == {$var})return {$v['value']};");
+	
 	echo '
 	<table class="wp-list-table widefat fixed posts" cellspacing="0">
 	<thead>
@@ -525,9 +621,11 @@ else
 		foreach($arr as $resultarr){
 			echo '<tr id="'.$resultarr['post_id'].'" valign="top">
 			<td class="column-name">'.$resultarr['post_title'].'</td>
-			<td class="column-desc">'.$resultarr['post_content'].'</td>
-			<td class="column-desc">'.(in_array($resultarr['post_title'],$this->get_main_names())?(base64_encode(maybe_serialize($this->get_main_by_name($resultarr['post_title'])))==$getCustomField($resultarr,'actual_code'))? 'Installed (In Sync)': 'Installed (Out Of Sync)':'Not Installed').'</td>
-			<td class="column-install"><a href="'.$formaction.'&activate=true&id='.$resultarr['post_id'].'&nonce='.wp_create_nonce(__FILE__).'" title="Activate" class="edit">'.'Install'.'</a></td>
+			<td class="column-desc">'.$resultarr['post_content'].'<br/>Blog URL:<a href="'.$this->getCustomField($resultarr,'import_blog_url').'"/>'.$this->getCustomField($resultarr,'import_blog_url').'</a></td>
+			<td class="column-desc">'.(in_array($resultarr['post_title'],(array)$this->get_main_names())?(base64_encode(maybe_serialize($this->get_main_by_name($resultarr['post_title'])))==$this->getCustomField($resultarr,'actual_code'))? 'Installed (In Sync)': 'Installed (Out Of Sync)':'Not Installed').'</td>
+			<td class="column-install">
+				<a href="'.$formaction.'&activate=true&id='.$resultarr['post_id'].'&nonce='.wp_create_nonce(__FILE__).'" title="Activate" class="edit">'.'Install'.'</a>
+				</td>
 			</tr>';
 
 
@@ -546,29 +644,78 @@ else
 	function view_xydac_sync_func($tab)
 	{
 		echo '<h1>Xydac Ultimate CMS Cloud</h1>';
-		if($_GET['activate']=='true' && wp_verify_nonce($_GET['nonce'], __FILE__) && !empty($_GET['id']))
+		$formaction = $tab['href'];
+		if((isset($_GET['activate']) && $_GET['activate']=='true' && wp_verify_nonce($_GET['nonce'], __FILE__) && !empty($_GET['id']) ||
+			(isset($_POST['activate']) && $_POST['activate']=='true' && wp_verify_nonce($_POST['nonce'], __FILE__) && !empty($_POST['post_id']))))
 		{
 			//installation process...
 			$namearr = $this->get_main_names();
-			$result = xydac()->xml_rpc_client('wp.getPost',$_GET['id'],array());
+			$result = xydac()->xml_rpc_client('wp.getPost',isset($_GET['id'])?$_GET['id']:$_POST['post_id'],array());
 			if(!$result->isError() && is_array($result->getResponse())){
 				$resultarr = $result->getResponse();
-
+				$actualcode = "";
+				$fieldcode = "";
+				foreach($resultarr['custom_fields'] as $v){
+					if($v['key']=='actual_code')
+						$actualcode = maybe_unserialize(base64_decode($v['value']));
+					if($v['key']=='field_code')
+						$fieldcode = maybe_unserialize(base64_decode($v['value']));
+				}
+				if(!is_array($actualcode))
+				{
+					echo '<div id="error" class="error below-h2"><p>There is no data received.</p></div>';
+				}else{
 				if((is_array($namearr) && !in_array($resultarr['post_title'],$namearr)) || !is_array($namearr))
 				{
-					//can be added directly	
-					echo "can be added directly";
+						$insert_main = $this->insert_object('main',$resultarr['post_title'],'',$actualcode,'name');
+						if(!is_wp_error($insert_main)){
+							if(is_array($fieldcode)){
+								$this->dao->register_option($this->get_registered_option('field')."_".$resultarr['post_title']);
+								foreach($fieldcode as $field)
+									$this->insert_object('field',$field['field_name'],$resultarr['post_title'],$field,'field_name');
+								echo '<div id="message" class="message below-h2"><p>'.$this->module_label.' Added Successfully</p></div>';
+							}
+						}else
+							echo '<div id="error" class="error below-h2"><p>'.make_clickable($insert_main->get_error_message()).'</p></div>';
 					
 				}
 				else if(is_array($namearr) && in_array($resultarr['post_title'],$namearr))
 				{
 					//name has to changed before adding.
-					echo "name has to changed before adding.";
+						if(isset($_POST['post_id']) && isset($_POST['post_name'])){
+							$actualcode['name'] = $_POST['post_name'];
+							$insert_main = $this->insert_object('main',$actualcode['name'],'',$actualcode,'name');
+							if(!is_wp_error($insert_main)){
+								if(is_array($fieldcode)){
+									$this->dao->register_option($this->get_registered_option('field')."_".$actualcode['name']);
+									foreach($fieldcode as $field)
+										$this->insert_object('field',$field['field_name'],$actualcode['name'],$field,'field_name');
+								}
+								echo '<div id="message" class="message below-h2"><p>'.$this->module_label.' Added Successfully</p></div>';
+							}else
+								echo '<div id="error" class="error below-h2"><p>'.make_clickable($insert_main->get_error_message()).'</p></div>';
+						}else{
+							echo '<div id="error" class="error below-h2"><p>Similar name is being used for another item, So Name has to changed before adding.</p></div>';
+							echo '<div id="xydac_sync_namediv" >
+								<label>Please Enter New name</label>
+								<form action="'.$formaction.'" method="post">
+									<input type="text" name="post_name"/>					
+								<input type="hidden" name="post_id" value="'.$_GET['id'].'"/>
+								<input type="hidden" name="activate" value="true"/>
+								<input type="hidden" name="nonce" value="'.wp_create_nonce(__FILE__).'"/>
+								<input type="submit"/>
+								</form>
+								</div>
+								';
+						}
+					}
 				}
 			}
+			else
+				echo '<div id="error" class="error below-h2"><p>'.make_clickable($result->getErrorMessage()).'</p></div>';
 				
 		}else{
-			$formaction = $tab['href'];
+			
 			if(xydac()->apikey){
 				$result = xydac()->xml_rpc_client('wp.getPosts',null,array('post_type'=>'xydac_'.$this->module_name));
 				if(!$result->isError() && is_array($result->getResponse())){
@@ -586,8 +733,14 @@ else
 					$this->show_sync_page($publicposts,$formaction);
 					
 
+				}else
+				{
+				 echo '<div id="error" class="error below-h2"><p>'.make_clickable($result->getErrorMessage()).'</p></div>';
 				}
 					
+			}else
+				{
+				 echo make_clickable('<div id="error" class="error below-h2"><p>You have not provided API Key, Kindly register at http://www.xydac.com/</p></div>');
 			}
 		}
 

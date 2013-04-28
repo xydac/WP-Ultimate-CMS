@@ -9,7 +9,7 @@
 class xydac_options_dao{
 	private $registered_option = array();
 	private $backup_option;
-	private $namefield_name;
+	public $namefield_name;
 
 
 	public function set_backup_option($option){
@@ -141,10 +141,10 @@ class xydac_options_dao{
 	 */
 	public function insert_object($option,$data,$isDataArray=false){
 		if(!$this->is_option_registered($option))
-			return false;
-		$xydac_options = get_option($option);;
+			return new WP_Error('err', __("Not Insterted [Cause]: Option Not Registered.",XYDAC_CMS_NAME));
 	
-		if(!$xydac_options)
+		$xydac_options = get_option($option);
+		if(!$xydac_options || (!is_array($xydac_options) && trim($xydac_options)==""))
 		{
 			$temp = array();
 			if($isDataArray)
@@ -162,7 +162,8 @@ class xydac_options_dao{
 				array_push($xydac_options,$v);
 			else
 				array_push($xydac_options,$data);
-			$this->namefield_name = 'name';
+			if($this->namefield_name=='')
+				$this->namefield_name = 'name';
 			usort($xydac_options, array($this,'xy_cmp'));
 			update_option($option,$xydac_options);
 			return true;

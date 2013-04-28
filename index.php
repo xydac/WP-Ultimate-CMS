@@ -5,7 +5,7 @@ Plugin URI: http://xydac.com/ultimate-cms/
 Description: This is an Easy to use Plugin to Create, Customize, Manage Custom Post Type,Custom Page Type, Custom Archives, Custom Taxonomies.
 Author: XYDAC
 Author URI: http://xydac.com/
-Version: 1.0.6
+Version: 1.0.7
 License: GPL2*/
 
 if ( !defined( 'XYDAC_CMS_NAME' ) )define('XYDAC_CMS_NAME',"ultimate-cms");
@@ -24,6 +24,7 @@ require_once 'dao.php';
 require_once 'class-xydac-cms-module.php';
 require_once 'class-xydac-cms-home.php';
 require_once ABSPATH.'wp-includes'.DS.'class-IXR.php';
+require_once 'class-xydac-synckeys.php';
 
 function xydac()
 {
@@ -60,6 +61,7 @@ class xydac_ultimate_cms{
 			self::cms()->active = self::cms()->dao->get_options(XYDAC_CMS_MODULES.'_active');
 			self::cms()->allModules = array();
 			self::cms()->apikey = get_option(XYDAC_CMS_USER_API_KEY);
+			self::cms()->synkeys = new xydac_synckeys();
 			self::load_modules();
 			
 
@@ -345,7 +347,7 @@ class xydac_ultimate_cms{
 
 	}
 	function is_xydac_ucms_pro(){
-	return false;
+		//return false;
 		$k = get_option(XYDAC_CMS_USER_API_KEY);
 		if(empty($k))
 			return false;

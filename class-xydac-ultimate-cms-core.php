@@ -236,81 +236,21 @@ abstract class xydac_ultimate_cms_core{
 	
 	function sync($name)
 	{
-		if(xydac()->apikey){
-			$xydac_option = $this->parent_class->get_main_by_name($name);
-			
-			//--Begin indentifying the id's for actual code and field code
-			$actual_code_id =-1;
-			$field_code_id =-1;
-			if(isset($xydac_option['sync_id']) && $xydac_option['sync_id']>0){
-				$xy_rpc_post = xydac()->xml_rpc_client('wp.getPost',$xydac_option['sync_id'], array('custom_fields'));
-				if(isset($xy_rpc_post) && $xy_rpc_post->isError()){
-					if(404==$xy_rpc_post->getErrorCode())
-					{
-						unset($xydac_options[$k]['sync_id']);
-						update_option($this->option_name,$xydac_options);
-					}
-					$this->xydac_core_error = new WP_Error($xy_rpc_post->getErrorCode(), $xy_rpc_post->getErrorMessage().' Sync ID:'.$xydac_option['sync_id']);
+	$msg = $this->parent_class->sync_object($this->type, $name, $this->namefield_name);
+		if(is_wp_error(($msg))){
+			$this->xydac_core_error= $msg;
+			do_action('xydac_core_sync');
 					return false;
-				}else if(isset($xy_rpc_post) && !$xy_rpc_post->isError()) {
-					$xy_rpc_post = $xy_rpc_post->getResponse();
-					foreach($xy_rpc_post['custom_fields'] as $arr)
-					{
-						if($arr['key']=='actual_code')
-							$actual_code_id = (int)$arr['id'];
-						else if($arr['key']=='field_code')
-							$field_code_id = (int)$arr['id'];
 					}
-				}
-			}
-			//--End indentifying the id's for actual code and field code
 			
-			//--Begin send Preparation
-			$content['post_title'] = $xydac_option[$this->namefield_name];
-			$content['post_type'] = 'xydac_'.$this->xydac_core_name;
-			$content['post_content'] = '<p>'.$xydac_option['description'].'</p>';
-			if($actual_code_id>0 && $field_code_id>0)
-				$content['custom_fields'] = array( array('id'=>$actual_code_id,'key' => 'actual_code','value'=>base64_encode(maybe_serialize($xydac_option))),array('id'=>$field_code_id,'key' => 'field_code','value'=>base64_encode(maybe_serialize(''))));
-			else
-				$content['custom_fields'] = array( array('key' => 'actual_code','value'=>base64_encode(maybe_serialize($xydac_option))),
-						array('key' => 'field_code','value'=>base64_encode(maybe_serialize(''))));
-			//--End send Preparation
 			
-			//--Begin Send the data for add or edit
-			if(isset($xydac_option['sync_id']) && (int)$xydac_option['sync_id']>0)
-				$result = xydac()->xml_rpc_client('wp.editPost',$xydac_option['sync_id'], $content);
-			else
-				$result = xydac()->xml_rpc_client('wp.newPost', $content);
-			//--End Send the data for add or edit
 			
-			//--Begin Process Received Data
-			if($result->isError()){
-				if(404==$result->getErrorCode())
-				{
-					unset($xydac_options[$k]['sync_id']);
-					update_option($this->option_name,$xydac_options);
-				}
-				$this->xydac_core_error = new WP_Error($result->getErrorCode(), $result->getErrorMessage().' Sync ID:'.$xydac_option['sync_id']);
-				return false;
-			}else{
-				$result = $result->getResponse();
-				if(!isset($xydac_option['sync_id']) && $result!='1')
-				{
-					$xydac_options[$k]['sync_id'] = $result;
-					update_option($this->option_name,$xydac_options);
-				}
-				$this->xydac_core_message = $this->xydac_core_label.__(' Synced '.$result.' .',XYDAC_CMS_NAME);
-				do_action('xydac_core_sync',$name);
+		else{
+			$this->xydac_core_message = $msg;
+			do_action('xydac_core_sync');
 					return true;
-				}
-				//--End Process Received Data
 			
 	
-			$this->xydac_core_error = new WP_Error('err', $this->xydac_core_label.__(" Not Found",XYDAC_CMS_NAME));
-			return false;
-		}else {
-			$this->xydac_core_error = new WP_Error('err', $this->xydac_core_label.__(" Api key is not defined",XYDAC_CMS_NAME));
-			return false;
 		}
 			
 			
@@ -360,7 +300,7 @@ abstract class xydac_ultimate_cms_core{
 						</div>
 						<?php } ?>
 						<br class="clear">
-						<table class="widefat tag fixed" cellspacing="0">
+						<table class="widefat tag fixed">
 							<thead class="content-types-list">
 								<tr>
 									<th class="manage-column column-cb check-column" id="cb" scope="col"><input type="checkbox"></th>
