@@ -12,7 +12,6 @@ class xydac_taxonomy_functions{
 		add_filter( 'posts_where' , array($this,'xydac_posts_where'),10,1 );
 		add_filter( 'manage_posts_columns', array($this,'xydac_taxonomy_cols'),10,2 );
 
-
 	}
 
 	/**

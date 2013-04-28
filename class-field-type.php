@@ -272,6 +272,7 @@ function xydac_fieldtypes_init()
 {
 	//@todo: add a button on main page to do this as this creates a performance issue
 	$xydac_active_field_types = xydac()->xydac_cms_build_active_field_types();
+	//var_dump($xydac_active_field_types);die();
 	global $xydac_cms_fields,$wp_version;
 	//$xydac_active_field_types = get_option("xydac_active_field_types");
 	$xydac_fields = array();
@@ -279,7 +280,7 @@ function xydac_fieldtypes_init()
 	$adminstyle = "";
 	$sitescript = "";
 	$sitestyle = "";
-
+	$added = array();
 	foreach(glob(WP_PLUGIN_DIR.'/'.XYDAC_CMS_NAME.'/fieldTypes/*.php') as $file)
 	{
 		include_once($file);
@@ -288,9 +289,11 @@ function xydac_fieldtypes_init()
 		if((isset($temp->minwpver) && !empty($temp->minwpver)) || (isset($temp->maxwpver) && !empty($temp->maxwpver)))
 			if(floatval($wp_version)<$temp->minwpver || floatval($wp_version)>$temp->maxwpver)
 			continue;
+		
 		if(is_array($xydac_active_field_types))
-			if(in_array($temp->ftype,$xydac_active_field_types))
+			if(in_array($temp->ftype,$xydac_active_field_types) && !in_array($temp->ftype,$added))
 			{
+				array_push($added,$temp->ftype);
 				$adminscript.= "\n/*============START $temp->ftype=============================*/\n".$temp->adminscript()."\n/*============END $temp->ftype=============================*/\n";
 				$adminstyle.= "\n/*============START $temp->ftype=============================*/\n".$temp->adminstyle()."\n/*============END $temp->ftype=============================*/\n";
 				$sitescript.= "\n/*============START $temp->ftype=============================*/\n".$temp->sitescript()."\n/*============END $temp->ftype=============================*/\n";
@@ -305,6 +308,7 @@ function xydac_fieldtypes_init()
 			if(is_array($temp->compaitable) && in_array('taxonomy',$temp->compaitable))
 				$xydac_fields['fieldtypes']['taxonomy'][$temp->ftype] = $temp->flabel;
 	}
+	
 	$xydac_fields['adminscript'] = $adminscript;
 	$xydac_fields['adminstyle'] = $adminstyle;
 	$xydac_fields['sitescript'] = $sitescript;

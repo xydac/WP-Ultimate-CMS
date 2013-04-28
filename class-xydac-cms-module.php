@@ -29,6 +29,9 @@ abstract class xydac_cms_module{
 	private $menu_position;
 	//XydacSync Module
 	private $xydac_sync;
+	
+	private $custom_css_id;
+	private $custom_js_id;
 
 	/*----------------------------Constructor---------------------*/
 	//array('module_label'=>'','has_custom_fields'=>,'uses_active'=>,'registered_option'=>array('main'=>'','active'=>'','field'=>''),'base_path'=>'','menu_position'=>'top/sub')
@@ -44,6 +47,9 @@ abstract class xydac_cms_module{
 		$this->base_path = (!empty($args) && is_array($args) && isset($args['base_path']) && !empty($args['base_path'])) ? $args['base_path'] : null;
 		$this->menu_position = (!empty($args) && is_array($args) && isset($args['menu_position']) && !empty($args['menu_position'])) ? $args['menu_position'] : null;
 		$this->xydac_sync = (!empty($args) && is_array($args) && isset($args['xydac_sync']) && !empty($args['xydac_sync'])) ? true : false;
+		$this->custom_css_id = (!empty($args) && is_array($args) && isset($args['custom_css_id']) && !empty($args['custom_css_id'])) ? $args['custom_css_id'] : 'content_css';
+		$this->custom_js_id = (!empty($args) && is_array($args) && isset($args['custom_js_id']) && !empty($args['custom_js_id'])) ? $args['custom_js_id'] : 'content_js';
+		
 		$this->xydac_sync = true;
 		// @todo: path has not been defined.
 		$this->dao = xydac()->dao;
@@ -91,8 +97,38 @@ abstract class xydac_cms_module{
 		if('top'==$this->menu_position)
 			add_action('admin_menu', array($this,'handle_menu'),100);
 		add_action( 'init', array($this,'init') , 1);
+
+		add_filter('xydac_cms_site_style',array($this,'xydac_cms_site_style_func'),60,1);
+		add_filter('xydac_cms_site_script',array($this,'xydac_cms_site_script_func'),60,1);
+		
 	}
 
+	/*-----------Filters--------------*/
+	function xydac_cms_site_style_func($style)
+	{
+		global $xydac_cms_fields;
+		$cpts = $this->get_active();
+		$st ="";
+		if(is_array($cpts))
+			foreach ($cpts as $cpt) {
+				if(isset($cpt[$this->custom_css_id]))
+					$st.="\n/*============START ".$this->module_label." - ".$cpt['name']."=============================*/\n".$cpt["content_css"]."\n/*============END ".$cpt['name']."=============================*/\n";
+			}
+		return $style.$st;
+	}
+	function xydac_cms_site_script_func($script)
+	{
+		global $xydac_cms_fields;
+		$cpts = $this->get_active();
+		$st ="";
+		if(is_array($cpts))
+			foreach ($cpts as $cpt) {
+				if(isset($cpt[$this->custom_js_id]))
+					$st.="\n/*============START ".$this->module_label." - ".$cpt['name']."=============================*/\n".$cpt["content_js"]."\n/*============END ".$cpt['name']."=============================*/\n";
+			}
+		return $script.$st;
+	}
+	
 	/*-----------Getters--------------*/
 	public function get_module_name(){
 		return $this->module_name;

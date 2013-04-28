@@ -30,7 +30,7 @@ class xydac_page_type_manager extends xydac_ultimate_cms_core{
 		//add_filter('xydac_core_rowactions',array($this,'xydac_core_rowactions'));
 		add_filter('xydac_core_doactions',array($this,'xydac_core_doactions'));
 		//parent::__construct(xydac()->modules->page_type->get_module_name(),xydac()->modules->page_type->get_module_label(),xydac()->modules->page_type->get_base_path(),xydac()->modules->page_type->get_registered_option('main'),$form_variables,true,false);
-		$args = array('enableactivation'=>false,'xydac_core_show_additional' => true);
+		$args = array('enableactivation'=>false,'xydac_core_show_additional' => true,'custom_css_id'=>'content_css','custom_jss_id'=>'content_js');
 		parent::__construct(xydac()->modules->page_type,'main',$form_variables,$args);
 	}
 	function xydac_core_leftdiv()

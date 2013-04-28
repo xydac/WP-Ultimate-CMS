@@ -10,10 +10,6 @@ class xydac_post_type_functions{
 		add_filter ('enter_title_here',array($this,'xydac_enter_title_here_manager'));
 		//@todo: enabling this creates problem with xml rpc
 		//add_filter( 'pre_get_posts', array($this,'xydac_posts_home') );
-		add_filter('xydac_cms_site_style',array($this,'xydac_cms_site_style_func'),10,1);
-		add_filter('xydac_cms_site_script',array($this,'xydac_cms_site_script_func'),10,1);
-		add_filter('xydac_cms_admin_style',array($this,'xydac_cms_admin_style_func'),10,1);
-		add_filter('xydac_cms_admin_script',array($this,'xydac_cms_admin_script_func'),10,1);
 		add_shortcode('post_title',array($this,'xydac_cms_get_post'));
 
 	}
@@ -21,38 +17,6 @@ class xydac_post_type_functions{
 	{
 		global $post;
 		return $post->post_title;
-	}
-	function xydac_cms_site_style_func($style)
-	{
-		global $xydac_cms_fields;
-		$cpts = xydac()->modules->post_type->get_active();
-		$st ="";
-		foreach ($cpts as $cpt) {
-			if(isset($cpt["content_css"]))
-				$st.="\n/*============START ".$cpt['name']."=============================*/\n".$cpt["content_css"]."\n/*============END ".$cpt['name']."=============================*/\n";
-		}
-		return $style.$xydac_cms_fields['sitestyle'].$st;
-	}
-	function xydac_cms_site_script_func($script)
-	{
-		global $xydac_cms_fields;
-		$cpts = xydac()->modules->post_type->get_active();
-		$st ="";
-		foreach ($cpts as $cpt) {
-			if(isset($cpt["content_js"]))
-				$st.="\n/*============START ".$cpt['name']."=============================*/\n".$cpt["content_js"]."\n/*============END ".$cpt['name']."=============================*/\n";
-		}
-		return $script.$xydac_cms_fields['sitescript'].$st;
-	}
-	function xydac_cms_admin_style_func($style)
-	{
-		global $xydac_cms_fields;
-		return $style.$xydac_cms_fields['adminstyle'];
-	}
-	function xydac_cms_admin_script_func($script)
-	{
-		global $xydac_cms_fields;
-		return $script.$xydac_cms_fields['adminscript'];
 	}
 	function the_content_manager($content)
 	{

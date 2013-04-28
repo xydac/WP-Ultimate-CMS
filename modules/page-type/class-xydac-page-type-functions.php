@@ -9,8 +9,8 @@ class xydac_page_type_functions{
 	function __construct()
 	{
 		add_filter ('the_content',array($this,'the_content_manager'));
-		add_filter('xydac_cms_site_style',array($this,'xydac_cms_site_style_func'),11,1);
-		add_filter('xydac_cms_site_script',array($this,'xydac_cms_site_script_func'),11,1);
+		//add_filter('xydac_cms_site_style',array($this,'xydac_cms_site_style_func'),11,1);
+		//add_filter('xydac_cms_site_script',array($this,'xydac_cms_site_script_func'),11,1);
 	}
 	function xydac_cms_site_style_func($style)
 	{

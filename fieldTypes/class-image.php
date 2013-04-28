@@ -40,7 +40,7 @@ class image extends field_type{
 		if(!isset($tabular) || (isset($tabular) &&!$tabular)){
 			$r.='<label for="'.$name.'" style="display:inline">'.$label.'</label><p>';
 		}
-		$r.='<a href="media-upload.php?type=image&amp;TB_iframe=true&width=640&height=513" class="thickbox xydac_image" id="xydac_cpt_add_image_'.$name.'" name="'.$name.'"  title="Add an Image"><img src="images/media-button-image.gif" alt="Add an Image" style="padding-right:10px;">Add Image</a>';
+		$r.='<a href="media-upload.php?type=image&TB_iframe=true&width=640&height=513" class="thickbox xydac_image" id="xydac_cpt_add_image_'.$name.'" name="'.$name.'"  title="Add an Image"><img src="images/media-button-image.gif" alt="Add an Image" style="padding-right:10px;">Add Image</a>';
 		$r.='&nbsp;';
 		$r.='<a href="#" class="xydac_image" id="xydac_cpt_remove_image_'.$name.'" name="'.$name.'" title="Remove Image">Remove Image</a>';
 
@@ -125,6 +125,7 @@ class image extends field_type{
 	}
 	public function adminscript()
 	{
+		add_thickbox();
 		$r = <<<XYDACSCRIPT
 
 

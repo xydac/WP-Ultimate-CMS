@@ -189,8 +189,9 @@ class xydac_ultimate_cms{
 	{
 		$role = get_role("administrator");
 		$role->add_cap("manage_xydac_cms");
-		xydac_fieldtypes_init();
 		wp_enqueue_script("jquery");
+		xydac_fieldtypes_init();
+		
 	}
 
 	function xydac_cms_site_head()

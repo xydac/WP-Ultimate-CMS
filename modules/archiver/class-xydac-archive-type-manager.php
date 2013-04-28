@@ -24,7 +24,8 @@ class xydac_archive_type_manager extends xydac_ultimate_cms_core{
 		add_filter('xydac_core_headfootcolumn',array($this,'headfootcolumn'));
 		//parent::__construct("xydac_archive","Archive",XYDAC_CMS_ARCHIVE_PATH,XYDAC_CMS_ARCHIVE_OPTION,$form_variables);
 		//parent::__construct(xydac()->modules->archive_type->get_module_name(),xydac()->modules->archive_type->get_module_label(),xydac()->modules->archive_type->get_base_path(),xydac()->modules->archive_type->get_registered_option('main'),$form_variables);
-		parent::__construct(xydac()->modules->archive_type,'main',$form_variables);
+		$args = array('custom_css_id'=>'customcss','custom_jss_id'=>'customscript');
+		parent::__construct(xydac()->modules->archive_type,'main',$form_variables,$args);
 	}
 
 	function headfootcolumn()
