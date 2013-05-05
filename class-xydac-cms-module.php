@@ -47,6 +47,7 @@ abstract class xydac_cms_module{
 		$this->base_path = (!empty($args) && is_array($args) && isset($args['base_path']) && !empty($args['base_path'])) ? $args['base_path'] : null;
 		$this->menu_position = (!empty($args) && is_array($args) && isset($args['menu_position']) && !empty($args['menu_position'])) ? $args['menu_position'] : null;
 		$this->xydac_sync = (!empty($args) && is_array($args) && isset($args['xydac_sync']) && !empty($args['xydac_sync'])) ? true : false;
+		
 		$this->custom_css_id = (!empty($args) && is_array($args) && isset($args['custom_css_id']) && !empty($args['custom_css_id'])) ? $args['custom_css_id'] : 'content_css';
 		$this->custom_js_id = (!empty($args) && is_array($args) && isset($args['custom_js_id']) && !empty($args['custom_js_id'])) ? $args['custom_js_id'] : 'content_js';
 		
@@ -106,25 +107,25 @@ abstract class xydac_cms_module{
 	/*-----------Filters--------------*/
 	function xydac_cms_site_style_func($style)
 	{
-		global $xydac_cms_fields;
+		
 		$cpts = $this->get_active();
 		$st ="";
 		if(is_array($cpts))
 			foreach ($cpts as $cpt) {
 				if(isset($cpt[$this->custom_css_id]))
-					$st.="\n/*============START ".$this->module_label." - ".$cpt['name']."=============================*/\n".$cpt["content_css"]."\n/*============END ".$cpt['name']."=============================*/\n";
+					$st.="\n/*============START ".$this->module_label." - ".$cpt['name']."=============================*/\n".$cpt[$this->custom_css_id]."\n/*============END ".$cpt['name']."=============================*/\n";
 			}
 		return $style.$st;
 	}
 	function xydac_cms_site_script_func($script)
 	{
-		global $xydac_cms_fields;
+		
 		$cpts = $this->get_active();
 		$st ="";
 		if(is_array($cpts))
 			foreach ($cpts as $cpt) {
 				if(isset($cpt[$this->custom_js_id]))
-					$st.="\n/*============START ".$this->module_label." - ".$cpt['name']."=============================*/\n".$cpt["content_js"]."\n/*============END ".$cpt['name']."=============================*/\n";
+					$st.="\n/*============START ".$this->module_label." - ".$cpt['name']."=============================*/\n".$cpt[$this->custom_js_id]."\n/*============END ".$cpt['name']."=============================*/\n";
 			}
 		return $script.$st;
 	}

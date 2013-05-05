@@ -19,7 +19,8 @@ class xydac_archive_type extends xydac_cms_module{
 				'uses_active'=>false,
 				'registered_option'=>array('main'=>'xydac_archive'),
 				'base_path'=>get_bloginfo('wpurl').'/wp-admin/admin.php?page=xydac_ultimate_cms_archive_type',
-				'menu_position'=>'top'
+				'menu_position'=>'top',
+				'custom_css_id'=>'customcss','custom_jss_id'=>'customscript'
 		));
 		new xydac_archive_type_functions();
 

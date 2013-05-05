@@ -18,8 +18,6 @@ class xydac_archive_type_manager extends xydac_ultimate_cms_core{
 				'customscript' => array( 'arr_label' => __('Custom Java Script',XYDAC_CMS_NAME) , 'name' => '[customscript]', 'type'=>'textarea', 'desc'=> __('The custom Javascript to be used for archive',XYDAC_CMS_NAME) , 'default'=>' ', 'height'=>'100px'),
 		);
 		add_filter('xydac_core_leftdiv',array($this,'xydac_core_leftdiv'));
-		add_action('xydac_core_bulkaction',array($this,'xydac_core_bulkaction'));
-		add_filter('xydac_core_rowactions',array($this,'xydac_core_rowactions'));
 		add_filter('xydac_core_doactions',array($this,'xydac_core_doactions'));
 		add_filter('xydac_core_headfootcolumn',array($this,'headfootcolumn'));
 		//parent::__construct("xydac_archive","Archive",XYDAC_CMS_ARCHIVE_PATH,XYDAC_CMS_ARCHIVE_OPTION,$form_variables);
@@ -37,31 +35,13 @@ class xydac_archive_type_manager extends xydac_ultimate_cms_core{
 	{
 		return "class=xydacfieldform";
 	}
-	function xydac_core_rowactions()
-	{
-		$action = array('Export'=>XYDAC_CMS_EXPORT_PATH."?archive_name=");
-		return $action;
-	}
+	
 	function xydac_core_doactions()
 	{
-		$action = array('delete'=>__("Delete",XYDAC_CMS_NAME),'export'=>__("Export",XYDAC_CMS_NAME));
+		$action = array('delete'=>__("Delete",XYDAC_CMS_NAME));
 		return $action;
 	}
-	function xydac_core_bulkaction($post)
-	{
-		switch($_POST['action'])
-		{
-			case "export" :{
-				$cpt ="";
-				if(isset($_POST['cbval']))
-					foreach($_POST['cbval'] as $v)
-					$cpt.=$v.",";
-				$cpt = substr($cpt,0,-1);
-				$l = XYDAC_CMS_EXPORT_PATH."?archive_name=".$cpt;
-				echo "<div id='message' class='updated below-h2'><p><a href=$l>".__('Click Here to download the Export File',XYDAC_CMS_NAME)."</a></p></div>";
-			}
-		}
-	}
+	
 }
 
 ?>

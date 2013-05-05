@@ -395,6 +395,7 @@ DEBUG;
 	}
 	//-ERROR LOGGING AND HANDLING END
 	public function xydac_show_donate_link($showimage=true){
+		if(!xydac()->is_xydac_ucms_pro()){
 		echo '
 		<p class="xydacdonation">
 		<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=nikhilseth1989%40gmail%2ecom&item_name=WordPress%20Plugin%20(Ultimate%20CMS)&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8">
@@ -408,7 +409,7 @@ DEBUG;
 		</a>
 		</p>
 		';
-	
+		}
 	
 	}
 
