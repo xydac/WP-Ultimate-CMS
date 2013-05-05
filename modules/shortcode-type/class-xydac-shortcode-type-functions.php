@@ -2,7 +2,8 @@
 class xydac_shortcode_type_functions{
 	var $shortcodes;
 	var $values = array();
-	var $text;
+	var $nestedvalues = array();
+	var $text="";
 	function __construct()
 	{
 		$this->shortcodes = stripslashes_deep(xydac()->modules->shortcode_type->get_active());
@@ -26,6 +27,24 @@ class xydac_shortcode_type_functions{
 		else
 			return '';
 	}
+	function get_attr_data($attr){
+		$attr = explode(',',$attr);
+			
+		if(is_array($attr) && !empty($attr)){
+			$a = array();
+			foreach($attr as $att){
+				$kv = explode('=',$att);
+				$key = $kv[0];
+				if(isset($kv[1])){
+					$value = $kv[1];
+					$a[$key] = $value;
+				}else
+					$a[$key]='';
+			}
+			$attr = $a;
+		}
+		return $attr;
+	}
 	function xydac_shortcode($atts, $text,$shortcode_name)
 	{
 		
@@ -33,27 +52,51 @@ class xydac_shortcode_type_functions{
 			return;
 		else{
 			$shortcode = $this->shortcodes[$shortcode_name];
-			$attr = explode(',',$shortcode['attr']);
+			$simpleshortcode = $shortcode['simpleshortcode'];
+			$attr = $this->get_attr_data($shortcode['attr']);
 			
-			if(is_array($attr) && !empty($attr)){
-				$a = array();
-				foreach($attr as $att){
-					$kv = explode('=',$att);
-					$key = $kv[0];
-					if(isset($kv[1])){
-						$value = $kv[1];
-						$a[$key] = $value;
-					}else
-						$a[$key]='';
-				}
-				$attr = $a;
-			}
-			extract(shortcode_atts($attr, $atts));
+			
 			$this->values = shortcode_atts($attr, $atts);
-			$this->text = do_shortcode($text);
-			$output = preg_replace_callback('/##([0-9]*[a-z|A-Z]*[0-9]*)##/',array($this,'rep_func'),$shortcode['customhtml']);
 			
-			return '<div class="'.$shortcode_name.'">'.$output.'</div>';
+			if($simpleshortcode=='false'){
+				
+				extract($shortcode);
+				$nestedattr = $this->get_attr_data($nestedattr);
+				
+				
+				$nestedtagname = 'xys_'.$nestedtagname;
+				$s = '';
+				if(preg_match_all("/(.?)\[(".$nestedtagname.")\b(.*?)(?:(\/))?\](?:(.+?)\[\/".$nestedtagname."\])?(.?)/s", $text, $matches)){
+					
+					for($i = 0; $i < count($matches[0]); $i++) {
+						$matches[3][$i] = shortcode_parse_atts( $matches[3][$i] );
+					}
+					$s.=$beforeloop;
+					for($i = 0; $i < count($matches[0]); $i++) {
+						$this->values = shortcode_atts($nestedattr, $matches[3][$i]);
+						$this->text =  $matches[5][$i];
+						$s .= preg_replace_callback('/##([0-9]*[a-z|A-Z]*[0-9]*)##/',array($this,'rep_func'),$loop1);
+						 
+					}
+					$s.=$afterloop1;
+					for($i = 0; $i < count($matches[0]); $i++) {
+						$this->values = shortcode_atts($nestedattr, $matches[3][$i]);
+						$this->text =  $matches[5][$i];
+						$s .= preg_replace_callback('/##([0-9]*[a-z|A-Z]*[0-9]*)##/',array($this,'rep_func'),$loop2);
+							
+					}
+					$s.=$afterloop2;
+						
+				}
+				return '<div class="'.$shortcode_name.'">'.$s.'</div>';
+				
+			}else{
+				$this->text = do_shortcode($text);
+				$output = preg_replace_callback('/##([0-9]*[a-z|A-Z]*[0-9]*)##/',array($this,'rep_func'),$shortcode['customhtml']);
+					
+				return '<div class="'.$shortcode_name.'">'.$output.'</div>';
+			}
+			
 		}
 		
 		

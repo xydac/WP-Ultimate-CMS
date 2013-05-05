@@ -47,7 +47,7 @@ class xydac_options_dao{
 	 */
 	public function get_options($option,$args=null){
 		//xydac()->log('get_option',$this->registered_option);
-		
+			
 		if(!$this->is_option_registered($option))
 			return;
 		
@@ -72,10 +72,7 @@ class xydac_options_dao{
 		$backtrace = debug_backtrace();
 		xydac()->log(' dao->get_options for '.$option.' called by:'. $backtrace[1]['function'].'<-'.$backtrace[2]['function'],$args);
 
-		//Step 3: If values and fields are not defined then returns the option fetched.
-		if(empty($fields) && empty($values))
-			return $option_values;
-
+		
 		//Step 4: If values is given then handle values
 		if(isset($values) && is_array($values)){//'values'=>array('name'=>'hhh')
 			$final = array();
@@ -105,7 +102,11 @@ class xydac_options_dao{
 			}
 			$option_values = $final;
 		}
-
+		//Step 3: If values and fields are not defined then returns the option fetched.
+		// moved step 3 after 4 because active gave wrong result set.
+		if(empty($fields) && empty($values))
+			return $option_values;
+		
 
 		//Step 5: If fields are given the Handle Fields
 		if(isset($fields) && !empty($fields)){
