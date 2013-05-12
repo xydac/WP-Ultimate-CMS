@@ -115,6 +115,7 @@ abstract class xydac_ultimate_cms_core{
 		elseif(isset($_GET["delete_".$this->xydac_core_name]) && isset($_GET[$this->xydac_core_name."_name"]))
 			{
 				$this->delete($_GET[$this->xydac_core_name."_name"]);
+				$this->xydac_core_editmode = false;
 			}
 		elseif(isset($_GET["sync_".$this->xydac_core_name]) && isset($_GET[$this->xydac_core_name."_name"]))
 			{

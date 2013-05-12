@@ -3,6 +3,7 @@ class xydac_shortcode_type_functions{
 	var $shortcodes;
 	var $values = array();
 	var $nestedvalues = array();
+	var $nestedtagname = '';
 	var $text="";
 	function __construct()
 	{
@@ -23,13 +24,12 @@ class xydac_shortcode_type_functions{
 		if(isset($this->values[$val]))
 			return $this->values[$val];
 		else if(strtoupper($val)=='CONTENT')
-			return $this->text;
+			return do_shortcode($this->text);
 		else
 			return '';
 	}
 	function get_attr_data($attr){
 		$attr = explode(',',$attr);
-			
 		if(is_array($attr) && !empty($attr)){
 			$a = array();
 			foreach($attr as $att){
@@ -42,64 +42,49 @@ class xydac_shortcode_type_functions{
 					$a[$key]='';
 			}
 			$attr = $a;
+
 		}
 		return $attr;
 	}
-	function xydac_shortcode($atts, $text,$shortcode_name)
+	function xydac_shortcode($atts, $fullcontent,$shortcode_name)
 	{
 		
 		if(!isset($this->shortcodes[$shortcode_name]))
 			return;
 		else{
+		
 			$shortcode = $this->shortcodes[$shortcode_name];
 			$simpleshortcode = $shortcode['simpleshortcode'];
+			extract($shortcode);
 			$attr = $this->get_attr_data($shortcode['attr']);
-			
-			
+			$this->nestedtagname = 'xys_'.$nestedtagname;
 			$this->values = shortcode_atts($attr, $atts);
 			
-			if($simpleshortcode=='false'){
-				
-				extract($shortcode);
-				$nestedattr = $this->get_attr_data($nestedattr);
-				
-				
-				$nestedtagname = 'xys_'.$nestedtagname;
-				$s = '';
-				if(preg_match_all("/(.?)\[(".$nestedtagname.")\b(.*?)(?:(\/))?\](?:(.+?)\[\/".$nestedtagname."\])?(.?)/s", $text, $matches)){
-					
-					for($i = 0; $i < count($matches[0]); $i++) {
-						$matches[3][$i] = shortcode_parse_atts( $matches[3][$i] );
-					}
-					$s.=$beforeloop;
-					for($i = 0; $i < count($matches[0]); $i++) {
-						$this->values = shortcode_atts($nestedattr, $matches[3][$i]);
-						$this->text =  $matches[5][$i];
-						$s .= preg_replace_callback('/##([0-9]*[a-z|A-Z]*[0-9]*)##/',array($this,'rep_func'),$loop1);
-						 
-					}
-					$s.=$afterloop1;
-					for($i = 0; $i < count($matches[0]); $i++) {
-						$this->values = shortcode_atts($nestedattr, $matches[3][$i]);
-						$this->text =  $matches[5][$i];
-						$s .= preg_replace_callback('/##([0-9]*[a-z|A-Z]*[0-9]*)##/',array($this,'rep_func'),$loop2);
-							
-					}
-					$s.=$afterloop2;
-						
-				}
-				return '<div class="'.$shortcode_name.'">'.$s.'</div>';
-				
-			}else{
-				$this->text = do_shortcode($text);
-				$output = preg_replace_callback('/##([0-9]*[a-z|A-Z]*[0-9]*)##/',array($this,'rep_func'),$shortcode['customhtml']);
-					
-				return '<div class="'.$shortcode_name.'">'.$output.'</div>';
-			}
+			$template = $customhtml;
+			$template_pattern = '/(?:##BEGINLOOP##)(.+?)(?:##ENDLOOP##)/s';
+			preg_match_all($template_pattern,trim($template),$templatematches);
+			$templatesplit = preg_split($template_pattern, trim($template), -1, PREG_SPLIT_DELIM_CAPTURE);
 			
-		}
-		
-		
+			$output = '';
+			if($this->nestedtagname!='' && is_array($templatematches) &&!empty($templatematches[1])){
+				preg_match_all("/(.?)\[(".$this->nestedtagname.")\b(.*?)(?:(\/))?\](?:(.+?)\[\/".$this->nestedtagname."\])?(.?)/s",$fullcontent,$matches);
+				$output.=$templatesplit[0];
+				
+				foreach($templatematches[1] as $j=>$loop){
+					foreach($matches[0] as $i=>$match){
+						$this->values = shortcode_atts($attr, array_merge($atts,(array)shortcode_parse_atts( $matches[3][$i] )));
+						$this->text =  $matches[5][$i];
+						$output.= preg_replace_callback('/##([a-z|A-Z]*[0-9]*)##/',array($this,'rep_func'),$loop);
+					}
+					if(isset($templatesplit[2*($j+1)]))
+						$output.=$templatesplit[2*($j+1)];
+				}
+			}else{
+				$this->text =  $fullcontent;
+				$output.= preg_replace_callback('/##([a-z|A-Z]*[0-9]*)##/',array($this,'rep_func'),trim($template));
+			}
+			return '<div class="'.$shortcode_name.'">'.$output.'</div>';
+		}		
 	}
-
 }
+?>
