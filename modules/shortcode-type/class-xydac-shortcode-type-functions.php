@@ -24,7 +24,7 @@ class xydac_shortcode_type_functions{
 		if(isset($this->values[$val]))
 			return $this->values[$val];
 		else if(strtoupper($val)=='CONTENT')
-			return do_shortcode($this->text);
+			return $this->text;
 		else
 			return '';
 	}
@@ -54,7 +54,7 @@ class xydac_shortcode_type_functions{
 		else{
 		
 			$shortcode = $this->shortcodes[$shortcode_name];
-			$simpleshortcode = $shortcode['simpleshortcode'];
+			$simpleshortcode = isset($shortcode['simpleshortcode'])?$shortcode['simpleshortcode']:true;
 			extract($shortcode);
 			$attr = $this->get_attr_data($shortcode['attr']);
 			$this->nestedtagname = 'xys_'.$nestedtagname;
@@ -83,7 +83,7 @@ class xydac_shortcode_type_functions{
 				$this->text =  $fullcontent;
 				$output.= preg_replace_callback('/##([a-z|A-Z]*[0-9]*)##/',array($this,'rep_func'),trim($template));
 			}
-			return '<div class="'.$shortcode_name.'">'.$output.'</div>';
+			return '<div class="'.$shortcode_name.'">'.do_shortcode($output).'</div>';
 		}		
 	}
 }

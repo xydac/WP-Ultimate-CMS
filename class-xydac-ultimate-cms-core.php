@@ -67,7 +67,7 @@ abstract class xydac_ultimate_cms_core{
 		$this->xydac_core_form_action =  apply_filters( 'xydac_core_editlink',$obj->get_base_path($tab));
 			$this->namefield_name = apply_filters( 'xydac_core_field_name', 'name' );
 			$this->args = $args;
-		if(isset($_POST[$this->xydac_core_name.'_doaction_submit']) || isset($_POST[$this->xydac_core_name.'_update_submit']) || isset($_POST[$this->xydac_core_name.'_add_submit']))
+		if(isset($_POST['xydac_form_'.$this->xydac_core_name.'_doaction_submit']) || isset($_POST['xydac_form_'.$this->xydac_core_name.'_update_submit']) || isset($_POST['xydac_form_'.$this->xydac_core_name.'_add_submit']))
 			$this->postHandler();
 		$_get = $_GET;
 		unset($_get['page']);
@@ -81,11 +81,11 @@ abstract class xydac_ultimate_cms_core{
 	function postHandler()
 	{
 
-		if(isset($_POST[$this->xydac_core_name.'_doaction_submit'])&& isset($_POST['action']))
+		if(isset($_POST['xydac_form_'.$this->xydac_core_name.'_doaction_submit'])&& isset($_POST['action']))
 			$this->bulk_action();
-		else if(isset($_POST[$this->xydac_core_name.'_update_submit']))
+		else if(isset($_POST['xydac_form_'.$this->xydac_core_name.'_update_submit']))
 			$this->update();
-		else if(isset($_POST[$this->xydac_core_name.'_add_submit']))
+		else if(isset($_POST['xydac_form_'.$this->xydac_core_name.'_add_submit']))
 			$this->insert();
 		do_action('xydac_core_posthandler',$this->xydac_core_name); 
 	}	
@@ -136,8 +136,8 @@ abstract class xydac_ultimate_cms_core{
 	//can be used directly now 
 	function get_array_val($arr,$key)
 	{
-		$key = substr(preg_replace('/\]\[/', '-', $key),1,-1);
-		$e= explode('-',$key);
+		$key = substr(preg_replace('/\]\[/', '$$', $key),1,-1);
+		$e= explode('$$',$key);
 		$ar = &$arr;
 		foreach($e as $v)
 			@$ar = $ar[$v];
@@ -190,7 +190,7 @@ abstract class xydac_ultimate_cms_core{
 	function insert()
 	{
 		
-		$msg = $this->parent_class->insert_object($this->type, $_POST[$this->xydac_core_name][$this->namefield_name],isset($_GET['manage_'.$this->xydac_core_name])?$_GET['manage_'.$this->xydac_core_name]:'', apply_filters( 'xydac_core_insert',$_POST[$this->xydac_core_name]),$this->namefield_name);
+		$msg = $this->parent_class->insert_object($this->type, $_POST['xydac_form_'.$this->xydac_core_name][$this->namefield_name],isset($_GET['manage_'.$this->xydac_core_name])?$_GET['manage_'.$this->xydac_core_name]:'', apply_filters( 'xydac_core_insert',$_POST['xydac_form_'.$this->xydac_core_name]),$this->namefield_name);
 		if(is_wp_error(($msg)))
 			$this->xydac_core_error= $msg;
 		else{
@@ -203,7 +203,7 @@ abstract class xydac_ultimate_cms_core{
 	{
 	
 		$this->xydac_core_editmode = true;
-		$msg= $this->parent_class->update_object($this->type, $_POST[$this->xydac_core_name][$this->namefield_name],isset($_GET['manage_'.$this->xydac_core_name])?$_GET['manage_'.$this->xydac_core_name]:'', apply_filters( 'xydac_core_update',$_POST[$this->xydac_core_name]),$_POST[$this->xydac_core_name."_old"],$this->namefield_name);
+		$msg= $this->parent_class->update_object($this->type, $_POST['xydac_form_'.$this->xydac_core_name][$this->namefield_name],isset($_GET['manage_'.$this->xydac_core_name])?$_GET['manage_'.$this->xydac_core_name]:'', apply_filters( 'xydac_core_update',$_POST['xydac_form_'.$this->xydac_core_name]),$_POST['xydac_form_'.$this->xydac_core_name."_old"],$this->namefield_name);
 		if(is_wp_error(($msg))){
 			$this->xydac_core_error= $msg;
 			$this->xydac_core_editmode = true;
@@ -402,9 +402,9 @@ abstract class xydac_ultimate_cms_core{
 							<h3><?php if($this->xydac_core_editmode) echo __('Edit ',XYDAC_CMS_NAME).$this->xydac_core_label; else echo __('Add ',XYDAC_CMS_NAME).$this->xydac_core_label; ?>
 							<?php if($this->xydac_core_editmode) echo "<a  style='color:red;float:right;'  href='".$this->xydac_core_form_action."&edit_".$this->xydac_core_name."=false"."'>Cancel Edit</a>";  ?>
 							</h3>
-							<div class="form-field form-required <?php if(isset($_POST[$this->xydac_core_name.'_update_submit']) || isset($_POST[$this->xydac_core_name.'_add_submit'])) if(isset($_POST[$this->xydac_core_name][$this->namefield_name]) && empty($_POST[$this->xydac_core_name][$this->namefield_name])) echo 'form-invalid';?>"  >
+							<div class="form-field form-required <?php if(isset($_POST['xydac_form_'.$this->xydac_core_name.'_update_submit']) || isset($_POST['xydac_form_'.$this->xydac_core_name.'_add_submit'])) if(isset($_POST['xydac_form_'.$this->xydac_core_name][$this->namefield_name]) && empty($_POST['xydac_form_'.$this->xydac_core_name][$this->namefield_name])) echo 'form-invalid';?>"  >
 								<label for='<?php echo $this->xydac_core_name.'['.$this->namefield_name.']'; ?>'><?php _e('The Name of the ',XYDAC_CMS_NAME);?><?php echo $this->xydac_core_label; ?></label>
-								<input type='text' name='<?php echo $this->xydac_core_name.'['.$this->namefield_name.']'; ?>' <?php if($this->xydac_core_editmode) echo "readonly"; ?> class='name' id='<?php echo $this->xydac_core_name.'['.$this->namefield_name.']'; ?>' value="<?php if($this->xydac_core_editmode) echo $this->xydac_editdata[$this->namefield_name]; ?>" />
+								<input type='text' name='xydac_form_<?php echo $this->xydac_core_name.'['.$this->namefield_name.']'; ?>' <?php if($this->xydac_core_editmode) echo "readonly"; ?> class='name' id='<?php echo $this->xydac_core_name.'['.$this->namefield_name.']'; ?>' value="<?php if($this->xydac_core_editmode) echo $this->xydac_editdata[$this->namefield_name]; ?>" />
 								<p><?php echo $this->xydac_core_label;  _e('Name identifies your ',XYDAC_CMS_NAME); echo $this->xydac_core_label; _e('among others. It is usually all lowercase and contains only letters, numbers, and hyphens.',XYDAC_CMS_NAME); ?></p>
 							</div>
 							</div>
@@ -433,28 +433,28 @@ abstract class xydac_ultimate_cms_core{
 								<div class='form-field' id="xydac_panel_<?php echo $this->xydac_core_name.$name ?>"  >
 									<?php if($type=='boolean')
 									{?><label for='<?php echo $this->xydac_core_name.$name ?>' style="display:inline;font-weight:bold;"><?php echo $arr_label; ?></label>
-										<select id='<?php echo $this->xydac_core_name.$name; ?>' name='<?php echo $this->xydac_core_name.$name ?>' class='postform' style="float:right;width:100px;margin-right:5%">
+										<select id='<?php echo $this->xydac_core_name.$name; ?>' name='xydac_form_<?php echo $this->xydac_core_name.$name ?>' class='postform' style="float:right;width:100px;margin-right:5%">
 											<option value='true' <?php  if($default=='true' && !$this->xydac_core_editmode) {echo 'selected';}elseif($this->xydac_core_editmode) { if('true'==$this->get_array_val($this->xydac_editdata,$name)) echo "selected"; }  ?>><?php echo 'True'; ?></option>
 											<option value='false' <?php if($default=='false' && !$this->xydac_core_editmode){ echo 'selected';}elseif($this->xydac_core_editmode) {if('false'==$this->get_array_val($this->xydac_editdata,$name)) echo "selected";} ?>><?php echo 'False'; ?></option>
 										</select>
 									<?php } elseif($type=='array') { ?>
 										<label for='<?php echo $this->xydac_core_name.$name ?>' style="display:inline;font-weight:bold;"><?php echo $arr_label ?></label>
-										<select id='<?php echo $this->xydac_core_name.$name; ?>' name='<?php echo $this->xydac_core_name.$name ?>' class='postform' style="float:right;width:150px;margin-right:5%">
+										<select id='<?php echo $this->xydac_core_name.$name; ?>' name='xydac_form_<?php echo $this->xydac_core_name.$name ?>' class='postform' style="float:right;width:150px;margin-right:5%">
 											<?php  foreach($values as $n=>$c) {   ?>
 												<option value='<?php echo $n; ?>' <?php if($default==$n && !$this->xydac_core_editmode) {echo 'selected';}elseif($this->xydac_core_editmode) { if($n==$this->get_array_val($this->xydac_editdata,$name)) echo 'selected'; }  ?>><?php echo $c ?></option>
 												<?php } ?>
 										</select>
 									<?php } elseif($type=='string') { ?><label for='<?php echo $this->xydac_core_name.$name ?>' style="font-weight:bold;"><?php echo $arr_label ?></label>
-										<input type='text' name='<?php echo $this->xydac_core_name.$name ?>' class='name' id='<?php echo $this->xydac_core_name.$name ?>' value="<?php if($this->xydac_core_editmode) { echo $this->get_array_val($this->xydac_editdata,$name);} ?>"/>
+										<input type='text' name='xydac_form_<?php echo $this->xydac_core_name.$name ?>' class='name' id='<?php echo $this->xydac_core_name.$name ?>' value="<?php if($this->xydac_core_editmode) { echo $this->get_array_val($this->xydac_editdata,$name);} ?>"/>
 									
 									<?php } elseif($type=='checkbox') { ?><label for='<?php echo $this->xydac_core_name.$name ?>' style="font-weight:bold;"><?php echo $arr_label ?></label>
 										<?php $_checkboxeditdata = $this->get_array_val($this->xydac_editdata,$name);$_i=0; 
 										if(!is_array($_checkboxeditdata)) {$_checkboxeditdata= array($_checkboxeditdata);}
 										foreach($values as $val_name=>$val_label){ ?>
-											<div style="width:180px;float:left;"><input type='checkbox' style="width:15px;margin-left:20px" name="<?php echo $this->xydac_core_name.$name."[]"; ?>" id="<?php echo $this->xydac_core_name.$name; ?>" value="<?php _e($val_name,'xydac'); ?>" <?php if($this->xydac_core_editmode && in_array($val_name,$_checkboxeditdata)) echo "checked=checked"; ?>  />&nbsp;<?php _e($val_label,'xydac'); ?></div><?php if($_i==1) {$_i=0;echo "<br />";}else $_i++; ?>
+											<div style="width:180px;float:left;"><input type='checkbox' style="width:15px;margin-left:20px" name="xydac_form_<?php echo $this->xydac_core_name.$name."[]"; ?>" id="<?php echo $this->xydac_core_name.$name; ?>" value="<?php _e($val_name,'xydac'); ?>" <?php if($this->xydac_core_editmode && in_array($val_name,$_checkboxeditdata)) echo "checked=checked"; ?>  />&nbsp;<?php _e($val_label,'xydac'); ?></div><?php if($_i==1) {$_i=0;echo "<br />";}else $_i++; ?>
 										<?php } ?>
 									<?php } elseif($type=='textarea') { ?><label for='<?php echo $this->xydac_core_name.$name ?>' style="font-weight:bold;"><?php echo $arr_label ?></label>
-										<textarea style="height:<?php if(isset($height)) echo $height; else echo "300px"; ?>" name='<?php echo $this->xydac_core_name.$name; ?>' class='name' id='<?php echo $this->xydac_core_name.$name; ?>'><?php if($this->xydac_core_editmode) {echo $this->get_array_val($this->xydac_editdata,$name); } ?></textarea>
+										<textarea style="height:<?php if(isset($height)) echo $height; else echo "300px"; ?>" name=xydac_form_'<?php echo $this->xydac_core_name.$name; ?>' class='name' id='<?php echo $this->xydac_core_name.$name; ?>'><?php if($this->xydac_core_editmode) {echo $this->get_array_val($this->xydac_editdata,$name); } ?></textarea>
 									<?php } ?>
 								<p><?php echo $desc ?></p>
 								</div>
@@ -463,11 +463,11 @@ abstract class xydac_ultimate_cms_core{
 							</div>
 							<?php do_action("xydac_core_form"); ?>
 							
-								<input type="hidden" name="<?php echo $this->xydac_core_name."_old"; ?>" value="<?php echo $this->xydac_editdata[$this->xydac_core_name.'_old'];?>">
+								<input type="hidden" name="xydac_form_<?php echo $this->xydac_core_name."_old"; ?>" value="<?php echo $this->xydac_editdata[$this->xydac_core_name.'_old'];?>">
 						<?php } ?>
 						
 						<p class='submit'>
-						<input type="submit"  name="<?php if($this->xydac_core_editmode) echo $this->xydac_core_name.'_update_submit'; else  echo $this->xydac_core_name.'_add_submit'; ?>" class="button-primary" value="<?php if($this->xydac_core_editmode) _e('Update '.$this->xydac_core_label,$this->xydac_core_name); else  _e('Add '.$this->xydac_core_label,$this->xydac_core_name); ?>"></p>
+						<input type="submit"  name="xydac_form_<?php if($this->xydac_core_editmode) echo $this->xydac_core_name.'_update_submit'; else  echo $this->xydac_core_name.'_add_submit'; ?>" class="button-primary" value="<?php if($this->xydac_core_editmode) _e('Update '.$this->xydac_core_label,$this->xydac_core_name); else  _e('Add '.$this->xydac_core_label,$this->xydac_core_name); ?>"></p>
 						</form>
 					<?php do_action('xydac_core_leftfoot'); ?>
 					</div>

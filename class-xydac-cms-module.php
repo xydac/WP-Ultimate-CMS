@@ -331,7 +331,7 @@ abstract class xydac_cms_module{
 							$actual_code_id = (int)$arr['id'];
 						else if($arr['key']=='field_code')
 							$field_code_id = (int)$arr['id'];
-						else if($arr['key']=='blog_url')
+						else if($arr['key']=='import_blog_url')
 							$blog_url_id = (int)$arr['id'];
 					}
 				}
@@ -340,10 +340,10 @@ abstract class xydac_cms_module{
 			//--Begin send Preparation
 			$content['post_title'] = $xydac_option[$namefieldname];
 			$content['post_type'] = 'xydac_'.$this->get_module_name();
-			$content['post_content'] = '<p>'.empty($xydac_option['description'])?"":$xydac_option['description'].'</p>';
+			$content['post_content'] = '<p>'.(empty($xydac_option['description'])?"":$xydac_option['description']).'</p>';
 				$arr_actualcode = array('key' => 'actual_code','value'=>base64_encode(maybe_serialize($xydac_option)));
 				$arr_fieldcode = array('key' => 'field_code','value'=>base64_encode(maybe_serialize($xydac_option_field)));
-				$arr_blogurlcode = array('key' => 'import_blog_url','value'=>get_bloginfo('url'));
+				$arr_blogurlcode = array('key' => 'import_blog_url','value'=>'http://www.xydac.com');
 				if($actual_code_id>0)
 					$arr_actualcode['id'] = $actual_code_id;
 				if($field_code_id>0)
@@ -662,6 +662,7 @@ else
 			<td class="column-desc">'.(in_array($resultarr['post_title'],(array)$this->get_main_names())?(base64_encode(maybe_serialize($this->get_main_by_name($resultarr['post_title'])))==$this->getCustomField($resultarr,'actual_code'))? 'Installed (In Sync)': 'Installed (Out Of Sync)':'Not Installed').'</td>
 			<td class="column-install">
 				<a href="'.$formaction.'&activate=true&id='.$resultarr['post_id'].'&nonce='.wp_create_nonce(__FILE__).'" title="Activate" class="edit">'.'Install'.'</a>
+				'.(($resultarr['post_status']=='draft')?'&nbsp;|&nbsp;<a href="'.$formaction.'&makepublic=true&id='.$resultarr['post_id'].'&nonce='.wp_create_nonce(__FILE__).'" title="Make Public" class="edit">'.'Make Public'.'</a>':(($resultarr['post_status']=='pending')?'&nbsp;|&nbsp;<a href="'.$formaction.'&makeprivate=true&id='.$resultarr['post_id'].'&nonce='.wp_create_nonce(__FILE__).'" title="Make Public" class="edit">'.'Make Private'.'</a>':'')).'
 				</td>
 			</tr>';
 
@@ -682,6 +683,17 @@ else
 	{
 		echo '<h1>Xydac Ultimate CMS Cloud</h1>';
 		$formaction = $tab['href'];
+		if((isset($_GET['makepublic']) && $_GET['makepublic']=='true' && wp_verify_nonce($_GET['nonce'], __FILE__) && !empty($_GET['id']) ||
+			(isset($_GET['makeprivate']) && $_GET['makeprivate']=='true' && wp_verify_nonce($_GET['nonce'], __FILE__) && !empty($_GET['id']))))
+		{
+			if(isset($_GET['makeprivate']))
+				$re = xydac()->xml_rpc_client('wp.makePrivate',isset($_GET['id'])?$_GET['id']:$_POST['post_id']);
+			else
+				$re = xydac()->xml_rpc_client('wp.makePublic',isset($_GET['id'])?$_GET['id']:$_POST['post_id']);
+			echo '<div id="message" class="message below-h2"><p>'.$re->getResponse().'</p></div>';
+			
+			
+		}
 		if((isset($_GET['activate']) && $_GET['activate']=='true' && wp_verify_nonce($_GET['nonce'], __FILE__) && !empty($_GET['id']) ||
 			(isset($_POST['activate']) && $_POST['activate']=='true' && wp_verify_nonce($_POST['nonce'], __FILE__) && !empty($_POST['post_id']))))
 		{
@@ -758,14 +770,19 @@ else
 				if(!$result->isError() && is_array($result->getResponse())){
 					$resultsarr = $result->getResponse();
 					$publicposts = array();
+					$pendingposts = array();
 					$draftposts = array();
 					foreach($resultsarr as $result)
 					  if($result['post_status']=='draft')
 					    array_push($draftposts,$result);
-					  else
+					  else if($result['post_status']=='pending')
+					    array_push($pendingposts,$result);
+					else 
 					    array_push($publicposts,$result);
 					echo '<h3>Private Items</h3>';					
 					$this->show_sync_page($draftposts,$formaction);
+					echo '<h3>Pending for Public</h3>';					
+					$this->show_sync_page($pendingposts,$formaction);
 					echo '<h3>Public Shared</h3>';
 					$this->show_sync_page($publicposts,$formaction);
 					

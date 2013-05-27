@@ -285,7 +285,15 @@ div.xydacfieldform .form-field {
 	border-width: 0 1px 1px;
 	margin: 0px;
 	clear: both;
-} /* ---------- */
+	padding-left:5px;
+	padding-right:5px;
+}
+
+div.xydacfieldform .form-field p{
+	padding:0 5px;
+}
+
+ /* ---------- */
 div.xydacfieldform .xydac_home {
 	border-color: #DFDFDF;
 	border-style: solid;

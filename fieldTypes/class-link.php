@@ -31,7 +31,7 @@ class link extends field_type{
 		$r="<div>";
 		$r.= text::get_text_input(array('name'=>$this->temp_title->name.'-'.$val,'tabular'=>$tabular,'label'=>$this->label.__(' Title',XYDAC_CMS_NAME),'desc'=>$this->desc),$val_title,"xydac_custom[".$this->name.'-'.$val."]",true);
 		$r.= text::get_text_input(array('name'=>$this->temp_link->name.'-'.$val,'tabular'=>$tabular,'label'=>$this->label.__(' Link',XYDAC_CMS_NAME),'desc'=>$this->desc),$val_link,"xydac_custom[".$this->name.'-'.$val."]",true);
-		$r.='<p><span class="'.$this->name.'-a">ii&nbsp;</span></p>';//do not remove this -a, this is just for ajax script
+		$r.='<p><span class="'.$this->name.'-a">&nbsp;</span></p>';//do not remove this -a, this is just for ajax script
 		$r.="</div>";
 		return $r;
 	}

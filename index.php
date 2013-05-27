@@ -5,7 +5,7 @@ Plugin URI: http://xydac.com/ultimate-cms/
 Description: This is an Easy to use Plugin to Create, Customize, Manage Custom Post Type,Custom Page Type, Custom Archives, Custom Taxonomies.
 Author: XYDAC
 Author URI: http://xydac.com/
-Version: 1.0.7
+Version: 1.0.6
 License: GPL2*/
 
 if ( !defined( 'XYDAC_CMS_NAME' ) )define('XYDAC_CMS_NAME',"ultimate-cms");
@@ -161,13 +161,13 @@ class xydac_ultimate_cms{
 		}
 	}
 	public function xml_rpc_client($method,$id=null,$args=array()) {
-		$nonce =  wp_create_nonce($_SERVER['HTTP_HOST']);
-		set_transient( 'xydac_ultimate_cms_nonce',$nonce, 1000 );
+		$nonce =  wp_create_nonce($_SERVER['HTTP_HOST'].$_SERVER['REQUEST_TIME']);
+		delete_transient('xydac_ultimate_cms_nonce');
+		set_transient( 'xydac_ultimate_cms_nonce',$nonce, 50 );
 		$log =  plugins_url( 'ultimate-cms/xydacverify.php?nonce='.$nonce , dirname(__FILE__) );
 		$pwd =  xydac()->apikey;
 		$xmlrpc = 'http://www.xydac.com/xmlrpc.php';
 		$client = new IXR_Client($xmlrpc);
-		//$client->debug = true;
 		if($id==null)
 			$client->query($method, '', $log, $pwd,$args);
 		else if(empty($args))

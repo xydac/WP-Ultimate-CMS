@@ -3,7 +3,7 @@ Contributors: deepak.seth
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=nikhilseth1989%40gmail%2ecom&item_name=WordPress%20Plugin%20(Ultimate%20CMS)&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 Tags: Custom Post Type,CPT,Ultimate Post Type,Post Type,Post,Post Type Manager,Page Type,Page Type Manager,Archive,Archive Manager,Taxonomy,Taxonomy Manager
 Requires at least: 3.0
-Tested up to: 3.5.1
+Tested up to: 3.6b
 Stable tag: trunk
 
 
@@ -29,8 +29,10 @@ Some Features
 * Manage Custom Page Types.
 * Manage Custom Archives.
 * Manage Custom Field Types.
+* Manage Custom Shortcode types.
 * Cool UI for manipulating WordPress
 
+**SYNC ALL YOUR DATA**
 You'll need to check out the plugin website to have a better look
 **[[Plugin URL]](http://www.xydac.com/)** 
 
@@ -60,6 +62,10 @@ The automatic plugin installer should work for most people. Manual installation 
 
 
 == Changelog ==
+
+
+= 1.0.6 =
+* Added shortcode type. Fixed many issues. Added Xydac SYNC functionality
 
 = 1.0.5 =
 * Revert to Jquery UI 1.9 to fix jQuery COnflict.
@@ -123,6 +129,9 @@ No currently the API functionality is under development. the plugin will be upda
 
 
 == Upgrade Notice == 
+
+= 1.0.6 =
+* Added shortcode type. Fixed many issues. Added Xydac SYNC functionality
 
 = 1.0.5 =
 * Revert to Jquery UI 1.9 to fix jQuery COnflict and some minor bug fixes.
