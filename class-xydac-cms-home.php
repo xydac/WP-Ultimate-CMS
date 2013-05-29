@@ -37,7 +37,7 @@ class xydac_ultimate_cms_home extends xydac_cms_module{
 			}
 			echo "<h3>Xydac Ultimate-CMS Options</h3>";
 			//array('name'=>'','label'=>'','description'=>'');
-			$formcontents = apply_filters('xydac_cms_homeformoption', array('0'=>array('name'=>XYDAC_CMS_USER_API_KEY,'label'=>'API Key','description'=>'Please enter your API Key from Xydac.com','value'=>get_option(XYDAC_CMS_USER_API_KEY))));
+			$formcontents = apply_filters('xydac_cms_homeformoption', array('0'=>array('name'=>XYDAC_CMS_USER_API_KEY,'label'=>'API Key','description'=>'Please enter your API Key from <strong><a href="http://xydac.com/account/">Xydac.com</a> API KEY WORKING GET ONE FOR FREE NOW<br/> API SYNC FUNCTIONALITY WORKS ONLY ON LIVE WEBSITE, OR WEBSITE BEHIND A STATIC IP</strong>','value'=>get_option(XYDAC_CMS_USER_API_KEY))));
 			echo '<form method="post" name="xydac_cms_home_option" action="'.$this->base_path.'">';
 			echo '<table class="form-table admin-table"><tbody>';
 			foreach($formcontents as $formcontent){

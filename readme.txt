@@ -1,26 +1,30 @@
 ﻿=== Ultimate CMS ===
 Contributors: deepak.seth
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=nikhilseth1989%40gmail%2ecom&item_name=WordPress%20Plugin%20(Ultimate%20CMS)&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
-Tags: Custom Post Type,CPT,Ultimate Post Type,Post Type,Post,Post Type Manager,Page Type,Page Type Manager,Archive,Archive Manager,Taxonomy,Taxonomy Manager
+Tags: Custom Post Type,CPT,Ultimate Post Type,Post Type,Post,Post Type Manager,Page Type,Page Type Manager,Archive,Archive Manager,Taxonomy,Taxonomy Manager,Shortcode manager,shortcode
 Requires at least: 3.0
 Tested up to: 3.6b
 Stable tag: trunk
 
 
-This is an Easy to use Plugin to Create, Customize, Manage Custom Post Type,Custom Page Type, Custom Archives, Custom Taxonomies.
+This is an Easy to use Plugin to Create, Customize, Manage Custom Post Type,Custom Page Type, Custom Archives, Custom Taxonomies, Custom Shortcode.
 
 == Description ==
-The plugin is divided in for parts:
+The plugin is divided in five parts:
 
 * Archive Manager
 * Post Type Manager
 * Page Type Manager
 * Taxonomy Manager
+* ShortcodeManager
 
 One of the major component of the plugin are Custom Field Types without which no Custom Field would have existed.It is basically a generalization of custom field types, so that any PHP developer can create the own custom field types and also share it with different people.
 **[Download now!](http://downloads.wordpress.org/plugin/ultimate-cms.zip)**.
 
 **[[Plugin URL]](http://www.xydac.com/)** 
+**[[GIThub URL]](https://github.com/xydac/WP-Ultimate-CMS)** 
+
+**SYNC ALL YOUR DATA**
 
 Some Features
 
@@ -32,7 +36,7 @@ Some Features
 * Manage Custom Shortcode types.
 * Cool UI for manipulating WordPress
 
-**SYNC ALL YOUR DATA**
+
 You'll need to check out the plugin website to have a better look
 **[[Plugin URL]](http://www.xydac.com/)** 
 
@@ -63,6 +67,11 @@ The automatic plugin installer should work for most people. Manual installation 
 
 == Changelog ==
 
+= 1.0.8 =
+* fixed bug with loss of content html (text area fields) and fixed working of link fieldtype
+
+= 1.0.7 =
+* fixed bug with Taxonomy addition and deletion
 
 = 1.0.6 =
 * Added shortcode type. Fixed many issues. Added Xydac SYNC functionality
@@ -125,10 +134,16 @@ Please let me know if you have any problem.
 Deactivate Ultimate taxonomy manager or Ultimate Post type manager you are using and activate Ultimate CMS.Your data will be restored.
 
 = Do i need the API key to run this plugin =
-No currently the API functionality is under development. the plugin will be updated to provide more functionality. Till then you can use the plugin without API key.
+The API key is available if required, It's free and you can get one from www.xydac.com/account
 
 
 == Upgrade Notice == 
+
+= 1.0.8 =
+* fixed bug with loss of content html (text area fields) and fixed working of link fieldtype
+
+= 1.0.7 =
+* fixed bug with Taxonomy addition and deletion
 
 = 1.0.6 =
 * Added shortcode type. Fixed many issues. Added Xydac SYNC functionality

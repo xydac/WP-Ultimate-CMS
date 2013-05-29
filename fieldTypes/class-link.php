@@ -18,7 +18,7 @@ class link extends field_type{
 		global $post;
 		$val_title = false;
 		$val_link= false;
-		if(is_string($val) && $val=='false')
+		if(empty($val) || (is_string($val) && $val=='false'))
 			$val = substr(uniqid(),0,8);
 		else
 		{

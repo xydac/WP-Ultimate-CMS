@@ -208,8 +208,6 @@ class xydac_options_dao{
 				update_option($option,$xydac_options);
 				return true;
 			}
-			else
-				return false;
 		return false;
 	}
 	public function delete_all_object($option){

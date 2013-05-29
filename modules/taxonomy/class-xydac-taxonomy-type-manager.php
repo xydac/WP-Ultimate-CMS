@@ -115,6 +115,7 @@ class xydac_taxonomy_type_manager extends xydac_ultimate_cms_core{
 	}
 	function xydac_core_insert($datas)
 	{
+		$datas = array(0=>$datas);
 		foreach($datas as $k=>$data){
 			$datas[$k]['args']['labels']['name'] = xydac_mods_inflect::pluralize($datas[$k]['name']);
 			$datas[$k]['args']['label'] = (isset($datas[$k]['args']['labels']['name']) && !empty($datas[$k]['args']['labels']['name']))? $datas[$k]['args']['labels']['name']: xydac_mods_inflect::pluralize($datas[$k]['name']);
@@ -140,7 +141,7 @@ class xydac_taxonomy_type_manager extends xydac_ultimate_cms_core{
 			$datas[$k]['args']['show_tagcloud']= "true";
 			$datas[$k]['args']['hierarchical']= "false";
 		}
-		return $datas;
+		return $datas[0];
 	}
 }
 
