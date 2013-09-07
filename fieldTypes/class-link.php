@@ -57,7 +57,12 @@ class link extends field_type{
 			$this->temp_title->name = $this->temp_title->name.'-'.$key;
 			$this->temp_link->name = $this->temp_link->name.'-'.$key;
 			$eval = trim($val[$this->temp_title->name]);
-			if(!empty($eval))
+			if(empty($eval) )
+			{
+				delete_post_meta( $post_id, $this->temp_title->name );
+				delete_post_meta( $post_id, $this->temp_link->name );
+			}
+			else
 			{
 				if($new)
 					add_post_meta($post_id, $this->name, $key);
