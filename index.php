@@ -303,6 +303,7 @@ class xydac_ultimate_cms{
 		do_action('xydac_cms_activate');
 	}
 	public static function xydac_taxonomy_fix(){
+	if(defined('XYDAC_FIELDTABLE')){
 	global $wpdb;
 		$fields = $wpdb->get_results($wpdb->prepare("SELECT tax_name,field_name,field_label,field_type,field_desc,field_val FROM {$wpdb->prefix}taxonomyfield order by tax_name"));
 		if(isset(self::cms()->modules->taxonomy_type)){
@@ -324,6 +325,7 @@ class xydac_ultimate_cms{
 				
 				}
 			}
+		}
 		}
 	}
 	function xydac_taxonomy_activate()
@@ -413,6 +415,10 @@ DEBUG;
 	
 	}
 
+}
+add_action('activated_plugin','xydac_save_error');
+function xydac_save_error(){
+    update_option('xydac_plugin_error',  ob_get_contents());
 }
 
 xydac();
