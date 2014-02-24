@@ -148,7 +148,7 @@ class xydac_options_dao{
 		if(!$xydac_options || (!is_array($xydac_options) && trim($xydac_options)==""))
 		{
 			$temp = array();
-			if($isDataArray)
+			if($isDataArray && is_array($data))
 				foreach($data as $v)
 					array_push($temp,$v);
 			else
@@ -158,9 +158,9 @@ class xydac_options_dao{
 		}
 		if(is_array($xydac_options))
 		{
-			if($isDataArray)
+			if($isDataArray && is_array($data))
 				foreach($data as $v)
-				array_push($xydac_options,$v);
+				    array_push($xydac_options,$v);
 			else
 				array_push($xydac_options,$data);
 			if($this->namefield_name=='')
@@ -171,6 +171,16 @@ class xydac_options_dao{
 		}
 		return false;
 	}
+    /**
+     *This is a overrider function so as to directly update the value of option with data
+     */
+    public function insert_object_hard($option,$data){
+        if(!$this->is_option_registered($option))
+			return new WP_Error('err', __("Not Insterted [Cause]: Option Not Registered.",XYDAC_CMS_NAME));
+	   update_option($option,$data);
+			return true;
+        
+    }
 	public function update_object($option,$data,$oldname,$namefieldname){
 		if(!$this->is_option_registered($option))
 			return false;;
