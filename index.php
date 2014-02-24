@@ -12,6 +12,7 @@ if ( !defined( 'XYDAC_CMS_NAME' ) )define('XYDAC_CMS_NAME',"ultimate-cms");
 if ( !defined( 'XYDAC_CMS_USER_API_KEY' ) )define('XYDAC_CMS_USER_API_KEY',"xydac_cms_api_key");
 if ( !defined( 'XYDAC_CMS_OPTIONS' ) )define('XYDAC_CMS_OPTIONS',"XYDAC_CMS_OPTIONS");
 if ( !defined( 'XYDAC_CMS_MODULES' ) )define('XYDAC_CMS_MODULES',"xydac_cms_modules");
+if ( !defined( 'XYDAC_CMS_MODULES_OLD_HASH' ) )define('XYDAC_CMS_MODULES_OLD_HASH',"xydac_cms_modules_old_hash");
 if ( !defined( 'DS' ) )define('DS', DIRECTORY_SEPARATOR);
 global $xydac_cms_fields;
 
@@ -58,7 +59,9 @@ class xydac_ultimate_cms{
 			self::cms()->modules = new stdClass();
 			self::cms()->dao->register_option(XYDAC_CMS_MODULES);
 			self::cms()->dao->register_option(XYDAC_CMS_MODULES.'_active');
-			self::cms()->active = self::cms()->dao->get_options(XYDAC_CMS_MODULES.'_active');
+            self::cms()->dao->register_option(XYDAC_CMS_MODULES_OLD_HASH);
+			self::cms()->oldhash = self::cms()->dao->get_options(XYDAC_CMS_MODULES_OLD_HASH);
+            self::cms()->active = self::cms()->dao->get_options(XYDAC_CMS_MODULES.'_active');
 			self::cms()->allModules = array();
 			self::cms()->apikey = get_option(XYDAC_CMS_USER_API_KEY);
 			self::cms()->synkeys = new xydac_synckeys();
@@ -81,7 +84,7 @@ class xydac_ultimate_cms{
 	/*------------------------------------------MODULES SECTION-----------------------------*/
 	private static function load_modules(){
 		self::get_module_data();
-		self::cms()->dao->delete_all_object(XYDAC_CMS_MODULES);
+		//self::cms()->dao->delete_all_object(XYDAC_CMS_MODULES);//--removing deletion @performance issue
 		$module_insert = array();
 		foreach(self::cms()->allModules as $k=>$module){
 				
@@ -97,7 +100,16 @@ class xydac_ultimate_cms{
 					array_push($module_insert,array('name'=>$module['name'],'type'=>$module['type'],'author'=>$module['author'],'description'=>$module['description']));
 
 		}
-		self::cms()->dao->insert_object(XYDAC_CMS_MODULES,$module_insert,true);
+        if(!is_serialized($module_insert))
+            $newhash = md5(maybe_serialize($module_insert));
+        else
+            $newhash = md5($module_insert);
+    
+        if($newhash!=self::cms()->oldhash && !empty($newhash)){
+		  self::cms()->dao->insert_object_hard(XYDAC_CMS_MODULES,$module_insert);
+		  self::cms()->dao->insert_object_hard(XYDAC_CMS_MODULES_OLD_HASH,$newhash);   
+        }
+        
 	}
 	private static function get_module_data(){
 		foreach (self::$dirpath as $mname=>$path){
@@ -303,9 +315,10 @@ class xydac_ultimate_cms{
 		do_action('xydac_cms_activate');
 	}
 	public static function xydac_taxonomy_fix(){
-	if(defined('XYDAC_FIELDTABLE')){
 	global $wpdb;
-		$fields = $wpdb->get_results($wpdb->prepare("SELECT tax_name,field_name,field_label,field_type,field_desc,field_val FROM {$wpdb->prefix}taxonomyfield order by tax_name"));
+        
+        $fields = $wpdb->get_results("SELECT tax_name,field_name,field_label,field_type,field_desc,field_val FROM {$wpdb->prefix}taxonomyfield order by tax_name");
+        
 		if(isset(self::cms()->modules->taxonomy_type)){
 			$field_option = self::cms()->modules->taxonomy_type->get_registered_option('field');
 			$tax_names = array();
@@ -325,7 +338,6 @@ class xydac_ultimate_cms{
 				
 				}
 			}
-		}
 		}
 	}
 	function xydac_taxonomy_activate()
@@ -415,10 +427,6 @@ DEBUG;
 	
 	}
 
-}
-add_action('activated_plugin','xydac_save_error');
-function xydac_save_error(){
-    update_option('xydac_plugin_error',  ob_get_contents());
 }
 
 xydac();
