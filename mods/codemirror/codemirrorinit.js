@@ -4,13 +4,13 @@ jQuery(document).ready(function($) {
 	var j=0;
 	jQuery('textarea[name*="css"],textarea[name*="customscript"],textarea[name*="js"],textarea[name*="html"],textarea[name*="loop"]').each(function(){
 	if(this.name.search(/js/i)!=-1 || this.name.search(/customscript/i)!=-1){
-		xydac_codemirror[j] = CodeMirror.fromTextArea(document.getElementById(this.name),{lineNumbers :true,matchBrackets: true,mode :'text/javascript',gutter:true});
+		xydac_codemirror[j] = CodeMirror.fromTextArea(document.getElementById(this.id),{lineNumbers :true,matchBrackets: true,mode :'text/javascript',gutter:true});
 		}
 	else if(this.name.search(/css/i)!=-1){
-		xydac_codemirror[j] = CodeMirror.fromTextArea(document.getElementById(this.name),{lineNumbers :true,matchBrackets: true,mode :'text/css',gutter:true});
+		xydac_codemirror[j] = CodeMirror.fromTextArea(document.getElementById(this.id),{lineNumbers :true,matchBrackets: true,mode :'text/css',gutter:true});
 		}
 	else{
-		xydac_codemirror[j] = CodeMirror.fromTextArea(document.getElementById(this.name),{lineNumbers :true,matchBrackets: true,mode :'htmlmixed',gutter:true});
+		xydac_codemirror[j] = CodeMirror.fromTextArea(document.getElementById(this.id),{lineNumbers :true,matchBrackets: true,mode :'htmlmixed',gutter:true});
 		}
 	if(this.name == 'xydac_archive_type[args][beforeloop]')
 		xydac_codemirror_name[j] = "beforeloop";

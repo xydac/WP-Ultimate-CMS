@@ -40,13 +40,14 @@ class xydac_mods_codemirror{
 	{
 		ob_start();
 		include $this->plugindir.'/codemirror.js';
-		include $this->plugindir.'/codemirrorinit.js';
+		
 		include $this->plugindir.'/css.js';
 		include $this->plugindir.'/javascript.js';
 		include $this->plugindir.'/xml.js';
 		include $this->plugindir.'/htmlmixed.js';
+		include $this->plugindir.'/codemirrorinit.js';
 		$codemirror_script = ob_get_clean();
-		 $codemirror_script.=<<<SCRIPT
+		/* $codemirror_script.=<<<SCRIPT
 		function updatePreview() {
 	        var previewFrame = document.getElementById('xydac-codemirror-preview');
 	        var preview =  previewFrame.contentDocument ||  previewFrame.contentWindow.document;
@@ -76,15 +77,15 @@ class xydac_mods_codemirror{
 	        		jQuery.post(ajaxurl, {action: 'xydac_cms_codemirror',val: xydac_codemirror[i].getValue()}, function(data) {customcss = data;return false});
 	        	else if(xydac_codemirror_name[i]=='customscript')
 	        		jQuery.post(ajaxurl, {action: 'xydac_cms_codemirror',val: xydac_codemirror[i].getValue()}, function(data) {customscript = data;return false}); */
-	        }
-	        var fullhtml = beforeloop+customhtml+afterloop;
-	        var nm = document.getElementById("xydac_archive_type[name]").value;
-	        preview.write("<html><head><style>"+customcss+"</style></head><body id='"+nm+"'>"+fullhtml+"</body></html>");
+	     /*   }
+	        //var fullhtml = beforeloop+customhtml+afterloop;
+	        //var nm = document.getElementById("xydac_archive_type[name]").value;
+	        //preview.write("<html><head><style>"+customcss+"</style></head><body id='"+nm+"'>"+fullhtml+"</body></html>");
 	        //preview.write("ll");
 	        preview.close();
       	}
       setTimeout(updatePreview, 300);
-SCRIPT;
+SCRIPT;*/
 
 		if(isset($_GET['codemirror'])&& ('1'==$_GET['codemirror'])){
 			return $script."\n".$codemirror_script;
