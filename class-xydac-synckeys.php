@@ -43,4 +43,4 @@ class xydac_synckeys{
 		return $this->synkeysarr;
 	}
 	
-}
+}?>

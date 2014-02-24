@@ -230,4 +230,4 @@ class xydac_taxonomy_functions{
 		return $where;
 	}
 
-}
+}?>

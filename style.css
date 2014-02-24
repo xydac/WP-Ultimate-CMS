@@ -257,6 +257,7 @@ div#accordion .form-field {
 	border-style: solid;
 	border-width: 0 0 1px 0;
 	margin: 0px;
+    padding:8px;
 } /* ---------- */
 div.xydacfieldform {
 	background-color: #F9F9F9;

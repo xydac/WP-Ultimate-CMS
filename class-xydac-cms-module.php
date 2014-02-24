@@ -343,7 +343,8 @@ abstract class xydac_cms_module{
 			$content['post_content'] = '<p>'.(empty($xydac_option['description'])?"":$xydac_option['description']).'</p>';
 				$arr_actualcode = array('key' => 'actual_code','value'=>base64_encode(maybe_serialize($xydac_option)));
 				$arr_fieldcode = array('key' => 'field_code','value'=>base64_encode(maybe_serialize($xydac_option_field)));
-				$arr_blogurlcode = array('key' => 'import_blog_url','value'=>'http://www.xydac.com');
+				//$arr_blogurlcode = array('key' => 'import_blog_url','value'=>'http://www.xydac.com');
+                $arr_blogurlcode = array('key' => 'import_blog_url','value'=>site_url());
 				if($actual_code_id>0)
 					$arr_actualcode['id'] = $actual_code_id;
 				if($field_code_id>0)

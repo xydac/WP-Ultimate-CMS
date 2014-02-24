@@ -31,4 +31,4 @@ class xydac_archive_type_functions{
 			}
 	}
 
-}
+}?>
