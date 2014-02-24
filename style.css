@@ -338,6 +338,11 @@ div.xydacfieldform .xydac_home p {
 	margin: 0;
 }
 
+/*Added for Submit Button*/
+.col-wrap p.xydacformsubmit{
+    margin-top:10px;
+}
+
 .xydac_button {
 	-moz-border-radius: 3px;
 	text-align: center;
