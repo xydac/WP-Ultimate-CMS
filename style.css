@@ -551,6 +551,7 @@ p.xydacdonation a {
 	font-size: 14px;
 	line-height: 1.3em;
 	padding: 7px 7px 8px;
+	vertical-align: top;
 	text-align: left;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
@@ -561,10 +562,19 @@ p.xydacdonation a {
     border: 1px solid #bfbfbf;
 }
 .admin-table th {
-    background: #dfdfdf;
     border-right: 1px solid #bfbfbf;
     vertical-align: middle;
     font-size: 130%;
+    padding: 10px;
+    background: #dfdfdf; /* Old browsers */
+    background: -moz-linear-gradient(left,  #dfdfdf 0%, #bfbfbf 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#dfdfdf), color-stop(100%,#bfbfbf)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  #dfdfdf 0%,#bfbfbf 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  #dfdfdf 0%,#bfbfbf 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  #dfdfdf 0%,#bfbfbf 100%); /* IE10+ */
+    background: linear-gradient(to right,  #dfdfdf 0%,#bfbfbf 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dfdfdf', endColorstr='#bfbfbf',GradientType=1 ); /* IE6-9 */
+
 }
 .admin-table td {
     background: #f2f2f2;
@@ -573,10 +583,13 @@ p.xydacdonation a {
     min-width: 50%;
     padding: 5px;
 }
-.admin-table span {
-    color: #666;
-    padding-left: 5px;
+
+.admin-table pre{
+    margin:0;
+    padding:5px;
+    width:100%;
+    
 }
-.admin-table .button-primary{
-	padding: 5px 50px;
+.admin-table .checkbox{
+    padding-right: 15px;
 }

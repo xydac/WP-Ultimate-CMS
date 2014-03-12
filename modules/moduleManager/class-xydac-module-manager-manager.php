@@ -27,11 +27,14 @@ class xydac_module_manager_manager extends xydac_ultimate_cms_core{
 		_e('Module Manager helps you to manage the modules associated with Ultimate CMS plugin. You can activate or deactivate the modules as per your use, Leaving any module activated doesn\'t use any extra resource But still it\'s safer to deactivate the same if not being used.');
 	}
 	function xydac_core_rowdata_func($datas){
+        
 		foreach($datas as $k=>$data)
 			if($data['type']=='Core-Module' || $data['type']=='core-module' || $data['type']=='CoreModule' || $data['type']=='coremodule' || $data['type']=='coreModule')
 				unset($datas[$k]);
-			else 
+			else {
 				$datas[$k]['type'] = ucwords($datas[$k]['type']);
+                $datas[$k]['author'] = "<a href='".$datas[$k]['url']."' >".$datas[$k]['author']."</a>";
+        }
 		return $datas;
 	}
 }

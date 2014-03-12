@@ -5,7 +5,7 @@ Plugin URI: http://xydac.com/ultimate-cms/
 Description: This is an Easy to use Plugin to Create, Customize, Manage Custom Post Type,Custom Page Type, Custom Archives, Custom Taxonomies.
 Author: XYDAC
 Author URI: http://xydac.com/
-Version: 1.0.8
+Version: 1.1
 License: GPL2*/
 
 if ( !defined( 'XYDAC_CMS_NAME' ) )define('XYDAC_CMS_NAME',"ultimate-cms");
@@ -13,6 +13,8 @@ if ( !defined( 'XYDAC_CMS_USER_API_KEY' ) )define('XYDAC_CMS_USER_API_KEY',"xyda
 if ( !defined( 'XYDAC_CMS_OPTIONS' ) )define('XYDAC_CMS_OPTIONS',"XYDAC_CMS_OPTIONS");
 if ( !defined( 'XYDAC_CMS_MODULES' ) )define('XYDAC_CMS_MODULES',"xydac_cms_modules");
 if ( !defined( 'XYDAC_CMS_MODULES_OLD_HASH' ) )define('XYDAC_CMS_MODULES_OLD_HASH',"xydac_cms_modules_old_hash");
+if ( !defined( 'XYDAC_UCMS_FORMOPTION' ) )define('XYDAC_UCMS_FORMOPTION',"XYDAC_UCMS_FORMOPTION");
+
 if ( !defined( 'DS' ) )define('DS', DIRECTORY_SEPARATOR);
 global $xydac_cms_fields;
 
@@ -23,9 +25,13 @@ require_once 'class-field-type.php';
 require_once 'class-xydac-ultimate-cms-core.php';
 require_once 'dao.php';
 require_once 'class-xydac-cms-module.php';
-require_once 'class-xydac-cms-home.php';
 require_once ABSPATH.'wp-includes'.DS.'class-IXR.php';
 require_once 'class-xydac-synckeys.php';
+require_once 'class-xydac-ucms-dbupdates.php';
+require_once 'class-xydac-ucmsoption.php';
+require_once 'class-xydac-snippets.php';
+require_once 'class-xydac-cms-home.php';
+
 
 function xydac()
 {
@@ -49,6 +55,7 @@ class xydac_ultimate_cms{
 					'modules'=>dirname(__FILE__).DS.'modules'.DS.'',
 					'mods'=> dirname(__FILE__).DS.'mods'.DS.'',
 					'fieldTypes'=>dirname(__FILE__).DS.'fieldTypes'.DS.'',
+                    'snippets'=>dirname(__FILE__).DS.'snippets'.DS.'',
 					'userMods'=> ABSPATH.DS.'wp-content'.DS.'ultimate_cms'.DS.''
 			);
 			
@@ -60,6 +67,7 @@ class xydac_ultimate_cms{
 			self::cms()->dao->register_option(XYDAC_CMS_MODULES);
 			self::cms()->dao->register_option(XYDAC_CMS_MODULES.'_active');
             self::cms()->dao->register_option(XYDAC_CMS_MODULES_OLD_HASH);
+            self::cms()->options = new xydac_ucmsoption();
 			self::cms()->oldhash = self::cms()->dao->get_options(XYDAC_CMS_MODULES_OLD_HASH);
             self::cms()->active = self::cms()->dao->get_options(XYDAC_CMS_MODULES.'_active');
 			self::cms()->allModules = array();
@@ -76,11 +84,13 @@ class xydac_ultimate_cms{
 			add_action('wp_head', array(self::$instance,'xydac_cms_site_head'));
 			add_action('admin_footer', array(self::$instance,'xydac_cms_admin_foot'));
 			add_action( 'xydac_cms_activate', array(self::$instance,'xydac_taxonomy_activate'));
-			register_activation_hook( __FILE__, array(self::$instance,'xydac_cms_activate') );
+			register_activation_hook( __FILE__, array('xydac_ucms_dbupdates','xydac_cms_activate') );
 		};
 		
 		return self::$instance;
 	}
+    
+    
 	/*------------------------------------------MODULES SECTION-----------------------------*/
 	private static function load_modules(){
 		self::get_module_data();
@@ -89,15 +99,20 @@ class xydac_ultimate_cms{
 		foreach(self::cms()->allModules as $k=>$module){
 				
 				require_once $module['file']['dirpath'].$module['file']['filename'];
-				if ( substr($module['file']['filename'], -4) == '.php' )
-					$classname = str_replace('-','_',substr($module['file']['filename'],strlen($module['file']['dirname'])+7,-4));
+                $classname='';
+				if ( substr($module['file']['filename'], -4) == '.php' ){
+                    if($module['file']['dirname']!='.')
+					   $classname = str_replace('-','_',substr($module['file']['filename'],strlen($module['file']['dirname'])+7,-4));
+                    else
+                        $classname = str_replace('-','_',substr($module['file']['filename'],6,-4));
+                }
 				if(class_exists($classname) && (($module['type']!='Core-Module' && is_array(self::cms()->active) && in_array($module['name'],self::cms()->active)) ||$module['type']=='Core-Module')){
 					new $classname();
 				}
 				//if($module['type']=='Core-Module')
 					//unset(self::cms()->allModules[$k]);
 				//else
-					array_push($module_insert,array('name'=>$module['name'],'type'=>$module['type'],'author'=>$module['author'],'description'=>$module['description']));
+					array_push($module_insert,array('name'=>$module['name'],'type'=>$module['type'],'author'=>$module['author'],'description'=>$module['description'],'url'=>$module['url'],'classname'=>$classname));
 
 		}
         if(!is_serialized($module_insert))
@@ -158,10 +173,12 @@ class xydac_ultimate_cms{
 						$data = get_file_data($modules_root.'/'.$file, $module_headers);
 					
 						if(empty($data['name'])) continue;
+                        
 						if(($mname!='userMods' && $data['type']!='Core-Module') || ($mname=='userMods' && $data['type']!='Core-Module'))
 							$data['type'] = $mname;
 						else if($mname=='userMods' && $data['type']=='Core-Module')
 							continue;
+                            
 						$data['file']['filename'] = $file;
 						$data['file']['dirpath'] = $path;
 						$data['file']['dirname'] = dirname($file);
@@ -225,12 +242,13 @@ class xydac_ultimate_cms{
 
 	function xydac_cms_main1(){
 		new xydac_ultimate_cms_home();
-		
 	}
 	function xydac_cms_admin_menu()
 	{
 		$xydac_main_menu = add_menu_page('Ultimate CMS', 'Ultimate CMS', 'manage_xydac_cms', 'xydac_ultimate_cms', array($this,'xydac_cms_main1'));
 	}
+    
+    //This method is used by class-field-type to get a list of active field types
 	function xydac_cms_build_active_field_types()
 	{
 		$active = array();
@@ -254,92 +272,9 @@ class xydac_ultimate_cms{
 		return $active; 
 	}
 
-	/**
-	 * Not used now....cleanup required.
-	 */
-	function xydac_cms_cpt_field_convert()
-	{
-		global $wpdb;
-		$cpts = get_reg_cptName();
-		if(is_array($cpts))
-			foreach($cpts as $cpt)
-			{
-				$fields = getCptFields($cpt);
-
-				if(is_array($fields) && !empty($fields))
-					foreach($fields as $field)
-					{
-						$metas = $wpdb->get_results("SELECT meta_id, meta_value FROM ".$wpdb->postmeta." WHERE meta_key ='".$field['field_name']."'");
-						foreach($metas as $meta)
-						{
-							$meta->meta_value = maybe_unserialize($meta->meta_value);
-							$r = false;
-							if(is_array($meta->meta_value))
-							{
-								foreach($meta->meta_value as $k=>$v)
-									if($k==$field['field_type'])
-									{
-										$wpdb->query("UPDATE ".$wpdb->postmeta." SET meta_value='".$v."' WHERE meta_id = ".$meta->meta_id);
-									}
-							}
-						}
-						if(!in_array($field['field_type'],$xydac_active_field_types))
-							array_push($xydac_active_field_types,$field['field_type']);
-					}
-			}
-				
-			update_option('xydac_active_field_types',$xydac_active_field_types);
-			update_option('xydac_cms_ver','1.0');
-	}
-	function xydac_cms_activate()
-	{
-		global $wpdb;
-		if (function_exists('is_multisite') && is_multisite()) {
-			// check if it is a network activation - if so, run the activation function for each blog id
-			if (isset($_GET['networkwide']) && ($_GET['networkwide'] == 1)) {
-				$old_blog = $wpdb->blogid;
-				// Get all blog ids
-				$blogids = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM $wpdb->blogs"));
-				foreach ($blogids as $blog_id) {
-					switch_to_blog($blog_id);
-					//$this->xydac_cms_cpt_field_convert();
-					$this->xydac_taxonomy_fix();
-					do_action('xydac_cms_activate');
-				}
-				switch_to_blog($old_blog);
-				return;
-			}
-		}
-		$this->xydac_taxonomy_fix();
-		//$this->xydac_cms_cpt_field_convert();
-		do_action('xydac_cms_activate');
-	}
-	public static function xydac_taxonomy_fix(){
-	global $wpdb;
-        
-        $fields = $wpdb->get_results("SELECT tax_name,field_name,field_label,field_type,field_desc,field_val FROM {$wpdb->prefix}taxonomyfield order by tax_name");
-        
-		if(isset(self::cms()->modules->taxonomy_type)){
-			$field_option = self::cms()->modules->taxonomy_type->get_registered_option('field');
-			$tax_names = array();
-			foreach($fields as $field){
-				
-				$tax_option = $field_option.'_'.$field->tax_name;
-				
-				self::cms()->dao->register_option($tax_option);
-				$tax_field_data = self::cms()->dao->get_options($tax_option);
-
-				if(!isset($tax_names[$field->tax_name]) && !$tax_field_data)
-					$tax_names[$field->tax_name] = true;
-				if(isset($tax_names[$field->tax_name]) && $tax_names[$field->tax_name])
-				{
-					$field_arr = array('field_name'=>$field->field_name,'field_label'=>$field->field_label,'field_type'=>$field->field_type,'field_desc'=>$field->field_desc,'field_val'=>$field->field_val,'field_order'=>0);
-					self::cms()->dao->insert_object($tax_option,$field_arr);
-				
-				}
-			}
-		}
-	}
+	
+	
+    
 	function xydac_taxonomy_activate()
 	{
 		global $wpdb;

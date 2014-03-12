@@ -1,13 +1,13 @@
 ﻿=== Ultimate CMS ===
 Contributors: deepak.seth
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=nikhilseth1989%40gmail%2ecom&item_name=WordPress%20Plugin%20(Ultimate%20CMS)&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
-Tags: Custom Post Type,CPT,Ultimate Post Type,Post Type,Post,Post Type Manager,Page Type,Page Type Manager,Archive,Archive Manager,Taxonomy,Taxonomy Manager,Shortcode manager,shortcode
+Tags: Custom Post Type,CPT,Ultimate Post Type,Post Type,Post,Post Type Manager,Page Type,Page Type Manager,Archive,Archive Manager,Taxonomy,Taxonomy Manager,Shortcode manager,shortcode, WordPress tweaks, Snippets.
 Requires at least: 3.0
-Tested up to: 3.6b
+Tested up to: 3.8.1
 Stable tag: trunk
 
 
-This is an Easy to use Plugin to Create, Customize, Manage Custom Post Type,Custom Page Type, Custom Archives, Custom Taxonomies, Custom Shortcode.
+This is an Easy to use Plugin to Create, Customize, Manage Custom Post Type,Custom Page Type, Custom Archives, Custom Taxonomies, Custom Shortcode, Custom WordPress tweaks and settings.
 
 == Description ==
 The plugin is divided in five parts:
@@ -16,7 +16,8 @@ The plugin is divided in five parts:
 * Post Type Manager
 * Page Type Manager
 * Taxonomy Manager
-* ShortcodeManager
+* Shortcode Manager
+* **Snippet Library**
 
 One of the major component of the plugin are Custom Field Types without which no Custom Field would have existed.It is basically a generalization of custom field types, so that any PHP developer can create the own custom field types and also share it with different people.
 **[Download now!](http://downloads.wordpress.org/plugin/ultimate-cms.zip)**.
@@ -35,6 +36,7 @@ Some Features
 * Manage Custom Field Types.
 * Manage Custom Shortcode types.
 * Cool UI for manipulating WordPress
+* Enable and disable various WordPress tweaks
 
 
 You'll need to check out the plugin website to have a better look
@@ -66,6 +68,17 @@ The automatic plugin installer should work for most people. Manual installation 
 
 
 == Changelog ==
+
+= 1.1 =
+* Fixed extra chars during plugin activation.
+* Added Snippets library
+* Custom Snippets can be easily added as and when required.
+* Fixed default URL on Sync
+* Created seperate codes for DB updates
+* Code clean up
+* Minor styling fixes and various bug fixes
+* Updated Codemirror library to 3.22
+
 
 = 1.0.8 =
 * fixed bug with loss of content html (text area fields) and fixed working of link fieldtype
@@ -136,8 +149,16 @@ Deactivate Ultimate taxonomy manager or Ultimate Post type manager you are using
 = Do i need the API key to run this plugin =
 The API key is available if required, It's free and you can get one from www.xydac.com/account
 
+= Are the snippets code used when not activated? =
+No, Snippets codes are used only when active.
+
+= Are the snippets configuration lost when sniets are disabled? =
+Yes, If the snippets are disabled then all the settings will be lost.
 
 == Upgrade Notice == 
+
+= 1.1 =
+* Fixed extra chars during plugin activation, Added Snippets library, Added Custom Snippets can be easily added as and when required, Fixed default URL on Sync, Created seperate codes for DB updates, Code clean up, Minor styling fixes and various bug fixes,Updated Codemirror library to 3.22
 
 = 1.0.8 =
 * fixed bug with loss of content html (text area fields) and fixed working of link fieldtype
