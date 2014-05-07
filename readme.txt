@@ -78,6 +78,7 @@ The automatic plugin installer should work for most people. Manual installation 
 * Code clean up
 * Minor styling fixes and various bug fixes
 * Updated Codemirror library to 3.22
+* Reduced the number of database hits
 
 
 = 1.0.8 =
@@ -158,7 +159,7 @@ Yes, If the snippets are disabled then all the settings will be lost.
 == Upgrade Notice == 
 
 = 1.1 =
-* Fixed extra chars during plugin activation, Added Snippets library, Added Custom Snippets can be easily added as and when required, Fixed default URL on Sync, Created seperate codes for DB updates, Code clean up, Minor styling fixes and various bug fixes,Updated Codemirror library to 3.22
+* Fixed extra chars during plugin activation, Added Snippets library, Added Custom Snippets can be easily added as and when required, Fixed default URL on Sync, Created seperate codes for DB updates, Code clean up, Minor styling fixes and various bug fixes,Updated Codemirror library to 3.22, Reduced the number of database hits.
 
 = 1.0.8 =
 * fixed bug with loss of content html (text area fields) and fixed working of link fieldtype
