@@ -472,8 +472,9 @@ abstract class xydac_ultimate_cms_core{
 					<?php do_action('xydac_core_leftfoot'); ?>
 					</div>
 				</div>
-				<?php } ?>
+				
 			</div>
+			<?php } ?>
 		</div>
 		<?php do_action('xydac_core_foot'); ?>
 	<?php if(!xydac()->is_xydac_ucms_pro())xydac()->xydac_show_donate_link(false); ?>
