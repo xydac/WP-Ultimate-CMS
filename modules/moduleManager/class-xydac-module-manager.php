@@ -48,11 +48,8 @@ class xydac_module_manager extends xydac_cms_module{
 		
 	}
 	public function xydac_cms_admin_style_func($style){
-		$st = ".xydac-col-module_manager-description{width:40%;}
-				.xydac-col-module_manager-type{width:20%;}
-				.xydac-col-module_manager-author{width:20%;}
-				";
-		return $style."\n".$st;
+		$st = ".xydac-col-module_manager-description{width:80%;}";
+		return $style;//."\n".$st;
 	}
 }
 ?>

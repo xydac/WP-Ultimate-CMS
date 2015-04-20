@@ -18,7 +18,7 @@ class xydac_module_manager_manager extends xydac_ultimate_cms_core{
 	
 	function headfootcolumn()
 	{
-		$headfootcolumn = array('name'=>__("Name",XYDAC_CMS_NAME),'[type]'=>__("TYPE",XYDAC_CMS_NAME),'[description]'=>__("Description",XYDAC_CMS_NAME),'[author]'=>__("Author",XYDAC_CMS_NAME));
+		$headfootcolumn = array('name'=>__("Name",XYDAC_CMS_NAME),'[description]'=>__("Description",XYDAC_CMS_NAME));
 		return $headfootcolumn;
 	}
 	function xydac_core_head_func()
@@ -33,7 +33,8 @@ class xydac_module_manager_manager extends xydac_ultimate_cms_core{
 				unset($datas[$k]);
 			else {
 				$datas[$k]['type'] = ucwords($datas[$k]['type']);
-                $datas[$k]['author'] = "<a href='".$datas[$k]['url']."' >".$datas[$k]['author']."</a>";
+				$datas[$k]['description']	=	 $datas[$k]['description']."<br/>".ucwords($datas[$k]['type'])." | <strong>By : </strong>"."<a href='".$datas[$k]['url']."' >".$datas[$k]['author']."</a>";
+                
         }
 		return $datas;
 	}

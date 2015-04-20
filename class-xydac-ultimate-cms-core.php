@@ -301,7 +301,7 @@ abstract class xydac_ultimate_cms_core{
 						</div>
 						<?php } ?>
 						<br class="clear">
-						<table class="widefat tag fixed">
+						<table class="widefat tag  plugins">
 							<thead class="content-types-list">
 								<tr>
 									<th class="manage-column column-cb check-column" id="cb" scope="col"><input type="checkbox"></th>
@@ -309,8 +309,12 @@ abstract class xydac_ultimate_cms_core{
 									<?php 
 										$headfootcolumn = array('name'=>__("Name",XYDAC_CMS_NAME));
 										$headfootcolumn = apply_filters( 'xydac_core_headfootcolumn', $headfootcolumn );
-										foreach($headfootcolumn as $name=>$label)
-											echo '<th class="manage-column xydac-col-'.$this->xydac_core_name.'-'.str_replace(array('[',']',' '),'',$name).'" id="'.$name.'" scope="col">'.$label.'</th>';
+										foreach($headfootcolumn as $name=>$label){
+												if($name=='[description]')
+													echo '<th class="manage-column column-description xydac-col-'.$this->xydac_core_name.'-'.str_replace(array('[',']',' '),'',$name).'" id="'.$name.'" scope="col">'.$label.'</th>';
+												else
+													echo '<th class="manage-column column-name xydac-col-'.$this->xydac_core_name.'-'.str_replace(array('[',']',' '),'',$name).'" id="'.$name.'" scope="col">'.$label.'</th>';
+											}
 									?>
 								</tr>
 							</thead>
@@ -320,11 +324,11 @@ abstract class xydac_ultimate_cms_core{
 								foreach($xydac_rowdata as $value)
 								{ $name = $value[$this->namefield_name];
 								?>
-									<tr id="content-type-<?php echo $name; ?>" class="<?php if(!$this->isActive($name)) echo "xydacinactive"; else echo "xydacactive"; ?>">
-										<th class="check-column" scope="row">
+									<tr id="content-type-<?php echo $name; ?>" class="<?php if(!$this->isActive($name)) echo "inactive"; else echo "active"; ?>">
+										<th class="column-cb check-column" scope="row">
 											<input type="checkbox" value="<?php echo $name; ?>" name="cbval[]"/>
 										</th>
-										<td class="name column-name">
+										<td class="name column-name plugin-title">
 											<strong>
 											<?php if(!isset($this->args['show_link']) || isset($this->args['show_link'])&& $this->args['show_link']=='true') { ?>
 												<a class="row-title" title="Edit &ldquo;<?php echo $name; ?>&rdquo;" href="<?php echo $this->baselink."&edit_".$this->xydac_core_name."=true&".$this->xydac_core_name."_name=".$name; ?>">
@@ -332,15 +336,15 @@ abstract class xydac_ultimate_cms_core{
 												</a>
 												<?php } else {  echo $name; } ?>
 											</strong>
-											<br />
+											
 											<?php 
 												$rowactions = array();
 												$rowactions = apply_filters( 'xydac_core_rowactions', $rowactions );
 												if($this->activation)
 												{
-													echo '<div class="row-actions-visible" style="display:inline">';
+													echo '<div class="row-actions visible" style="display:inline">';
 													if(!$this->isActive($name))
-														echo '<span><a href="'.$this->baselink."&activate_".$this->xydac_core_name."=true&".$this->xydac_core_name."_name=".$name.'">'."Activate".'</a></span>';
+														echo '<span class="activate"><a href="'.$this->baselink."&activate_".$this->xydac_core_name."=true&".$this->xydac_core_name."_name=".$name.'">'."Activate".'</a></span>';
 													else
 														echo '<span class="delete"><a href="'.$this->baselink."&deactivate_".$this->xydac_core_name."=true&".$this->xydac_core_name."_name=".$name.'">'."Deactivate".'</a></span>';
 													echo '</div>';
