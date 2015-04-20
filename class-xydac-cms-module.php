@@ -560,8 +560,9 @@ abstract class xydac_cms_module{
 	*
 	* $tab : 'href','label','default'
 	*/
-	public function view_main(){
-		$sub = isset($_GET['sub']) ? $_GET['sub'] : (isset($_GET['edit_xydac_'.$this->module_name])?$this->module_name : (isset($_GET['edit_'.$this->module_name.'_field'])?$this->module_name.'_fields':false));
+	public function view_main($sub=""){
+		if(empty($sub))
+			$sub = isset($_GET['sub']) ? $_GET['sub'] : (isset($_GET['edit_xydac_'.$this->module_name])?$this->module_name : (isset($_GET['edit_'.$this->module_name.'_field'])?$this->module_name.'_fields':false));
 		$this->front_header($this->tabs);
 		if($sub)
 			foreach($this->tabs as $tab_name=>$tab){
