@@ -54,9 +54,9 @@ class xydac_ultimate_cms_configuration extends xydac_cms_module{
     
     function render_formelements($name,$label,$type,$description,$value,$options=array()){
         if($type=='text'){
-            echo "<input type='text' name='$name' id='$name' value='$value'/><br>";
+            echo "<input type='text' class='regular-text' name='$name' id='$name' value='$value'/><br>";
         }elseif($type=='textarea'){
-            echo "<textarea name='$name' id='$name' style='height:200px'> $value</textarea><br>";
+            echo "<textarea name='$name' id='$name' class='large-text code' style='height:200px'>$value</textarea><br>";
         }elseif($type=='checkbox'){
             foreach($options as $k=>$v){
                 if(is_array($value) && in_array($k,$value))
@@ -99,7 +99,7 @@ class xydac_ultimate_cms_configuration extends xydac_cms_module{
             
             
 			echo '<form method="post" name="xydac_cms_home_option" action="'.$this->base_path.'">';
-			echo '<table class="form-table admin-table"><tbody>';
+			echo '<table class="form-table"><tbody>';
 			foreach($formcontents as $formcontent){
                 
 			extract($formcontent);
