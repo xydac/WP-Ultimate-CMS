@@ -94,7 +94,7 @@ class xydac_ultimate_cms_configuration extends xydac_cms_module{
 				
 			}
             $this->initialize_form_fields();
-			echo "<h3>Xydac Ultimate-CMS Configuration</h3>";
+			echo "<h2>Xydac Ultimate-CMS Configuration</h2>";
 			$formcontents = apply_filters('xydac_cms_homeformoption', $this->configurationformfield);
             
             
