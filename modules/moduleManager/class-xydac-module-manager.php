@@ -19,11 +19,12 @@ class xydac_module_manager extends xydac_cms_module{
 				'has_custom_fields'=>false,
 				'uses_active'=>true,
 				'registered_option'=>array('main'=>'XYDAC_CMS_MODULES',
-						'active'=>XYDAC_CMS_MODULES.'_active'),
+				'active'=>XYDAC_CMS_MODULES.'_active'),
+				'xydac_sync'=>false,
 				'base_path'=>get_bloginfo('wpurl').'/wp-admin/admin.php?page=xydac_ultimate_cms'."&sub=module_manager"
 		));
 		$this->base_path = get_bloginfo('wpurl').'/wp-admin/admin.php?page=xydac_ultimate_cms';
-		add_filter('xydac_cms_home_tab',array($this,'xydac_cms_home_tab_func'));
+		add_filter('xydac_cms_home_tab',array($this,'xydac_cms_home_tab_func'),10);
 		add_action('xydac_cms_module_view_main',array($this,'xydac_cms_module_view_main_func'));
 		add_filter('xydac_cms_admin_style',array($this,'xydac_cms_admin_style_func'),10,1);
 	}
@@ -32,7 +33,7 @@ class xydac_module_manager extends xydac_cms_module{
 		$mytab = array('name'=>'module_manager',
 				'href'=>$this->base_path."&sub=module_manager",
 				'label'=>'Module Manager',
-				'default'=>false);
+				'default'=>true);
 		if(is_array($tab))
 			$tab['module_manager'] = $mytab;
 		else
@@ -47,11 +48,8 @@ class xydac_module_manager extends xydac_cms_module{
 		
 	}
 	public function xydac_cms_admin_style_func($style){
-		$st = ".xydac-col-module_manager-description{width:40%;}
-				.xydac-col-module_manager-type{width:20%;}
-				.xydac-col-module_manager-author{width:20%;}
-				";
-		return $style."\n".$st;
+		$st = ".xydac-col-module_manager-description{width:80%;}";
+		return $style;//."\n".$st;
 	}
 }
 ?>

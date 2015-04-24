@@ -41,7 +41,7 @@ class xydac_ucmsoption{
         $values = $_POST[xydac_ucms_form];
         $arr = array();
         foreach($values as $key=>$val){
-            $arr[sanitize_key($key)] = wp_kses($val);
+            $arr[sanitize_key($key)] = wp_kses($val,array('strong'=>array()));
         }
         xydac()->dao->set_options(XYDAC_UCMS_FORMOPTION,$arr);
         $this->flushvalues();
