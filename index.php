@@ -112,7 +112,7 @@ class xydac_ultimate_cms{
 				//if($module['type']=='Core-Module')
 					//unset(self::cms()->allModules[$k]);
 				//else
-					array_push($module_insert,array('name'=>$module['name'],'type'=>$module['type'],'author'=>$module['author'],'description'=>$module['description'],'url'=>$module['url'],'classname'=>$classname));
+					array_push($module_insert,array('name'=>$module['name'],'type'=>$module['type'],'author'=>$module['author'],'description'=>$module['description'],'moduleurl'=>$module['moduleurl'],'url'=>$module['url'],'classname'=>$classname));
 
 		}
         if(!is_serialized($module_insert))
@@ -134,6 +134,7 @@ class xydac_ultimate_cms{
 					'type'			=> 'Type',
 					'description'	=> 'Description',
 					'author'		=> 'Author',
+					'moduleurl'		=> 'Module URI',
 					'url'			=> 'Author URI',
 					'version'		=> 'Version',
 			);
@@ -219,6 +220,7 @@ class xydac_ultimate_cms{
 		$role = get_role("administrator");
 		$role->add_cap("manage_xydac_cms");
 		wp_enqueue_script("jquery");
+		add_thickbox();
 		xydac_fieldtypes_init();
 		
 	}
@@ -343,7 +345,7 @@ DEBUG;
 		return $obj;
 	}
 	//-ERROR LOGGING AND HANDLING END
-	public function xydac_show_donate_link($showimage=true){
+	public function xydac_show_donate_link($showimage=false){
 		if(!xydac()->is_xydac_ucms_pro()){
 		echo '
 		<p class="xydacdonation">

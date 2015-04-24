@@ -2,7 +2,7 @@
 /*
 Module Name:	Custom Javascript
 Type:			Snippet
-Description:	This adds the code snippets which enables you to add Custom Javascript using a given form, which will be added to your website. 
+Description:	This adds the code snippets which enables you to add Custom Javascript using a given form, which will be added to all the post and pages on your website. 
 Author:			deepak.seth
 Author URI:		http://www.xydac.com/
 Version:		1.0

@@ -1,8 +1,9 @@
 <?php
 /*
- Module Name:	Archive
+ Module Name:	Archive Manager
 Type:			Module
-Description:	Xydac Archive module
+Description:	Xydac Archive Manager allows you to create and manage custom Archives. An archive is a list or a collection of records. So creating an archive on your website would mean creating a list of objects that you want to show. these objects can be some posts with a fixed criteria, It may be pages or for that matter anything you post on WordPress.
+Module URI: 	http://xydac.com/ultimate-cms/archive-type
 Author:			deepak.seth
 Author URI:		http://www.xydac.com/
 Version:		1.0
