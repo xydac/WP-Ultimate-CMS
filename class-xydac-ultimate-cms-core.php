@@ -42,7 +42,7 @@ abstract class xydac_ultimate_cms_core{
 		if(!($obj instanceof xydac_cms_module) || !($type=='main' || $type=='field'))
 			return;
 		
-		extract($args);
+		extract($args);//--@todo: remove extract; It may not even be used ?
 		$this->parent_class = $obj;
 		$this->xydac_core_name = $obj->get_module_name();
 		$this->xydac_core_label = ($type=='main') ? $obj->get_module_label() : $obj->get_module_label().' Fields';
@@ -137,18 +137,30 @@ abstract class xydac_ultimate_cms_core{
 	function get_array_val($arr,$key)
 	{
 		$key = substr(preg_replace('/\]\[/', '$$', $key),1,-1);
+		
 		$e= explode('$$',$key);
 		$ar = &$arr;
 		foreach($e as $v)
 			@$ar = $ar[$v];
 		unset($ar);
 		return $arr;
-		/*if(!is_array($arr))//adding this showed output in text box as ARRAY
-			{ $tmp = array();array_push($tmp,$arr);
-			return $tmp;}
-		else
-			return $arr;*/
-
+	}
+	function modarr(&$array,$boolarr, $text) {
+		if(!is_array($array))
+			return $array;
+        foreach ($array as $key => $arr) {
+                if(is_array($arr)) $res[$key] = $this->modarr($arr,$boolarr,$text."[".$key."]");
+                else {
+					if(in_array($text."[".$key."]",$boolarr)){
+						if($text."[".$key."]"==$arr)
+							$res[$key] = "true";
+						else
+							$res[$key] = "false";
+					}else
+						$res[$key] = $arr;
+					}
+                }
+        return $res;
 	}
 	/*
 	$_POST['action'] : action to be performed
@@ -189,21 +201,37 @@ abstract class xydac_ultimate_cms_core{
 	}
 	function insert()
 	{
+		$dat = $_POST;
+		$boolarr = array();
+		foreach($this->xydac_core_form_array as $nam=>$d)
+			if($d['type']=='boolean'){
+				array_push($boolarr,$d['name']);
+			}
+		$dat['xydac_form_'.$this->xydac_core_name] = $this->modarr($dat['xydac_form_'.$this->xydac_core_name],$boolarr,"");
 		
-		$msg = $this->parent_class->insert_object($this->type, $_POST['xydac_form_'.$this->xydac_core_name][$this->namefield_name],isset($_GET['manage_'.$this->xydac_core_name])?$_GET['manage_'.$this->xydac_core_name]:'', apply_filters( 'xydac_core_insert',$_POST['xydac_form_'.$this->xydac_core_name]),$this->namefield_name);
+		$msg = $this->parent_class->insert_object($this->type, $dat['xydac_form_'.$this->xydac_core_name][$this->namefield_name],isset($_GET['manage_'.$this->xydac_core_name])?$_GET['manage_'.$this->xydac_core_name]:'', apply_filters( 'xydac_core_insert',$dat['xydac_form_'.$this->xydac_core_name]),$this->namefield_name);
 		if(is_wp_error(($msg)))
 			$this->xydac_core_error= $msg;
 		else{
 			$this->xydac_core_message = $msg;
 			$this->xydac_core_editmode = false;
 		}
+		
 		do_action('xydac_core_insert_update');
 	}
 	function update()
 	{
-	
+
+		$dat = $_POST;
+		$boolarr = array();
+		foreach($this->xydac_core_form_array as $nam=>$d)
+			if($d['type']=='boolean'){
+				array_push($boolarr,$d['name']);
+			}
+		$dat['xydac_form_'.$this->xydac_core_name] = $this->modarr($dat['xydac_form_'.$this->xydac_core_name],$boolarr,"");
+		
 		$this->xydac_core_editmode = true;
-		$msg= $this->parent_class->update_object($this->type, $_POST['xydac_form_'.$this->xydac_core_name][$this->namefield_name],isset($_GET['manage_'.$this->xydac_core_name])?$_GET['manage_'.$this->xydac_core_name]:'', apply_filters( 'xydac_core_update',$_POST['xydac_form_'.$this->xydac_core_name]),$_POST['xydac_form_'.$this->xydac_core_name."_old"],$this->namefield_name);
+		$msg= $this->parent_class->update_object($this->type, $dat['xydac_form_'.$this->xydac_core_name][$this->namefield_name],isset($_GET['manage_'.$this->xydac_core_name])?$_GET['manage_'.$this->xydac_core_name]:'', apply_filters( 'xydac_core_update',$dat['xydac_form_'.$this->xydac_core_name]),$_POST['xydac_form_'.$this->xydac_core_name."_old"],$this->namefield_name);
 		if(is_wp_error(($msg))){
 			$this->xydac_core_error= $msg;
 			$this->xydac_core_editmode = true;
@@ -212,6 +240,7 @@ abstract class xydac_ultimate_cms_core{
 			$this->xydac_core_message = $msg;
 			$this->xydac_core_editmode = false;
 		}
+		
 		do_action('xydac_core_insert_update');
 	}
 	/*
@@ -256,7 +285,7 @@ abstract class xydac_ultimate_cms_core{
 			
 			
 	}
-	
+
 	function init()
 	{ 
 	$xydac_rowdata = apply_filters( 'xydac_core_rowdata', ($this->type=='main')? $this->parent_class->get_main() : $this->parent_class->get_field($this->field_val) );//!is_array($this->option_name)?get_option($this->option_name):($this->option_name);
@@ -272,8 +301,12 @@ abstract class xydac_ultimate_cms_core{
 		<?php } ?>
 		<br class="clear" />
 		<div id="col-container" class="<?php echo $this->xydac_core_name;?>">
-		<?php if($this->xydac_core_show_left){?>
-			<div id="col-right">
+		<?php if($this->xydac_core_show_left){
+					if($this->xydac_core_editmode)
+						echo '<div id="col-right"  style="width:25%">';
+					else
+						echo '<div id="col-right">';
+		?>
 			<?php }else{?>
 			<div id="col">
 			<?php }?>
@@ -281,7 +314,7 @@ abstract class xydac_ultimate_cms_core{
 				<?php do_action('xydac_core_righthead'); ?>
 				
 					<form id="form_edit_doaction" action="<?php if($this->xydac_core_editmode) echo $this->xydac_core_form_action.'&edit_'.$this->xydac_core_name.'=true&'.$this->xydac_core_name.'_name='.$this->xydac_editdata[$this->namefield_name]; else echo $this->xydac_core_form_action; ?>" method="post">
-					<?php if($this->xydac_core_show_doaction){ ?>
+					<?php if($this->xydac_core_show_doaction && !$this->xydac_core_editmode){ ?>
 						<div class="tablenav">
 							<select name="action">
 								<option value=""><?php _e('Bulk Actions',XYDAC_CMS_NAME); ?></option>
@@ -309,12 +342,15 @@ abstract class xydac_ultimate_cms_core{
 									<?php 
 										$headfootcolumn = array('name'=>__("Name",XYDAC_CMS_NAME));
 										$headfootcolumn = apply_filters( 'xydac_core_headfootcolumn', $headfootcolumn );
+										
 										foreach($headfootcolumn as $name=>$label){
+											if(($this->xydac_core_editmode && ($name=='name' || $name=='field_name')) || (!$this->xydac_core_editmode)){
 												if($name=='[description]')
 													echo '<th class="manage-column column-description xydac-col-'.$this->xydac_core_name.'-'.str_replace(array('[',']',' '),'',$name).'" id="'.$name.'" scope="col">'.$label.'</th>';
 												else
 													echo '<th class="manage-column column-name xydac-col-'.$this->xydac_core_name.'-'.str_replace(array('[',']',' '),'',$name).'" id="'.$name.'" scope="col">'.$label.'</th>';
 											}
+										}
 									?>
 								</tr>
 							</thead>
@@ -362,6 +398,7 @@ abstract class xydac_ultimate_cms_core{
 											   /*  } */?>
 										</td>
 										<?php 
+										if(!$this->xydac_core_editmode){
 										/*put value as array and $v as [field_label]*/
 										if(is_array($value) && is_array($headfootcolumn)) 
 											foreach($headfootcolumn as $v=>$k)  
@@ -373,7 +410,7 @@ abstract class xydac_ultimate_cms_core{
 										?><td class="categories xydac-col-<?php echo $this->xydac_core_name.'-'.str_replace(array('[',']',' '),'',$v);?>">
 										<?php echo $val; ?>
 										</td>
-										<?php }}  ?>
+										<?php }}}  ?>
 
 									</tr>
 								<?php //echo $row->field_name;
@@ -384,7 +421,8 @@ abstract class xydac_ultimate_cms_core{
 										<th class="manage-column column-cb check-column"  scope="col"><input type="checkbox"></th>
 										<?php 
 											foreach($headfootcolumn as $name=>$label)
-											echo '<th class="manage-column xydac-col-'.$this->xydac_core_name.'-'.str_replace(array('[',']',' '),'',$name).'" id="'.$name.'" scope="col">'.$label.'</th>';
+												if(($this->xydac_core_editmode && ($name=='name'  || $name=='field_name')) || (!$this->xydac_core_editmode))
+													echo '<th class="manage-column xydac-col-'.$this->xydac_core_name.'-'.str_replace(array('[',']',' '),'',$name).'" id="'.$name.'" scope="col">'.$label.'</th>';
 										?>
 									</tr>
 							</tfoot>
@@ -395,8 +433,12 @@ abstract class xydac_ultimate_cms_core{
 					<br class="clear">
 				</div>
 			</div>
-<?php if($this->xydac_core_show_left){ ?>
-			<div id='col-left'>
+<?php if($this->xydac_core_show_left){ 
+					if($this->xydac_core_editmode)
+						echo '<div id="col-left"  style="width:75%">';
+					else
+						echo '<div id="col-left">';
+?>
 				<div class='col-wrap'>
 					<div class='form-wrap'>
 					<?php do_action('xydac_core_lefthead'); ?>
@@ -426,21 +468,24 @@ abstract class xydac_ultimate_cms_core{
 							'default'=>''
 							*/
 							if(is_array($this->xydac_core_form_array))
+							$oo=0;
 							foreach($this->xydac_core_form_array as $name=>$data)
 							{
-							extract($data);
-							if($type == 'heading'){ 
-								if($initialclose) echo "</div>"; 
-								if(!isset($finalclose)) {  echo "<h3>".$arr_label."</h3><div>"; } 
-							} else {
-							?>
-								<div class='form-field' id="xydac_panel_<?php echo $this->xydac_core_name.$name ?>"  >
+								extract($data);
+								if($type == 'heading'){ 
+									if($initialclose) echo '<div class="clear"></div></div>'; $oo=0;
+									if(!isset($finalclose)) {  echo "<h3>".$arr_label."</h3><div>"; } 
+								}elseif($type == 'subheading'){ 
+									echo '<div class="clear"></div>';$oo=0;
+									 echo "<div><h3>".$arr_label."</h3></div>";
+								} else {
+								?>
+								<div class='form-field' id="xydac_panel_<?php echo $this->xydac_core_name.$name ?>" style="position:relative;<?php echo ($type=='textarea' || !$this->xydac_core_editmode)?'':'width:45%;float:left;'?>" >
 									<?php if($type=='boolean')
-									{?><label for='<?php echo $this->xydac_core_name.$name ?>' style="display:inline;font-weight:bold;"><?php echo $arr_label; ?></label>
-										<select id='<?php echo $this->xydac_core_name.$name; ?>' name='xydac_form_<?php echo $this->xydac_core_name.$name ?>' class='postform' style="float:right;width:100px;margin-right:5%">
-											<option value='true' <?php  if($default=='true' && !$this->xydac_core_editmode) {echo 'selected';}elseif($this->xydac_core_editmode) { if('true'==$this->get_array_val($this->xydac_editdata,$name)) echo "selected"; }  ?>><?php echo 'True'; ?></option>
-											<option value='false' <?php if($default=='false' && !$this->xydac_core_editmode){ echo 'selected';}elseif($this->xydac_core_editmode) {if('false'==$this->get_array_val($this->xydac_editdata,$name)) echo "selected";} ?>><?php echo 'False'; ?></option>
-										</select>
+									{?>
+											<input type="hidden" name="xydac_form_<?php echo $this->xydac_core_name.$name; ?>" value=""/>
+											<input type='checkbox' style="width:15px;margin-left:20px" name="xydac_form_<?php echo $this->xydac_core_name.$name; ?>" id="<?php echo $this->xydac_core_name.$name; ?>" value="<?php echo $name; ?>" <?php if($this->xydac_core_editmode && $this->get_array_val($this->xydac_editdata,$name)=='true') echo "checked=checked"; ?>  />
+											<label for='<?php echo $this->xydac_core_name.$name ?>' style="display:inline;font-weight:bold;"><?php echo $arr_label; ?></label>
 									<?php } elseif($type=='array') { ?>
 										<label for='<?php echo $this->xydac_core_name.$name ?>' style="display:inline;font-weight:bold;"><?php echo $arr_label ?></label>
 										<select id='<?php echo $this->xydac_core_name.$name; ?>' name='xydac_form_<?php echo $this->xydac_core_name.$name ?>' class='postform' style="float:right;width:150px;margin-right:5%">
@@ -460,8 +505,14 @@ abstract class xydac_ultimate_cms_core{
 									<?php } elseif($type=='textarea') { ?><label for='<?php echo $this->xydac_core_name.$name ?>' style="font-weight:bold;"><?php echo $arr_label ?></label>
 										<textarea style="height:<?php if(isset($height)) echo $height; else echo "300px"; ?>" name='xydac_form_<?php echo $this->xydac_core_name.$name; ?>' class='name' id='<?php echo $this->xydac_core_name.$name; ?>'><?php if($this->xydac_core_editmode) {echo $this->get_array_val($this->xydac_editdata,$name); } ?></textarea>
 									<?php } ?>
-								<p><?php echo $desc ?></p>
+									<?php if($type!='array' && !empty(trim($desc)) ){ ?>
+										<a class="xydactooltip" href="#" >Info<?php echo '<span style="width: 180px;" class="info">'.$desc.'</span>'; ?></a>
+									<?php } ?>
 								</div>
+								<?php $oo++;
+								if($oo%2==0)
+									echo '<div class="clear"></div>';
+								?>
 							<?php }}  ?>
 							<!--END ADDED FORM SECTION -->
 							</div>
