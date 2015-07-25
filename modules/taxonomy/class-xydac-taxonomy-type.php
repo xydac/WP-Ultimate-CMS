@@ -2,8 +2,9 @@
 /*
  Module Name:	Taxonomy
 Type:			Module
-Description:	Xydac Taxonomy module
+Description:	Xydac Taxonomy Manager Provides you with power to create as many taxonomies you want for your website, as well as link these taxonomies with as many post types you want.A taxonomy is used for categorizing objects. WordPress has Category and Tags as two default taxonomies, which are used to categorized posts. Category has the tendency to categorize hierarchically, where as tags can categorize only on tag basis
 Author:			deepak.seth
+Module URI: 	http://xydac.com/ultimate-cms/custom-taxonomy/
 Author URI:		http://www.xydac.com/
 Version:		1.0
 

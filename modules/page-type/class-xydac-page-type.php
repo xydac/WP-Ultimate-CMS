@@ -2,7 +2,8 @@
 /*
 Module Name:	Page Type
 Type:			Module
-Description:	Xydac Page Type module
+Description:	Xydac Page Type is similar to Custom post type but are sub components of Page. It enables you to add form fields and design elements to a given page type and later show them as form in the Edit/Add Page. The custom design for page type enables you to show the given elements in pre defined way to end user. 
+Module URI: 	http://xydac.com/ultimate-cms/page-type/
 Author:			deepak.seth
 Author URI:		http://www.xydac.com/
 Version:		1.0
@@ -16,7 +17,7 @@ class xydac_page_type extends xydac_cms_module{
 
 	function __construct()
 	{
-		parent::__construct('page_type',array('module_label'=>'Xydac Page Type',
+		parent::__construct('page_type',array('module_label'=>'Xydac Page Types',
 				'has_custom_fields'=>true,
 				'uses_active'=>true,
 				'registered_option'=>array('main'=>'xydac_page_type',

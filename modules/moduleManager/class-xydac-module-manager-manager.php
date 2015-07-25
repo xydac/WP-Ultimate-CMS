@@ -34,8 +34,10 @@ class xydac_module_manager_manager extends xydac_ultimate_cms_core{
 			else {
 				$datas[$k]['type'] = ucwords($datas[$k]['type']);
 				$datas[$k]['description']	=	 $datas[$k]['description']."<br/>".ucwords($datas[$k]['type'])." | <strong>By : </strong>"."<a href='".$datas[$k]['url']."' >".$datas[$k]['author']."</a>";
-                
-        }
+                if(!empty($datas[$k]['moduleurl']))
+					$datas[$k]['description'].=" | <a href='".$datas[$k]['moduleurl']."' target='_new' >View details</a>";
+        
+		}
 		return $datas;
 	}
 }

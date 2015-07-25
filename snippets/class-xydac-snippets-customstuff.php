@@ -4,6 +4,7 @@ Module Name:	Custom Stuff
 Type:			Snippet
 Description:	Adds a collection of useful Custom Snippets of WordPress tweaks from http://www.wphub.com/tutorials/code-snippets-wordpress/. Please check site for more details.
 Author:			deepak.seth
+Module URI:     http://www.wphub.com/tutorials/code-snippets-wordpress/
 Author URI:		http://www.xydac.com/
 Version:		1.0
 */

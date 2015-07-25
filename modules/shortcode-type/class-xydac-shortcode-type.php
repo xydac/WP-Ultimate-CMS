@@ -2,7 +2,8 @@
 /*
  Module Name:	ShortCode
 Type:			Module
-Description:	Xydac Shortcode module
+Description:	Xydac Shortcode allows user to create shortcode for various HTML tags. It allows you to create new Shortcode that behaves the way you want them to be.
+Module URI: 	http://xydac.com/ultimate-cms/shortcode-manager/
 Author:			deepak.seth
 Author URI:		http://www.xydac.com/
 Version:		1.0

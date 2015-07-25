@@ -2,7 +2,7 @@
 /*
 Module Name:	Custom CSS
 Type:			Snippet
-Description:	This adds the code snippets which enables you to add Custom CSS using a given form, which will be added to your website. 
+Description:	This adds the code snippets which enables you to add Custom CSS using a given form, which will be added to all the pages and posts on your website. 
 Author:			deepak.seth
 Author URI:		http://www.xydac.com/
 Version:		1.0

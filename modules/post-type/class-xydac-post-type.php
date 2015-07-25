@@ -2,7 +2,8 @@
 /*
  Module Name:	Post Type
 Type:			Module
-Description:	Xydac Post Type module
+Description:	Xydac Post Type is used to define Custom post types in WordPress. It enables you to add and customize new post types and further add form fields and design elements to a given post type. These form fields are later shown in the Edit/Add Page for user to fill asked information. The custom design for post type enables you to show the given elements in pre defined way to end user. The plugin provides a way to do all this without writing a single file on server. 
+Module URI: 	http://xydac.com/ultimate-cms/post-type/
 Author:			deepak.seth
 Author URI:		http://www.xydac.com/
 Version:		1.0
@@ -16,7 +17,7 @@ class xydac_post_type extends xydac_cms_module{
 
 	function __construct()
 	{
-		parent::__construct('post_type',array('module_label'=>'Xydac Post Type',
+		parent::__construct('post_type',array('module_label'=>'Xydac Post Types',
 				'has_custom_fields'=>true,
 				'uses_active'=>true,
 				'registered_option'=>array('main'=>'xydac_cpt',
