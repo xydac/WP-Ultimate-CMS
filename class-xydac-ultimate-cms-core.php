@@ -504,8 +504,9 @@ abstract class xydac_ultimate_cms_core{
 										<?php } ?>
 									<?php } elseif($type=='textarea') { ?><label for='<?php echo $this->xydac_core_name.$name ?>' style="font-weight:bold;"><?php echo $arr_label ?></label>
 										<textarea style="height:<?php if(isset($height)) echo $height; else echo "300px"; ?>" name='xydac_form_<?php echo $this->xydac_core_name.$name; ?>' class='name' id='<?php echo $this->xydac_core_name.$name; ?>'><?php if($this->xydac_core_editmode) {echo $this->get_array_val($this->xydac_editdata,$name); } ?></textarea>
-									<?php } ?>
-									<?php if($type!='array' && !empty(trim($desc)) ){ ?>
+									<?php } 
+									$desc = trim($desc);
+									 if($type!='array' && !empty($desc) ){ ?>
 										<a class="xydactooltip" href="#" >Info<?php echo '<span style="width: 180px;" class="info">'.$desc.'</span>'; ?></a>
 									<?php } ?>
 								</div>
