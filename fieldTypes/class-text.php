@@ -5,7 +5,7 @@ class text extends field_type{
 	public function __construct($name,$args = array())
 	{
 		parent::__construct($name,$args);
-		$this->ver = 2.0;
+		$this->ver = 3.0;
 		$this->basic = true;
 		$this->ftype = 'text';
 		$this->flabel = __('Text Box',XYDAC_CMS_NAME);
@@ -18,7 +18,7 @@ class text extends field_type{
 		if(isset($tabular) && $tabular){
 			$r.='<tr class="form-field"><th scope="row" valign="top">';
 		}
-		$r.='<label for="'.$name.'">'.$label.'</label><p>';
+		$r.='<label for="'.$name.'">'.$label.'</label>';
 		if(isset($tabular) && $tabular){
 			$r.='</th><td>';
 		}
@@ -28,7 +28,7 @@ class text extends field_type{
 			$r.='<input type="text" name="'.$name.'" id="'.$name.'" value="'.esc_html( $value, 1 ).'" />';
 		if($create_old)
 			$r.='<input type="hidden" name="'.$name.'-old" value="'.esc_html( $value, 1 ).'" />';
-		$r.='</p><p><span class="'.$name.'">'.$desc.'</span></p>';
+		$r.='<span class="description '.$name.'">'.$desc.'</span>';
 		if(isset($tabular) && $tabular){
 			$r.='</td></tr>';
 		}

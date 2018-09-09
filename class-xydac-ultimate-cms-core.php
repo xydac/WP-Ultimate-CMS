@@ -474,7 +474,7 @@ abstract class xydac_ultimate_cms_core{
 								extract($data);
 								if($type == 'heading'){ 
 									if($initialclose) echo '<div class="clear"></div></div>'; $oo=0;
-									if(!isset($finalclose)) {  echo "<h3>".$arr_label."</h3><div>"; } 
+									if(!isset($finalclose)) {  echo "<h3 class='accordion-toggle'>".$arr_label."</h3><div class='accordion-content'>"; } 
 								}elseif($type == 'subheading'){ 
 									echo '<div class="clear"></div>';$oo=0;
 									 echo "<div><h3>".$arr_label."</h3></div>";

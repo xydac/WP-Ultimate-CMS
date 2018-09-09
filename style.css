@@ -14,6 +14,7 @@ ul.xydac-custom-meta {
 	border-color: #DFDFDF #DFDFDF #CCCCCC;
 	border-width: 1px;
 	border-style: solid;
+	padding: 5px;
 }
 
 ul.xydac-custom-meta li.active {
@@ -37,12 +38,12 @@ ul.xydac-custom-meta li {
 .xydac-custom-meta li a {
 	text-decoration: none;
 	color: #999999;
+	font-size: 130%;
 }
 
 .xydac-custom-meta li.active a {
 	text-decoration: none;
 	color: #21759B;
-	font-weight: bold;
 }
 
 .xydac-custom-meta-div div.tabs-panel {
@@ -57,9 +58,8 @@ ul.xydac-custom-meta li {
 }
 
 .xydac-custom-meta .tab-content {
-	overflow: auto;
-	padding: 0.5em 0.9em;
-	border: 1px solid #DFDFDF;
+	overflow: visible;
+	/*border: 1px solid #DFDFDF;*/
 }
 
 .xydac-custom-meta .description {
@@ -69,9 +69,6 @@ ul.xydac-custom-meta li {
 .xydac-custom-meta label {
 	display: block;
 	font-weight: bold;
-	margin: 6px;
-	margin-bottom: 0;
-	margin-top: 12px;
 }
 
 .xydac-custom-meta label span {
@@ -97,10 +94,13 @@ ul.xydac-custom-meta li {
 	text-transform: uppercase;
 }
 
-.xydac-custom-meta label.radio {
+.xydac-custom-meta label.radio,
+.xydac-custom-meta label.checkbox {
 	display: inline;
 	font-weight: normal;
-	margin-left: 5px;
+}
+.xydac-custom-meta p input[type=radio],.xydac-custom-meta p input[type=checkbox]{
+	margin: 10px
 }
 
 .xydac-custom-meta label.neo {
@@ -132,6 +132,7 @@ p.customEditor {
 	background: none repeat scroll 0 0 #FFFFFF;
 }
 
+.xydac-custom-meta textarea.wp-editor-area,
 .xydac-custom-meta .customEditor textarea {
 	border: 0;
 }
@@ -207,55 +208,7 @@ p.customEditor {
 .xydac_form_inline .xydac_detail {
 	width: 50%;
 }
-
-div#accordion  h3.ui-state-active {
-	color: #21759B;
-	text-align: center;
-}
-
-div#accordion .ui-state-default {
-	cursor: pointer;
-	background: #F6F6F6;
-	border: 1px solid #DDD;
-	padding: 10px;
-	margin-bottom: 0px
-}
-
-div#accordion .ui-state-hover {
-	cursor: pointer;
-	background: #F6F6F6;
-	border: 1px solid #DDD;
-	padding: 10px;
-	background-image: -moz-linear-gradient(center top, #F9F9F9, #ECECEC);
-	color: #d54e21;
-}
-
-div#accordion .ui-state-active {
-	margin-bottom: 0px;
-	cursor: pointer;
-	padding: 10px;
-	background-color: #F1F1F1;
-	background-image: -moz-linear-gradient(center top, #F9F9F9, #ECECEC);
-	border-bottom-color: #DFDFDF;
-	border-top-color: #FFFFFF;
-	border-style: solid;
-	border-width: 1px;
-	border-color: #DFDFDF;
-	-moz-border-radius-topright: 3px;
-	-moz-border-radius-topleft: 3px;
-}
-
-div#accordion .ui-accordion-content-active {
-	background-color: #F9F9F9;
-	border-color: #DFDFDF;
-	border-style: solid;
-	border-width: 0 1px;
-}
-
-div#accordion .form-field {
-	margin: 0px;
-    padding:8px;
-} /* ---------- */
+/* ---------- */
 div.xydacfieldform {
 	background-color: #F9F9F9;
 }
@@ -318,8 +271,8 @@ div.xydacfieldform .xydac_home input[type='text'] {
 	padding: 5px;
 	width: 300px;
 	border-color: #DFDFDF;
-	-moz-border-radius: 3px 3px 3px 3px;
-	-moz-box-sizing: border-box;
+	border-radius: 3px 3px 3px 3px;
+	box-sizing: border-box;
 	font-size: 12px
 }
 
@@ -342,7 +295,7 @@ div.xydacfieldform .xydac_home p {
 }
 
 .xydac_button {
-	-moz-border-radius: 3px;
+	border-radius: 3px;
 	text-align: center;
 	color: #FFFFFF;
 	background-image: -moz-linear-gradient(center top, #B5421C, #D54E21);
@@ -376,7 +329,6 @@ p.xydacdonation a {
 	display: block;
 	color: #D54E21;
 	text-decoration: none;
-	v
 }
 
 .xydacinactive {
@@ -597,28 +549,75 @@ p.xydacdonation a {
 
 /* Tool tips as help for plugin */
 
-		.xydactooltip {
-			border-bottom: 1px dotted #000000; color: #000000; outline: none;
-			cursor: help; text-decoration: none;
-			position: absolute;
-			right:2em;top:6px;
-			float:right;
-		}
-		.xydactooltip span {
-			margin-left: -999em;
-			color:black;
-			position: absolute;
-		}
-		.xydactooltip:hover span {
-			border-radius: 5px 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; 
-			box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); -webkit-box-shadow: 5px 5px rgba(0, 0, 0, 0.1); -moz-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
-			position: absolute; right: 0em; top: 2em; z-index: 99;
-			margin-left: 0; width: 350px;
-			padding:5px;
-		}
-		.xydactooltip:hover img {
-			border: 0; margin: -10px 0 0 -55px;
-			float: left; position: absolute;
-		}
-		.xydactooltip .info { background: #9FDAEE; border: 1px solid #2BB0D7;	}
+.xydactooltip {
+	border-bottom: 1px dotted #000000; color: #000000; outline: none;
+	cursor: help; text-decoration: none;
+	position: absolute;
+	right:2em;top:6px;
+	float:right;
+}
+.xydactooltip span {
+	margin-left: -999em;
+	color:black;
+	position: absolute;
+}
+.xydactooltip:hover span {
+	border-radius: 5px 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; 
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.1); -webkit-box-shadow: 5px 5px rgba(0, 0, 0, 0.1); -moz-box-shadow: 5px 5px rgba(0, 0, 0, 0.1);
+	position: absolute; right: 0em; top: 2em; z-index: 99;
+	margin-left: 0; width: 350px;
+	padding:5px;
+}
+.xydactooltip:hover img {
+	border: 0; margin: -10px 0 0 -55px;
+	float: left; position: absolute;
+}
+.xydactooltip .info { background: #9FDAEE; border: 1px solid #2BB0D7;	}
 		
+/** 
+Accordion
+**/
+
+div#accordion .accordion-toggle {
+    cursor: pointer;
+    background: #e5e5e5;/*F6F6F6;*/
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 0px;
+}
+div#accordion .accordion-toggle.active{
+	background: #f1f1f1;
+}
+div#accordion .accordion-toggle::after{
+	content: "▼";
+	float: right;
+}
+
+div#accordion .accordion-toggle.active::after {
+	content: "▲";
+	float: right;
+}
+div#accordion .accordion-content {
+	cursor: pointer;
+	background: #F6F6F6;
+	border: 1px solid #DDD;
+	padding: 10px;
+	margin-bottom: 0px;
+	display: none;
+}
+
+div#accordion .accordion-content {
+	background-color: #F9F9F9;
+	border-color: #DFDFDF;
+	border-style: solid;
+	border-width: 0 1px;
+}
+
+div#accordion .form-field {
+	margin: 0px;
+    padding:8px;
+} 
+	
+/** 
+Accordion
+**/

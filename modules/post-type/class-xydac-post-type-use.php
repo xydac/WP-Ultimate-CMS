@@ -66,13 +66,15 @@ class xydac_post_type_use{
 		$inputfields=array();
 		$t="";
 		$e="";
+		$tax_combo = xydac()->modules->post_type->get_xydac_cms_tax_combo($post->ID);
+		
 		foreach($fields as $k=>$field)
 		{
 			$field_temp = new $field['field_type']($field['field_name'],array('label'=>$field['field_label'],'desc'=>$field['field_desc'],'val'=>$field['field_val'],'hasmultiple'=>$field['field_has_multiple']));
 			if($field_temp->isBasic())
 			{
-				$t.= "<div id='".$field['field_name']."' class='xydac_cms_field' rel='".$post->post_type."'>".$field_temp->input($post->ID)."</div>";
-				$t.= "<hr class='hrule clear'>";
+				$t.= "<div id='".$field['field_name']."' class='xydac_cms_field  form-field' rel='".$post->post_type."'>".$field_temp->input($post->ID)."</div>";
+				//$t.= "<hr class='hrule clear'>";
 				array_push($inputfields,$field['field_name']);
 			}
 			else
@@ -85,17 +87,18 @@ class xydac_post_type_use{
 		{
 			$e.='<li class="'.$field['field_name'].'"><a href="javascript:void(null);">'.$field['field_type'].'-'.$field['field_label'].'</a></li>';
 		}
-		$e.="<li class='taxonomies'><a href='javascript:void(null);'>".__('Additional Information',XYDAC_CMS_NAME)."</a></li>";
+		if(isset($tax_combo) && strlen($tax_combo))
+			$e.="<li class='taxonomies'><a href='javascript:void(null);'>".__('Additional Information',XYDAC_CMS_NAME)."</a></li>";
 
 		$e.= '<li class="inputfields"><a href="javascript:void(null);">Shortcodes</a></li>';
 		$e.='</ul>';
-		$e.= "<div class='xydac-custom'>";
+		$e.= "<div class='xydac-custom xydacfieldform'>";
 		$e.="<input type='hidden' name='xydac_custom_nonce' id='xydac_custom_nonce' value='".wp_create_nonce( plugin_basename(__FILE__) )."' />";
 		$e.=$t;
 		$e .="</div>";
 		foreach($notbasic as $k=>$field)
 		{
-			$e.= "<div class='xydac_cms_field ".$field['field_name']."' id='".$field['field_name']."' rel='".$post->post_type."'>";
+			$e.= "<div class='xydac_cms_field form-field ".$field['field_name']."' id='".$field['field_name']."' rel='".$post->post_type."'>";
 
 			$field_temp = new $field['field_type']($field['field_name'],array('label'=>$field['field_label'],'desc'=>$field['field_desc'],'val'=>$field['field_val'],'hasmultiple'=>$field['field_has_multiple']));
 			$e.= $field_temp->input($post->ID);
@@ -104,11 +107,12 @@ class xydac_post_type_use{
 			array_push($inputfields,$field['field_name']);
 		}
 
-		$e.="<div class='taxonomies'>". xydac()->modules->post_type->get_xydac_cms_tax_combo($post->ID)."</div>";
+		if(isset($tax_combo) && strlen($tax_combo))
+			$e.="<div class='taxonomies'>".$tax_combo."</div>";
 
 		$e.='<div class="inputfields">';
 		$e.='<h4>'.__('Availaible Shortcodes For Use ',XYDAC_CMS_NAME).'</h4>';
-		$e.= "<hr class='hrule clear'>";
+		//$e.= "<hr class='hrule clear'>";
 		$e.='<p style="word-spacing:2px;letter-spacing:3px"><strong>'.__('You can use these shortcodes anywhere to get the values for them at used location.',XYDAC_CMS_NAME).'</strong></p>';
 		foreach($inputfields as $inputfields)
 		{
