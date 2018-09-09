@@ -85,12 +85,14 @@ abstract class xydac_cms_module{
 						'label'=>$this->module_label.' Fields',
 						'default'=>false) ;
 			}
+			//removeapi - 
+			/*
 			if(xydac()->is_xydac_ucms_pro() && $this->xydac_sync){
 				$this->tabs['xydac_sync']=array('name'=>$this->module_name.'_xydac_sync',
 						'href'=>$this->base_path.'&sub='.$this->module_name.'_xydac_sync',
 						'label'=>$this->module_label.' Sync',
 						'default'=>false) ;
-			}
+			}*/
 		}else if(isset($args["tabs"]) && !empty($args["tabs"]) && is_array($args["tabs"]))
 			$this->tabs = $args["tabs"];
 
@@ -352,6 +354,14 @@ abstract class xydac_cms_module{
 				if($blog_url_id>0)
 					$arr_blogurlcode['id'] = $blog_url_id;
 			$content['custom_fields'] = array($arr_actualcode,$arr_fieldcode,$arr_blogurlcode);
+			// @TODO: Future Option for exporting data
+			$json_output = [];
+			$json_output['name'] = $namefieldname;
+			$json_output['type'] = 'xydac_'.$this->get_module_name();
+			$json_output['schema'] = $xydac_option;
+			$json_output['fields'] = $xydac_option_field;
+			
+			
 			//--End send Preparation
 			//--Begin Send the data for add or edit
 			if($syncid)

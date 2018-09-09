@@ -60,7 +60,7 @@ abstract class xydac_ultimate_cms_core{
 			$this->xydac_core_show_doaction = isset($xydac_core_show_doaction)?$xydac_core_show_doaction : true;
 			$this->xydac_core_show_delete = isset($xydac_core_show_delete)?$xydac_core_show_delete : true;
 			$this->xydac_core_show_sync = isset($xydac_core_show_sync)?$xydac_core_show_sync : true;
-		if(!xydac()->is_xydac_ucms_pro())
+		//removeapi - if(!xydac()->is_xydac_ucms_pro())
 			$this->xydac_core_show_sync = false;
 			
 		$this->activation = $obj->uses_active($this->type);

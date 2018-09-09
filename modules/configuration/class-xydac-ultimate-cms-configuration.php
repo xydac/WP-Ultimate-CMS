@@ -42,14 +42,15 @@ class xydac_ultimate_cms_configuration extends xydac_cms_module{
 	}
     function initialize_form_fields(){
         
-            
+		//removeapi - 
+		/*  
         array_push($this->configurationformfield,array('name'=>XYDAC_CMS_USER_API_KEY,
                                               'label'=>'API Key',
                                               'descriptionempty'=>'Xydac Cloud Sync: You can enter the API key to enable the sync facility at Xydac.com to backup your Xydac types. You can get your free API key from <strong><a href="http://xydac.com/account/">Xydac.com</a>. Once you get the API, you need to add this website address on your account pageat Xydac.com to enable sync from this website.',
                                               'description'=>'<a href="http://xydac.com/account/">My Account</a><br/><pre>Xydac Cloud Sync works only with live website currently.</pre>',
                                               'type'=>'text',
                                               'value'=>get_option(XYDAC_CMS_USER_API_KEY)));
-        
+        */
     }
     
     function render_formelements($name,$label,$type,$description,$value,$options=array()){
@@ -83,9 +84,11 @@ class xydac_ultimate_cms_configuration extends xydac_cms_module{
 			if(isset($_POST) && !empty($_POST) && wp_verify_nonce($_POST['xydac_cms_configuration_form_nonce'], __FILE__))
 			{
 
-				if(isset($_POST[XYDAC_CMS_USER_API_KEY]))
+				//removeapi - 
+				/*if(isset($_POST[XYDAC_CMS_USER_API_KEY]))
 					update_option(XYDAC_CMS_USER_API_KEY,$_POST[XYDAC_CMS_USER_API_KEY]);
-                if(isset($_POST[xydac_ucms_form])){
+				*/
+					if(isset($_POST[xydac_ucms_form])){
                         xydac()->options->formsubmit();
                     unset($_POST[xydac_ucms_form]);
                     
@@ -152,24 +155,8 @@ class xydac_ultimate_cms_configuration extends xydac_cms_module{
 	}
     
 	function configuration_footer(){
-        echo "
-			<script type='text/javascript'>
-			WebFontConfig = {
-			google: { families: [ 'Trade+Winds::latin' ] }
-			};
-			(function() {
-			var wf = document.createElement('script');
-			wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-			'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-			wf.type = 'text/javascript';
-			wf.async = 'true';
-			var s = document.getElementsByTagName('script')[0];
-			s.parentNode.insertBefore(wf, s);
-			})(); </script>
-			<br/><br/><br/>
-			";
 			$this->xydac_show_donate_link(false);
-			echo "<br/><h2 style=\"font-family: 'Trade Winds', cursive;font-size:40px;text-align:center;text-shadow: -1px 1px 4px #333;\">
+			echo "<br/><h2 style='text-align:center'>
 			<span style=\"font-size:20px;text-shadow:1px 1px 1px #333\">Code is Poetry</span>
 			&nbsp;&nbsp;-&nbsp;XYDAC&nbsp;-&nbsp;&nbsp;
 			<span style=\"font-size:20px;text-shadow:1px 1px 1px #333\">Adding Music to poetry</span></h2>";

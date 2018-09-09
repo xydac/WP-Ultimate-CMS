@@ -46,7 +46,8 @@ class xydac_post_type extends xydac_cms_module{
 				$xy_cpt['args']['labels']['edit_item'] = !empty($cpt['args']['labels']['edit_item']) ? $cpt['args']['labels']['edit_item'] : __('Edit '.$xy_cpt['args']['label']);
 				$xy_cpt['args']['labels']['new_item'] = !empty($cpt['args']['labels']['new_item']) ? $cpt['args']['labels']['new_item'] : __('New '.$xy_cpt['args']['label']);
 				$xy_cpt['args']['labels']['view_item'] = !empty($cpt['args']['labels']['view_item']) ? $cpt['args']['labels']['view_item'] : __('View '.$xy_cpt['args']['label']);
-				$xy_cpt['args']['labels']['search_item'] = !empty($cpt['args']['labels']['search_item']) ? $cpt['args']['labels']['search_item'] : __('Search '.$xy_cpt['args']['label']);
+                $xy_cpt['args']['labels']['view_items'] = !empty($cpt['args']['labels']['view_items']) ? $cpt['args']['labels']['view_items'] : __('Views '.$xy_cpt['args']['label']);//Added in WP 4.7 
+                $xy_cpt['args']['labels']['search_item'] = !empty($cpt['args']['labels']['search_item']) ? $cpt['args']['labels']['search_item'] : __('Search '.$xy_cpt['args']['label']);
 				$xy_cpt['args']['labels']['not_found'] = !empty($cpt['args']['labels']['not_found']) ? $cpt['args']['labels']['not_found'] : __('No '.$xy_cpt['args']['label'].' found');
 				$xy_cpt['args']['labels']['not_found_in_trash'] = !empty($cpt['args']['labels']['not_found_in_trash']) ? $cpt['args']['labels']['not_found_in_trash'] : __('No '.$xy_cpt['args']['label'].' found in Thrash');
 				$xy_cpt['args']['labels']['parent_item_colon'] = !empty($cpt['args']['labels']['parent_item_colon']) ? $cpt['args']['labels']['parent_item_colon'] : __('Parent '.$xy_cpt['args']['label']);
