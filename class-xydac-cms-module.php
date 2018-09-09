@@ -539,8 +539,8 @@ abstract class xydac_cms_module{
 	function front_header($tabs = null){
 		echo "<div class='wrap'>";
 		echo '<div id="icon-options-general" class="icon32"><br></div>';
-		if(!empty($tabs)){
-			echo '<h2 style="border-bottom: 1px solid #CCC;padding-bottom:0px;">';
+        if(!empty($tabs)){
+            echo '<nav class="nav-tab-wrapper woo-nav-tab-wrapper">';
 			$sub = isset($_GET['sub']) ? $_GET['sub'] : (isset($_GET['edit_xydac_'.$this->module_name])?$this->module_name : (isset($_GET['edit_'.$this->module_name.'_field'])?$this->module_name.'_fields':false));
 			foreach($tabs as $tab_name=>$tab){
 				?>
@@ -549,7 +549,7 @@ abstract class xydac_cms_module{
 </a>
 <?php
 			}
-			echo '</h2> <br class="clear" />';
+            echo '</nav>';
 		}
 	}
 	function front_footer(){
@@ -606,7 +606,7 @@ abstract class xydac_cms_module{
 		<?php echo __('Select the ',XYDAC_CMS_NAME).$this->module_label.__(' To manage ',XYDAC_CMS_NAME); ?>
 	</h3>
 	<select name='manage_<?php echo $this->module_name ?>'
-		id='manage_<?php echo $this->module_name ?>' style="margin: 20px;">
+		id='manage_<?php echo $this->module_name ?>'>
 		<?php foreach ($selectdata  as $name=>$label) {?>
 		<option value="<?php echo $label; ?>">
 			<?php echo $label; ?>

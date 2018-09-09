@@ -217,7 +217,7 @@ div#accordion .ui-state-default {
 	cursor: pointer;
 	background: #F6F6F6;
 	border: 1px solid #DDD;
-	padding: 5px;
+	padding: 10px;
 	margin-bottom: 0px
 }
 
@@ -225,7 +225,7 @@ div#accordion .ui-state-hover {
 	cursor: pointer;
 	background: #F6F6F6;
 	border: 1px solid #DDD;
-	padding: 5px;
+	padding: 10px;
 	background-image: -moz-linear-gradient(center top, #F9F9F9, #ECECEC);
 	color: #d54e21;
 }
@@ -233,7 +233,7 @@ div#accordion .ui-state-hover {
 div#accordion .ui-state-active {
 	margin-bottom: 0px;
 	cursor: pointer;
-	padding: 5px;
+	padding: 10px;
 	background-color: #F1F1F1;
 	background-image: -moz-linear-gradient(center top, #F9F9F9, #ECECEC);
 	border-bottom-color: #DFDFDF;
@@ -283,8 +283,7 @@ div.xydacfieldform .form-field {
 	border-width: 0 1px 1px;
 	margin: 0px;
 	clear: both;
-	padding-left:5px;
-	padding-right:5px;
+    padding:10px;
 }
 
 div.xydacfieldform .form-field p{
