@@ -146,7 +146,7 @@ abstract class field_type{
 
 	public function output($vals,$atts)
 	{
-		$atts = wp_specialchars_decode(stripslashes_deep($atts),ENT_QUOTES);
+		$atts = wp_specialchars_decode(stripslashes_deep($atts),ENT_NOQUOTES);
 	 extract(shortcode_atts(array(
 	 		'pre' => '',
 	 		'before_element'=>'',
@@ -156,7 +156,7 @@ abstract class field_type{
 
 		$s = "";
 		foreach($vals as $val)
-			$s.=wp_specialchars_decode($before_element).do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES)).wp_specialchars_decode($after_element);
+			$s.=wp_specialchars_decode($before_element).do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_NOQUOTES)).wp_specialchars_decode($after_element);
 		return wp_specialchars_decode($pre).$s.wp_specialchars_decode($post);
 
 	}

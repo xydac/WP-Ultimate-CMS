@@ -30,11 +30,11 @@ class nivoslider extends field_type{
 		$s = "";
 		foreach($vals as $val)
 		{
-			$val = wp_specialchars_decode($val,ENT_QUOTES);
+			$val = wp_specialchars_decode($val,ENT_NOQUOTES);
 			if (preg_match('/\A(?:\b(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)[-A-Z0-9+&@#\/%=~_|$?!:,.]*[A-Z0-9+&@#\/%=~_|$])\Z/i', $val))
 				$val='<img src="'.$val.'" />';
 			else
-				$val=do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES));
+				$val=do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_NOQUOTES));
 			$s.=$val;
 		}
 		//$s='<ul id="xydacnivoslider" class="nivoSlider">'.$s.'</ul>';
