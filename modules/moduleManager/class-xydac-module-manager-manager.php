@@ -25,6 +25,7 @@ class xydac_module_manager_manager extends xydac_ultimate_cms_core{
 	{
 		
 		_e('<p>Module Manager helps you to manage the modules associated with Ultimate CMS plugin. You can activate or deactivate the modules as per your use, Leaving any module activated doesn\'t use any extra resource But still it\'s safer to deactivate the same if not being used.</p>');
+		
 	}
 	function xydac_core_rowdata_func($datas){
         

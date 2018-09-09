@@ -1,31 +1,28 @@
-﻿=== Ultimate CMS ===
+=== Ultimate CMS ===
 Contributors: deepak.seth
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=nikhilseth1989%40gmail%2ecom&item_name=WordPress%20Plugin%20(Ultimate%20CMS)&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
+Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=deepak.seth@xydac.com&item_name=WordPress%20Plugin%20(Ultimate%20CMS)&no_shipping=0&no_note=1&tax=0&currency_code=USD&lc=US&bn=PP%2dDonationsBF&charset=UTF%2d8
 Tags: Custom Post Type,CPT,Ultimate Post Type,Post Type,Post,Post Type Manager,Page Type,Page Type Manager,Archive,Archive Manager,Taxonomy,Taxonomy Manager,Shortcode manager,shortcode, WordPress tweaks, Snippets.
 Requires at least: 3.0
-Tested up to: 3.8.1
+Tested up to: 4.9.8
 Stable tag: trunk
 
 
 This is an Easy to use Plugin to Create, Customize, Manage Custom Post Type,Custom Page Type, Custom Archives, Custom Taxonomies, Custom Shortcode, Custom WordPress tweaks and settings.
 
 == Description ==
-The plugin is divided in five parts:
+The plugin is divided in four parts:
 
 * Archive Manager
 * Post Type Manager
 * Page Type Manager
 * Taxonomy Manager
 * Shortcode Manager
-* **Snippet Library**
 
 One of the major component of the plugin are Custom Field Types without which no Custom Field would have existed.It is basically a generalization of custom field types, so that any PHP developer can create the own custom field types and also share it with different people.
 **[Download now!](http://downloads.wordpress.org/plugin/ultimate-cms.zip)**.
 
 **[[Plugin URL]](http://www.xydac.com/)** 
 **[[GIThub URL]](https://github.com/xydac/WP-Ultimate-CMS)** 
-
-**SYNC ALL YOUR DATA**
 
 Some Features
 
@@ -68,6 +65,16 @@ The automatic plugin installer should work for most people. Manual installation 
 
 
 == Changelog ==
+
+= 1.2 =
+* Tested with 4.9.8
+* Code Refactored
+* API Changes for post types
+* Added configuration Changes
+* Removed APIs
+* Added tooltips
+* Minor Performance Improvements
+* Added Issue Logging Button
 
 = 1.1 =
 * Fixed extra chars during plugin activation.

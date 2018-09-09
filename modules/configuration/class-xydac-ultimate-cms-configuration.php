@@ -33,10 +33,16 @@ class xydac_ultimate_cms_configuration extends xydac_cms_module{
 				'href'=>$this->base_path."&sub=configuration",
 				'label'=>'Configuration',
 				'default'=>false);
+		$github = array('name'=>'github_issue',
+				'href'=>"https://github.com/xydac/WP-Ultimate-CMS/issues/new",
+				'label'=>'Log an Issue',
+				'default'=>false);
+				
 		if(is_array($tab))
 			$tab['configuration'] = $mytab;
 		else
 			$tab = $mytab; 
+		$tab['github_issue'] = $github;
 		return $tab;
 		
 	}
