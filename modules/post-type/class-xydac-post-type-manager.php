@@ -75,6 +75,8 @@ class xydac_post_type_manager extends xydac_ultimate_cms_core{
 		add_action('xydac_core_bulkaction',array($this,'xydac_core_bulkaction'));
 		add_action('xydac_core_insert_update',array($this,'xydac_core_insert_update'));
 		add_action('xydac_core_rightfoot',array($this,'xydac_core_rightfoot'));
+		
+		add_action('xydac_core_head',array($this,'xydac_core_head'));
 
 
 		add_filter('xydac_core_headfootcolumn',array($this,'headfootcolumn'));
@@ -98,6 +100,13 @@ class xydac_post_type_manager extends xydac_ultimate_cms_core{
 				echo '<pre>[xydac_field]'.$field['field_name'].'[/xydac_field]</pre>';//
 			}
 			echo '</div>';
+		}
+	}
+
+	function xydac_core_head($data){
+		if($data->xydac_core_editmode && ($data->xydac_editdata[$data->namefield_name] == 'post' || $data->xydac_editdata[$data->namefield_name] == 'page')){
+			$data->xydac_core_error = new WP_Error('error',$data->xydac_editdata[$data->namefield_name]. __(' can not be edited',XYDAC_CMS_NAME));
+			$data->xydac_core_editmode = false;
 		}
 	}
 	

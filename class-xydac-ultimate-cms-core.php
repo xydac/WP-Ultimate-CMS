@@ -306,11 +306,11 @@ abstract class xydac_ultimate_cms_core{
 		do_action('xydac_core_head', $this); 
 		
 		if(!empty($this->xydac_core_message)) {
-			echo '<div id="message" class="updated below-h2"><p>'.$this->xydac_core_message.'</p></div>';
+			echo '<div id="message" class="notice updated below-h2 is-dismissible"><p>'.$this->xydac_core_message.'</p></div>';
 		} 
 		
 		if(!empty($this->xydac_core_error) && is_wp_error($this->xydac_core_error)) {
-			echo '<div id="error" class="error below-h2"><p>'.$this->xydac_core_error->get_error_message().'</p></div>';
+			echo '<div id="error" class="notice error below-h2  is-dismissible"><p>'.$this->xydac_core_error->get_error_message().'</p></div>';
 		} 
 	?>
 		<br class="clear" />

@@ -59,7 +59,9 @@ class xydac_taxonomy_type_manager extends xydac_ultimate_cms_core{
 		add_action('xydac_core_insert_update',array($this,'xydac_core_insert_update'));
 		add_action('xydac_core_delete',array($this,'xydac_core_delete'));
 		add_action('xydac_core_bulkaction',array($this,'xydac_core_bulkaction'));
-
+	
+		add_action('xydac_core_head',array($this,'xydac_core_head'));
+	
 		add_action('xydac_core_rightfoot',array($this,'xydac_core_rightfoot'));
 
 		//add_filter('xydac_core_rowactions',array($this,'xydac_core_rowactions'));
@@ -73,6 +75,13 @@ class xydac_taxonomy_type_manager extends xydac_ultimate_cms_core{
 	function xydac_core_leftdiv()
 	{
 		return "id=accordion";
+	}
+	
+	function xydac_core_head($data){
+		if($data->xydac_core_editmode && ($data->xydac_editdata[$data->namefield_name] == 'post_tag' || $data->xydac_editdata[$data->namefield_name] == 'category')){
+			$data->xydac_core_error = new WP_Error('error',$data->xydac_editdata[$data->namefield_name]. __(' can not be edited',XYDAC_CMS_NAME));
+			$data->xydac_core_editmode = false;
+		}
 	}
 	function xydac_core_rightfoot()
 	{	
