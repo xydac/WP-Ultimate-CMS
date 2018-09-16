@@ -22,13 +22,18 @@ class textarea extends field_type{
 		if(isset($tabular) && $tabular){
 			$r.='</th><td>';
 		}
+		$r.='<p class="xydac-custom-meta">';
 		if($pre_arr)
-			$r.='<p><textarea name="'.$pre_arr.'['.$name.']'.'" id="'.$name.'" cols="60" rows="4" >'.esc_html( $value, 1 ).'</textarea></p>';
+			$r.='<textarea name="'.$pre_arr.'['.$name.']'.'" id="'.$name.'" cols="60" rows="4" >'.esc_html( $value, 1 ).'</textarea>';
 		else
-			$r.='<p><textarea name="'.$name.'" id="'.$name.'" cols="60" rows="4" >'.esc_html( $value, 1 ).'</textarea></p>';
+			$r.='<textarea name="'.$name.'" id="'.$name.'" cols="60" rows="4" >'.esc_html( $value, 1 ).'</textarea>';
 		if($create_old)
 			$r.='<input type="hidden" name="'.$name.'-old" value="'.esc_html( $value, 1 ).'" />';
-		$r.='<p><span class="'.$name.'">'.$desc.'</span></p>';
+		
+		if(isset($desc) && strlen($desc)>0)
+		$r.='<a class="xydactooltip" href="#" ><span style="width: 180px;" class="info '.$name.'">'.$desc.'</span></a>';
+		$r.='</p>';
+		$r.='<div rel="'.$name.'" class="clear"></div>';
 		if(isset($tabular) && $tabular){
 			$r.='</td></tr>';
 		}
@@ -49,15 +54,15 @@ class textarea extends field_type{
 		{
 			foreach($val as $k=>$v)
 				$input.= $this->get_input($k,wp_htmledit_pre($v));
-			if($this->hasmultiple)
-				$input.= $this->get_input();
+			/*if($this->hasmultiple)
+				$input.= $this->get_input();*/
 		}
 		else
 			$input.= $this->get_input();
 		if($this->hasmultiple && $post->post_type=='page')
-			return $input."<a href='#' class='xydac_add_more_page' id='".$this->name."'>".__('ADD MORE',XYDAC_CMS_NAME)."</a>";
+			return $input."<a href='#' class='xydac_add_more_page' id='".$this->name."'></a>";
 		else if($this->hasmultiple)
-			return $input."<a href='#' class='xydac_add_more' id='".$this->name."'>".__('ADD MORE',XYDAC_CMS_NAME)."</a>";
+			return $input."<a href='#' class='xydac_add_more' id='".$this->name."'></a>";
 		else
 			return $input;
 	}

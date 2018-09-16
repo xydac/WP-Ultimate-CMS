@@ -23,35 +23,35 @@ class combobox extends field_type{
 		if(isset($tabular) && $tabular){
 			$r.='</th><td>';
 		}
+		$r.='<div class="xydac-custom-meta">';
 		if($pre_arr)
 		{
-			$r.='<p><select name="'.$pre_arr.'['.$name.']'.'" id="'.$name.'" />';
+			$r.='<select name="'.$pre_arr.'['.$name.']'.'" id="'.$name.'" >';
 			foreach ( $options as $key=>$option )
 				if ( htmlentities( $value, ENT_QUOTES ) == $key )
-				{
 					$r.='<option selected="selected" value="'.$key.'">'.$option.'</option>';
-				}
 				else
-				{$r.='<option value="'.$key.'">'.$option.'</option>';
-				}
-				$r.='</select></p>';
+					$r.='<option value="'.$key.'">'.$option.'</option>';
+				
+			$r.='</select>';
 		}
 		else
 		{
-			$r.='<p><select name="'.$name.'" id="'.$name.'" />';
+			$r.='<select name="'.$name.'" id="'.$name.'" >';
 			foreach ( $options as $key=>$option )
 				if ( htmlentities( $value, ENT_QUOTES ) == $key )
-				{
 					$r.='<option selected="selected" value="'.$key.'">'.$option.'</option>';
-				}
 				else
-				{$r.='<option value="'.$key.'">'.$option.'</option>';
-				}
-				$r.='</select></p>';
+					$r.='<option value="'.$key.'">'.$option.'</option>';
+				
+			$r.='</select>';
 		}
 		if($create_old)
 			$r.='<input type="hidden" name="'.$name.'-old" value="'.esc_html( $value, 1 ).'" />';
-		$r.='<p><span class="'.$name.'">'.$desc.'</span></p>';
+		if(isset($desc) && strlen($desc)>0)
+		$r.='<a class="xydactooltip" href="#" ><span style="width: 180px;" class="info '.$name.'">'.$desc.'</span></a>';
+		$r.='</div>';
+		$r.='<div rel="'.$name.'" class="clear"></div>';
 		if(isset($tabular) && $tabular){
 			$r.='</td></tr>';
 		}

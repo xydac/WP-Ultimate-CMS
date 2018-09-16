@@ -85,6 +85,14 @@ abstract class xydac_cms_module{
 						'label'=>$this->module_label.' Fields',
 						'default'=>false) ;
 			}
+			
+			// not using
+			if(file_exists(dirname(__FILE__).DS.'modules'.DS.str_replace('_','-',$this->module_name).DS.str_replace('_','-',$this->module_name).'.html')){
+				$this->tabs['help']=array('name'=>$this->module_name.'_help',
+						'href'=>$this->base_path.'&sub='.$this->module_name.'_help',
+						'label'=>$this->module_label.' Help',
+						'default'=>false) ;
+			}
 			//removeapi - 
 			/*
 			if(xydac()->is_xydac_ucms_pro() && $this->xydac_sync){
@@ -555,7 +563,7 @@ abstract class xydac_cms_module{
 			foreach($tabs as $tab_name=>$tab){
 				?>
 <a href="<?php echo $tab['href']; ?>"
-	class="nav-tab <?php if(($sub && $sub===$tab['name']) || (!$sub && true ==$tab['default']))  echo 'nav-tab-active' ?>"><?php echo $tab['label']; ?>
+	class="nav-tab <?php if(!empty($tab['clazz'])) echo $tab['clazz']; ?> <?php if(($sub && $sub===$tab['name']) || (!$sub && true ==$tab['default']))  echo 'nav-tab-active' ?>"><?php echo $tab['label']; ?>
 </a>
 <?php
 			}
@@ -600,6 +608,13 @@ abstract class xydac_cms_module{
 	{
 		$method = 'xydac_'.$this->module_name.'_manager';
 		new $method();
+	}
+	//help tab page - not using 
+	function view_help_func($tab)
+	{
+		echo "<div class='editbox'><h1>Getting Started with ".$this->get_module_label()."</h1><hr>";
+		include_once(dirname(__FILE__).DS.'modules'.DS.str_replace('_','-',$this->module_name).DS.str_replace('_','-',$this->module_name).'.html');
+		echo "</div>";
 	}
 	//default field page
 	function view_fields_func($tab)

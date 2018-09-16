@@ -5,7 +5,7 @@ Plugin URI: http://xydac.com/ultimate-cms/
 Description: This is an Easy to use Plugin to Create, Customize, Manage Custom Post Type,Custom Page Type, Custom Archives, Custom Taxonomies.
 Author: XYDAC
 Author URI: http://xydac.com/
-Version: 1.2.1
+Version: 2.0.0
 License: GPL2*/
 
 if ( !defined( 'XYDAC_CMS_NAME' ) )define('XYDAC_CMS_NAME',"ultimate-cms");
@@ -47,6 +47,7 @@ class xydac_ultimate_cms{
 	protected static $menu_slug;
 	protected  static $log_messages;
 	protected  static $debug =true;
+	
 
 	public static function cms(){
 		if(!(self::$instance instanceof self)){
@@ -84,12 +85,15 @@ class xydac_ultimate_cms{
 			add_action('wp_head', array(self::$instance,'xydac_cms_site_head'));
 			add_action('admin_footer', array(self::$instance,'xydac_cms_admin_foot'));
 			add_action( 'xydac_cms_activate', array(self::$instance,'xydac_taxonomy_activate'));
+			add_action( 'xydac_cms_activate', array(self::$instance,'xydac_activate_all_modules'));
 			register_activation_hook( __FILE__, array('xydac_ucms_dbupdates','xydac_cms_activate') );
+
+			
 		};
 		
 		return self::$instance;
 	}
-    
+	
     
 	/*------------------------------------------MODULES SECTION-----------------------------*/
 	private static function load_modules(){
@@ -220,10 +224,27 @@ class xydac_ultimate_cms{
 		$role = get_role("administrator");
 		$role->add_cap("manage_xydac_cms");
 		wp_enqueue_script("jquery");
+		wp_enqueue_code_editor( array( 'type' => 'text/html', 'css', 'javscript' ) );
 		add_thickbox();
 		xydac_fieldtypes_init();
+
+
+		$plugin = plugin_basename( __FILE__ );
+		add_filter( "plugin_action_links_$plugin", array($this,'xydac_plugin_add_settings_link') ,10,1);
 		
+		add_action( 'admin_notices', array($this,'wp_info_notice' ));
 	}
+	
+	/**
+	 * @Since 2.0
+	 */
+	function xydac_plugin_add_settings_link( $links ) {
+		array_push($links, 
+			'<a href="admin.php?page=xydac_ultimate_cms">' . __( 'Settings' ) . '</a>'
+		);
+		return $links;
+	}
+	
 
 	function xydac_cms_site_head()
 	{
@@ -247,7 +268,7 @@ class xydac_ultimate_cms{
 	}
 	function xydac_cms_admin_menu()
 	{
-		$xydac_main_menu = add_menu_page('Ultimate CMS', 'Ultimate CMS', 'manage_xydac_cms', 'xydac_ultimate_cms', array($this,'xydac_cms_main1'));
+		$xydac_main_menu = add_menu_page('Ultimate CMS', 'Ultimate CMS', 'manage_xydac_cms', 'xydac_ultimate_cms', array($this,'xydac_cms_main1'), 'dashicons-layout');
 	}
     
     //This method is used by class-field-type to get a list of active field types
@@ -274,7 +295,20 @@ class xydac_ultimate_cms{
 		return $active; 
 	}
 
-	
+	function wp_info_notice() {
+		if( get_transient( XYDAC_CMS_NAME.'_activated' ) ){
+		?>
+		<div class="updated notice is-dismissible">
+			<p><?php _e( 'Ultimate CMS Activated. Please Activate Modules from <a href="admin.php?page=xydac_ultimate_cms">Ultimate CMS Settings</a> Page to use the plugin.', XYDAC_CMS_NAME ); ?></p>
+		</div>
+		<?php
+		  delete_transient( XYDAC_CMS_NAME.'_activated' );
+		}
+	}
+
+	function xydac_activate_all_modules(){
+		set_transient( XYDAC_CMS_NAME.'_activated', true, 10 );
+	}
 	
     
 	function xydac_taxonomy_activate()

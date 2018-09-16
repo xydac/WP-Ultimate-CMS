@@ -18,6 +18,7 @@ The plugin is divided in four parts:
 * Taxonomy Manager
 * Shortcode Manager
 
+
 One of the major component of the plugin are Custom Field Types without which no Custom Field would have existed.It is basically a generalization of custom field types, so that any PHP developer can create the own custom field types and also share it with different people.
 **[Download now!](http://downloads.wordpress.org/plugin/ultimate-cms.zip)**.
 
@@ -65,6 +66,21 @@ The automatic plugin installer should work for most people. Manual installation 
 
 
 == Changelog ==
+
+
+= 2.0.0 =
+* Revamped design to be responsive
+* Using Wordpress Codemirror for Codemirror Plugin
+* Removed Jquery UI dependency
+* Added available Shortcodes on Post type edit page for template usage
+* Added Generated Shortcode for Xydac Shortcodes
+* Added Quick Help for all modules
+* Removed All information from Post type/taxonomy CREATE screen.
+* Minor UI Improvements
+* Added Fields Row Action for Main types in settings
+* Updated UI for Post type Meta Box
+* Using Dashicons for help
+* Added Activation banner
 
 = 1.2 =
 * Tested with 4.9.8

@@ -40,11 +40,12 @@ class xydactabs extends field_type{
 				$val_data = get_post_meta($post->ID, $this->temp_data->name.'-'.$val, true);
 			}
 		}
-		$r="<div>";
+		$r="<div  class='xydac_cms_field form-field'>";
 		$r.= text::get_text_input(array('name'=>$this->temp_title->name.'-'.$val,'tabular'=>$tabular,'label'=>$this->label.__(' Title',XYDAC_CMS_NAME),'desc'=>$this->desc),$val_title,"xydac_custom[".$this->name.'-'.$val."]",true);
 		$r.= richtextarea::get_richtextarea_input(array('name'=>$this->temp_data->name.'-'.$val,'tabular'=>$tabular,'label'=>$this->label.__(' Data',XYDAC_CMS_NAME),'desc'=>$this->desc),wp_specialchars_decode(stripslashes_deep($val_data),ENT_QUOTES),"xydac_custom[".$this->name.'-'.$val."]",true);
-		$r.='<p><span class="'.$this->name.'-a">ii&nbsp;</span></p>';//don not remove this -a, this is just for ajax script
+		//$r.='<p><span class="'.$this->name.'-a">ii&nbsp;</span></p>';//don not remove this -a, this is just for ajax script
 		$r.="</div>";
+		$r.='<div rel="'.$this->name.'-a" class="clear"></div>';
 		return $r;
 	}
 	public function saving(&$temp,$post_id,$val,$oval='')

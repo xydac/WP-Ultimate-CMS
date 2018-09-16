@@ -13,7 +13,7 @@ class xydac_snippets_customcss extends xydac_snippets{
     
     function __construct(){        
         $this->name         = 'cutom_css';
-        $this->label        = 'Custom CSS';
+        $this->label        = 'Frontend Custom CSS';
         $this->description  = 'You can provide Custom CSS to be included on your website.';
         $this->type         = 'textarea';
         $this->order        = 1;

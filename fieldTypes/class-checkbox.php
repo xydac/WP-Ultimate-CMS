@@ -18,23 +18,27 @@ class checkbox extends field_type{
 		if(isset($tabular) && $tabular){
 			$r.='<tr class="form-field"><th scope="row" valign="top">';
 		}
+		
 		if($value)
 			$value = explode(',',$value);
 		else
 			$value=array();
-		$r.='<label for="'.$name.'">'.$label.'</label>';
+
+		$labelName = ($pre_arr) ? $pre_arr."[".$name."]"."[".$key."]" : "[".$name."]"."[".$key."]";	
+		$r.='<label for="'.$labelName.'">'.$label.'</label>';
 		if(isset($tabular) && $tabular){
 			$r.='</th><td>';
 		}
+
 		$r.='<p class="xydac-custom-meta">';
 		if($pre_arr)
 		{
 			if(is_array($options))
 				foreach ( $options as $key=>$option )
 				if ( in_array($key,$value))
-				$r.="<input id='".$key."' type='checkbox' name='".$pre_arr.'['.$name.']'."[".$key."]' value='".$key."' checked='checked'/><label class='checkbox'  for='".$key."'>".$option."</label>";
-			else
-				$r.="<input id='".$key."' type='checkbox' name='".$pre_arr.'['.$name.']'."[".$key."]' value='".$key."'/><label class='checkbox' for='".$key."'>".$option."</label>";
+					$r.="<input id='".$key."' type='checkbox' name='".$pre_arr."[".$name."]"."[".$key."]' value='".$key."' checked='checked'/><label class='checkbox'  for='".$key."'>".$option."</label>";
+				else
+					$r.="<input id='".$key."' type='checkbox' name='".$pre_arr."[".$name."]"."[".$key."]' value='".$key."'/><label class='checkbox' for='".$key."'>".$option."</label>";
 
 		}
 		else
@@ -42,14 +46,18 @@ class checkbox extends field_type{
 			if(is_array($options))
 				foreach ( $options as $key=>$option )
 				if ( in_array($key,$value))
-				$r.="<input id='".$key."' type='checkbox' name='".$name."[".$key."]' value='".$key."' checked='checked'/><label class='checkbox'  for='".$key."'>".$option."</label>";
-			else
-				$r.="<input id='".$key."' type='checkbox' name='".$name."[".$key."]' value='".$key."'/><label class='checkbox' for='".$key."'>".$option."</label>";
+					$r.="<input id='".$key."' type='checkbox' name='".$name."[".$key."]' value='".$key."' checked='checked'/><label class='checkbox'  for='".$key."'>".$option."</label>";
+				else
+					$r.="<input id='".$key."' type='checkbox' name='".$name."[".$key."]' value='".$key."'/><label class='checkbox' for='".$key."'>".$option."</label>";
 
 		}
+		
 		if($create_old)
 			$r.='<input type="hidden" name="'.'['.$name.'-old]'.'" value="'.esc_html( $value, 1 ).'" />';
-		$r.='</p><p><span class="'.$name.'">'.$desc.'</span></p>';
+		$r.='</p>';
+		if(isset($desc) && strlen($desc)>0)
+		$r.='<a class="xydactooltip" href="#" ><span style="width: 180px;" class="info '.$name.'">'.$desc.'</span></a>';
+		$r.='<div rel="'.$name.'" class="clear"></div>';
 		if(isset($tabular) && $tabular){
 			$r.='</td></tr>';
 		}
@@ -68,6 +76,7 @@ class checkbox extends field_type{
 			foreach($val as $k=>$v)
 			$str.=$k.",";
 		$val = substr($str,0,-1);
+		
 		array_push($temp,update_post_meta($post_id, $this->name, esc_attr($val),esc_attr($oval)));
 	}
 }

@@ -1,17 +1,17 @@
 <?php 
 
-class text extends field_type{
+class datepicker extends field_type{
 
 	public function __construct($name,$args = array())
 	{
 		parent::__construct($name,$args);
 		$this->ver = 3.0;
 		$this->basic = true;
-		$this->ftype = 'text';
-		$this->flabel = __('Text Box',XYDAC_CMS_NAME);
+		$this->ftype = 'datepicker';
+		$this->flabel = __('Date Picker',XYDAC_CMS_NAME);
 		$this->compaitable = array('pagetype','posttype','taxonomy');
 	}
-	public static function get_text_input( $args = array(), $value = false, $pre_arr=false, $create_old = false )
+	public static function get_datepicker_input( $args = array(), $value = false, $pre_arr=false, $create_old = false )
 	{
 		extract( $args );
 		$r='';
@@ -24,9 +24,9 @@ class text extends field_type{
 		}
 		$r.='<p class="xydac-custom-meta">';
 		if($pre_arr)
-			$r.='<input type="text" name="'.$pre_arr.'['.$name.']'.'" id="'.$name.'" value="'.esc_html( $value, 1 ).'" />';
+			$r.='<input type="date" name="'.$pre_arr.'['.$name.']'.'" id="'.$name.'" value="'.esc_html( $value, 1 ).'" />';
 		else
-			$r.='<input type="text" name="'.$name.'" id="'.$name.'" value="'.esc_html( $value, 1 ).'" />';
+			$r.='<input type="date" name="'.$name.'" id="'.$name.'" value="'.esc_html( $value, 1 ).'" />';
 		if($create_old)
 			$r.='<input type="hidden" name="'.$name.'-old" value="'.esc_html( $value, 1 ).'" />';
 		
@@ -43,7 +43,7 @@ class text extends field_type{
 	{
 		if(is_string($no))
 			$no = substr(uniqid(),0,8);
-		return self::get_text_input(array('name'=>$this->name."-".$no,'tabular'=>$tabular,'label'=>$this->label,'desc'=>$this->desc),$val,"xydac_custom",true);
+		return self::get_datepicker_input(array('name'=>$this->name."-".$no,'tabular'=>$tabular,'label'=>$this->label,'desc'=>$this->desc),$val,"xydac_custom",true);
 	}
 
 

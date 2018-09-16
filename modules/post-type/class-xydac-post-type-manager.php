@@ -5,6 +5,7 @@ class xydac_post_type_manager extends xydac_ultimate_cms_core{
 
 	function __construct()
 	{
+		
 		$avl_types ='';
 		$form_variables = array(
 	   'heading-1' => array('arr_label' => __('Labels',XYDAC_CMS_NAME) , 'name' => 'xydac_acc_label', 'type'=>'heading', 'initialclose'=>false),
@@ -63,27 +64,43 @@ class xydac_post_type_manager extends xydac_ultimate_cms_core{
 				
 				'slug' => array( 'arr_label' => __('Slug',XYDAC_CMS_NAME) , 'name' => '[args][rewrite][slug]', 'type'=>'string', 'desc'=> __('Prepend posts with this slug. Uses Post-Type name if left blank.',XYDAC_CMS_NAME) , 'default'=>' '),
 				'permalink_epmask' => array( 'arr_label' => __('Permalink_EPMASK',XYDAC_CMS_NAME) , 'name' => '[args][permalink_epmask]', 'type'=>'string', 'desc'=> __('The default rewrite endpoint bitmasks.',XYDAC_CMS_NAME) , 'default'=>' '),
-				'heading-42' => array('arr_label' => __('Content Details',XYDAC_CMS_NAME) , 'name' => 'xydac_acc_con_details', 'type'=>'heading', 'initialclose'=>true),
-				'content_html' => array( 'arr_label' => __('Content HTML',XYDAC_CMS_NAME) , 'name' => '[content_html]', 'type'=>'textarea', 'desc'=> __('Please Enter the default template for the content.Use the litrel [CONTENT] wherever you want to show the default content.Else use the Shortcodes for display of other fields.<br/><b>Availaible Field Types :</b> <br/>'.$avl_types.' ',XYDAC_CMS_NAME), 'default'=>''),
-				'content_css' => array( 'arr_label' => __('Content CSS',XYDAC_CMS_NAME) , 'name' => '[content_css]', 'type'=>'textarea', 'desc'=> __('Please Enter the Custom CSS Styles for this post type ',XYDAC_CMS_NAME), 'default'=>''),
-				'content_js' => array( 'arr_label' => __('Content Javascript',XYDAC_CMS_NAME) , 'name' => '[content_js]', 'type'=>'textarea', 'desc'=> __('Please Enter the Custom Java script for this post type ',XYDAC_CMS_NAME), 'default'=>''),
+				'heading-42' => array('arr_label' => __('Content Details',XYDAC_CMS_NAME) , 'name' => 'xydac_acc_con_details', 'type'=>'heading', 'initialclose'=>true, 'heading_desc'=> __('Contents Should be used to style the look and feel of how things look in the frontend of the website. A form can be added to backend using custom field types. Once the form is in place you can use below to create a custom layout of different fields and any static html. You can use custom css and javascript here as well. All available shortcodes for post type is shown on the Right. You should create custom Fields if you haven\'t done that yet.',XYDAC_CMS_NAME)),
+				'content_html' => array( 'arr_label' => __('Content HTML',XYDAC_CMS_NAME) , 'arr_clazz' => 'codemirror_custom_html' , 'name' => '[content_html]', 'type'=>'textarea', 'desc'=> __('The Content of this is used on the frontend of current post type as template. You should use the shortcode and html to define how overall page should look like. Should you need the editor box content you can used shortcode [CONTENT].',XYDAC_CMS_NAME), 'default'=>''),
+				'content_css' => array( 'arr_label' => __('Content CSS',XYDAC_CMS_NAME) , 'arr_clazz' => 'codemirror_custom_css', 'name' => '[content_css]', 'type'=>'textarea', 'desc'=> __('Css styles defined here can be used to style the html markup used above. ',XYDAC_CMS_NAME), 'default'=>''),
+				'content_js' => array( 'arr_label' => __('Content Javascript',XYDAC_CMS_NAME) , 'arr_clazz' => 'codemirror_custom_js' , 'name' => '[content_js]', 'type'=>'textarea', 'desc'=> __('You can use any Custom Javascript to be added to frontent specific to current Post Type ',XYDAC_CMS_NAME), 'default'=>''),
 				'heading-5' => array('name'=>'finalheading','type'=>'heading','initialclose'=>true, 'finalclose'=>true),
 		);
 
 		add_action('xydac_core_delete',array($this,'xydac_core_delete'));
 		add_action('xydac_core_bulkaction',array($this,'xydac_core_bulkaction'));
 		add_action('xydac_core_insert_update',array($this,'xydac_core_insert_update'));
+		add_action('xydac_core_rightfoot',array($this,'xydac_core_rightfoot'));
+
+
 		add_filter('xydac_core_headfootcolumn',array($this,'headfootcolumn'));
 		add_filter('xydac_core_leftdiv',array($this,'xydac_core_leftdiv'));
+		//
 		//add_filter('xydac_core_rowactions',array($this,'xydac_core_rowactions'));
 		add_filter('xydac_core_doactions',array($this,'xydac_core_doactions'));
 		add_filter('xydac_core_insert',array($this,'xydac_core_insert'),10,1);
 		//parent::__construct("xydac_post_type",__("Custom Post Type",XYDAC_CMS_NAME),XYDAC_CMS_POST_TYPE_PATH,XYDAC_CMS_POST_TYPE_OPTION,$form_variables,true,false);
 		//parent::__construct(xydac()->modules->post_type->get_module_name(),xydac()->modules->post_type->get_module_label(),xydac()->modules->post_type->get_base_path(),xydac()->modules->post_type->get_registered_option('main'),$form_variables,true,false);
-		$args = array('enableactivation'=>false,'xydac_core_show_additional' => true,'custom_css_id'=>'content_css','custom_jss_id'=>'content_js');
+		$args = array('enableactivation'=>false,'xydac_core_show_additional' => false,'custom_css_id'=>'content_css','custom_jss_id'=>'content_js');
 		parent::__construct(xydac()->modules->post_type,'main',$form_variables,$args);
 		//if you make the call to constructor before adding filters and action then action and filters will not be enabled
 	}
+	function xydac_core_rightfoot()
+	{	if($this->xydac_core_editmode && isset($this->xydac_editdata['name'])){
+			$fields = xydac()->modules->post_type->get_field($this->xydac_editdata['name']);
+			echo '<div class="editbox">';
+			echo '<h3>'.__("Available Short codes").'</h3>';
+			foreach($fields as $k=>$field){
+				echo '<pre>[xydac_field]'.$field['field_name'].'[/xydac_field]</pre>';//
+			}
+			echo '</div>';
+		}
+	}
+	
 	function xydac_core_leftdiv()
 	{
 		return "id=accordion";
