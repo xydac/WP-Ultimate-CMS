@@ -93,16 +93,17 @@ abstract class field_type{
 			{
 				$input.= $this->get_input($k,$v);
 			}
+			/*
 			if($this->hasmultiple)
-				$input.= $this->get_input();
+				$input.= $this->get_input();*/
 		}
 		else
 			$input.= $this->get_input();
 
 		if($this->hasmultiple && $post->post_type=='page')
-			return $input."<a href='#' class='xydac_add_more_page' id='".$this->name."'>".__('ADD MORE',XYDAC_CMS_NAME)."</a>";
+			return $input."<a href='#' class='xydac_add_more_page' id='".$this->name."'></a>";
 		else if($this->hasmultiple)
-			return $input."<a href='#' class='xydac_add_more' id='".$this->name."'>".__('ADD MORE',XYDAC_CMS_NAME)."</a>";
+			return $input."<a href='#' class='xydac_add_more' id='".$this->name."'></a>";
 		else
 			return $input;
 	}
@@ -113,10 +114,13 @@ abstract class field_type{
 			$datas = get_metadata('taxonomy', $tag->term_id, $this->name, TRUE);
 		else
 			$datas = false;
-		if(!isset($_GET['action']))
-			return '<div class="form-field">'.$this->get_input(0,$datas).'</div>';
-		else
+		$screen = get_current_screen();
+		if ( $screen->base== 'term' && $screen->parent_base == 'edit' ) 
 			return '<tr class="form-field">'.$this->get_input(0,$datas,true).'</tr>';
+		else
+			return '<div class="form-field">'.$this->get_input(0,$datas).'</div>';
+		
+			
 	}
 	/* The function for handling the form data on save.
 	 * @temp = The array used to store all update metadata values

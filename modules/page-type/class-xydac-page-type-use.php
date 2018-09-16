@@ -69,8 +69,8 @@ class xydac_page_type_use{
 				$field_temp = new $field['field_type']($field['field_name'],array('label'=>$field['field_label'],'desc'=>$field['field_desc'],'val'=>$field['field_val'],'hasmultiple'=>$field['field_has_multiple']));
 				if($field_temp->isBasic())
 				{
-					$t.= "<div id='".$field['field_name']."' class='xydac_cms_field' rel='".$post->post_type."'>".$field_temp->input($page->ID)."</div>";
-					$t.= "<hr class='hrule clear'>";
+					$t.= "<div id='".$field['field_name']."' class='xydac_cms_field  form-field' rel='".$post->post_type."'>".$field_temp->input($page->ID)."</div>";
+					
 					array_push($inputfields,$field['field_name']);
 				}
 				else
@@ -86,45 +86,50 @@ class xydac_page_type_use{
 			$e.= '<li class="inputfields"><a href="javascript:void(null);">'.__('Shortcodes',XYDAC_CMS_NAME).'</a></li>';
 			$e.= '<li class="pagetype"><a href="javascript:void(null);">'.__('Page Type',XYDAC_CMS_NAME).'</a></li>';
 			$e.='</ul>';
-			$e.= "<div class='xydac-custom'>";
-			$e.="<input type='hidden' name='xydac_page_custom_nonce' id='xydac_page_custom_nonce' value='".wp_create_nonce( plugin_basename(__FILE__) )."' />";
-			$e.=$t;
+			$e.= "<div class='xydac-custom xydacfieldform'>";
+				$e.="<input type='hidden' name='xydac_page_custom_nonce' id='xydac_page_custom_nonce' value='".wp_create_nonce( plugin_basename(__FILE__) )."' />";
+				$e.=$t;
 			$e .="</div>";
 			foreach($notbasic as $k=>$field)
 			{
-				$e.= "<div class='xydac_cms_field ".$field['field_name']."' id='".$field['field_name']."' rel='".$page_type."'>";
+				$e.= "<div class='xydac_cms_field xydacfieldform ".$field['field_name']."' id='".$field['field_name']."' rel='".$page_type."'>";
 				$field_temp = new $field['field_type']($field['field_name'],array('label'=>$field['field_label'],'desc'=>$field['field_desc'],'val'=>$field['field_val'],'hasmultiple'=>$field['field_has_multiple']));
 				$e.= $field_temp->input($page->ID);
 				$e.= "</div>";
 				array_push($inputfields,$field['field_name']);
 			}
 			$e.='<div class="inputfields">';
+			
+			$e.='<div class="admin-tab-content">';
 			$e.='<h4>'.__('Availaible Shortcodes For Use ',XYDAC_CMS_NAME).'</h4>';
-			$e.= "<hr class='hrule clear'>";
-			$e.='<p style="word-spacing:2px;letter-spacing:3px"><strong>'.__('You can use these shortcodes anywhere to get the values for them at used location.',XYDAC_CMS_NAME).'</strong></p>';
+			$e.='<p>'.__('You can use these shortcodes anywhere to get the values for them at used location.',XYDAC_CMS_NAME).'</p>';
 			foreach($inputfields as $inputfields)
 			{
-
-				$e.='<strong>'.__('Field Name',XYDAC_CMS_NAME).'</strong> : &nbsp;'.$inputfields;
-				$e.='<p style="letter-spacing:2px">[xydac_page_field]'.$inputfields.'[/xydac_page_field]</p><br/>';
+				//$e.='<strong>'.__('Field Name',XYDAC_CMS_NAME).'</strong> : &nbsp;'.$inputfields;
+				$e.='<pre>[xydac_page_field]'.$inputfields.'[/xydac_page_field]</pre>';
 			}
 			$e.='';
 			$e.="</div>";
+			$e.="</div>";
 			$e.= "<div class='pagetype'>";
-			$e.= "<input type='hidden' name='xydac_page_custom_nonce' id='xydac_page_custom_nonce' value='".wp_create_nonce( plugin_basename(__FILE__) )."' />";
-			$e.= "<label for='xydac_page_type' style='padding:4px'>".__('Select Page Type',XYDAC_CMS_NAME)."</label>";
-			$e.= "<select name='xydac_page_type'>";
-			$pagetypes = xydac()->modules->page_type->get_active();//get_active_page_types();
-			if(is_array($pagetypes))
-				foreach($pagetypes as $pagetype)
-				if($page_type ==$pagetype['name'])
-				$e.= "<option selected value='".$pagetype['name']."'>".$pagetype['label']."</option>";
-			else
-				$e.= "<option value='".$pagetype['name']."'>".$pagetype['label']."</option>";
-			$e.= "<option value='none'>NONE</option>";
-			$e.= "</select>";
+			
+				$e.='<div class="admin-tab-content">';
+				$e.= "<input type='hidden' name='xydac_page_custom_nonce' id='xydac_page_custom_nonce' value='".wp_create_nonce( plugin_basename(__FILE__) )."' />";
+				$e.= "<label for='xydac_page_type' style='padding:4px'>".__('Select Page Type',XYDAC_CMS_NAME)."</label>";
+				$e.= "<select name='xydac_page_type'>";
+				$pagetypes = xydac()->modules->page_type->get_active();//get_active_page_types();
+				if(is_array($pagetypes))
+					foreach($pagetypes as $pagetype)
+					if($page_type ==$pagetype['name'])
+					$e.= "<option selected value='".$pagetype['name']."'>".$pagetype['label']."</option>";
+				else
+					$e.= "<option value='".$pagetype['name']."'>".$pagetype['label']."</option>";
+				$e.= "<option value='none'>NONE</option>";
+				$e.= "</select>";
+				$e.= "</div>";
 			$e.= "</div>";
 			$e.="</div>";
+			$e.= "<div class='clear'></div>";
 			echo $e;
 		}
 		else
@@ -141,6 +146,7 @@ class xydac_page_type_use{
 			$e.= "<option value='none' selected>NONE</option>";
 			$e.= "</select>";
 			$e.= "</div>";
+			$e.= "<div class='clear'></div>";
 			echo $e;
 		}
 	}

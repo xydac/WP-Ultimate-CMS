@@ -36,13 +36,14 @@ class image extends field_type{
 			$r.='<label for="'.$name.'" style="display:inline">'.$label.'</label><p>';
 			$r.='</th><td>';
 		}
-		$r.="<div style='position:relative;'><fieldset style='width:70%;float:left;height:75px;margin-bottom:20px;'>";
 		if(!isset($tabular) || (isset($tabular) &&!$tabular)){
 			$r.='<label for="'.$name.'" style="display:inline">'.$label.'</label><p>';
 		}
-		$r.='<a href="media-upload.php?type=image&TB_iframe=true&width=640&height=513" class="thickbox xydac_image" id="xydac_cpt_add_image_'.$name.'" name="'.$name.'"  title="Add an Image"><img src="images/media-button-image.gif" alt="Add an Image" style="padding-right:10px;">Add Image</a>';
+		$r.="<div class='xydac-custom-meta' style='position:relative;'><fieldset style='width:70%;float:left;height:75px;margin-bottom:20px;'>";
+		
+		$r.='<a href="media-upload.php?type=image&TB_iframe=true&width=640&height=513" class="thickbox xydac_image button-secondary" id="xydac_cpt_add_image_'.$name.'" name="'.$name.'"  title="Add an Image">Add Image</a>';
 		$r.='&nbsp;';
-		$r.='<a href="#" class="xydac_image" id="xydac_cpt_remove_image_'.$name.'" name="'.$name.'" title="Remove Image">Remove Image</a>';
+		$r.='<a href="#" class="xydac_image  button-secondary" id="xydac_cpt_remove_image_'.$name.'" name="'.$name.'" title="Remove Image">Remove Image</a>';
 
 		if($pre_arr)
 			$r.="<p><input type='text' id='".$name."' name='".$pre_arr.'['.$name.']'."' value='".esc_html( $value, 1 )."' /></p>";
@@ -50,13 +51,17 @@ class image extends field_type{
 			$r.="<p><input type='text' id='".$name."' name='".$name."' value='".esc_html( $value, 1 )."' /></p>";
 
 
-		$r.='</p><p><span class="'.$name.'">'.$desc.'</span></p>';
+		$r.='</p>';
+		if(isset($desc) && strlen($desc)>0)
+		$r.='<a class="xydactooltip" href="#" ><span style="width: 180px;" class="info '.$name.'">'.$desc.'</span></a>';
+		
 		$r.="</fieldset>";
 		$r.="<img src='".$img_src."' id='".$name."' width='75px' height='75px' style='float:right;margin-right:5px;'/>";
-		$r.="<div style=\"clear:left\"></div>";
+		
 		if($create_old)
 			$r.='<input type="hidden" name="'.$name.'-old" value="'.esc_html( $value, 1 ).'" />';
 		$r.= "</div>";
+		$r.='<div rel="'.$name.'" class="clear"></div>';
 		if(isset($tabular) && $tabular){
 			$r.='</td></tr>';
 		}

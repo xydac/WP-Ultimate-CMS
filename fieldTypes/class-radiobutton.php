@@ -43,7 +43,11 @@ class radiobutton extends field_type{
 		}
 		if($create_old)
 			$r.='<input type="hidden" name="'.'['.$name.'-old]'.'" value="'.esc_html( $value, 1 ).'" />';
-		$r.='</p><p><span class="'.$name.'">'.$desc.'</span></p>';
+		$r.='</p>';
+		
+		if(isset($desc) && strlen($desc)>0)
+		$r.='<a class="xydactooltip" href="#" ><span style="width: 180px;" class="info '.$name.'">'.$desc.'</span></a>';
+		$r.='<div rel="'.$name.'" class="clear"></div>';
 		if(isset($tabular) && $tabular){
 			$r.='</td></tr>';
 		}

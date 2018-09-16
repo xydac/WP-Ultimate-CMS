@@ -11,6 +11,7 @@ class xydac_post_type_use{
 		add_action('save_post',array($this,'custom_meta_save'));
 		add_action('wp_ajax_xydac_cms_post_type', array($this,'xydac_cms_ajax' ));
 	}
+
 	function xydac_cms_ajax()
 	{
 		$post_type = esc_attr($_POST['type']);
@@ -74,7 +75,6 @@ class xydac_post_type_use{
 			if($field_temp->isBasic())
 			{
 				$t.= "<div id='".$field['field_name']."' class='xydac_cms_field  form-field' rel='".$post->post_type."'>".$field_temp->input($post->ID)."</div>";
-				//$t.= "<hr class='hrule clear'>";
 				array_push($inputfields,$field['field_name']);
 			}
 			else
@@ -98,7 +98,7 @@ class xydac_post_type_use{
 		$e .="</div>";
 		foreach($notbasic as $k=>$field)
 		{
-			$e.= "<div class='xydac_cms_field form-field ".$field['field_name']."' id='".$field['field_name']."' rel='".$post->post_type."'>";
+			$e.= "<div class='xydac_cms_field xydacfieldform form-field ".$field['field_name']."' id='".$field['field_name']."' rel='".$post->post_type."'>";
 
 			$field_temp = new $field['field_type']($field['field_name'],array('label'=>$field['field_label'],'desc'=>$field['field_desc'],'val'=>$field['field_val'],'hasmultiple'=>$field['field_has_multiple']));
 			$e.= $field_temp->input($post->ID);
@@ -111,19 +111,29 @@ class xydac_post_type_use{
 			$e.="<div class='taxonomies'>".$tax_combo."</div>";
 
 		$e.='<div class="inputfields">';
+		// -- Begin shortcodes
+		$e.='<div class="admin-tab-content">';
 		$e.='<h4>'.__('Availaible Shortcodes For Use ',XYDAC_CMS_NAME).'</h4>';
-		//$e.= "<hr class='hrule clear'>";
-		$e.='<p style="word-spacing:2px;letter-spacing:3px"><strong>'.__('You can use these shortcodes anywhere to get the values for them at used location.',XYDAC_CMS_NAME).'</strong></p>';
+		$e.='<p>'.__('You can use these shortcodes anywhere to get the values for them at used location.',XYDAC_CMS_NAME).'</p>';
 		foreach($inputfields as $inputfields)
 		{
 
-			$e.='<strong>'.__('Field Name',XYDAC_CMS_NAME).'</strong> : &nbsp;'.$inputfields;
-			$e.='<p style="letter-spacing:2px">[xydac_field]'.$inputfields.'[/xydac_field]</p><br/>';
+			//$e.='<strong>'.__('Field Name',XYDAC_CMS_NAME).'</strong> : &nbsp;'.$inputfields;
+			$e.='<pre>[xydac_field]'.$inputfields.'[/xydac_field]</pre>';
 		}
 		$e.='';
 		$e.="</div>";
+// -- end shortcodes
 		$e.="</div>";
+		
+		$e.="</div>";
+		$e.="<div class='clear'></div>";
 		echo $e;
+	}
+
+	function getShortcodeContents(){
+		
+		return $e;
 	}
 
 	function custom_meta_save( $post_id ) {
@@ -147,7 +157,7 @@ class xydac_post_type_use{
 					else
 						$field_name = $b[0];
 					$fieldtype = xydac()->modules->post_type->get_field_type($post->post_type,$field_name);//xydac_cms_get_cpt_fieldtype($post->post_type,$field_name);
-
+					//echo 'Starting '.$t.': '.$a.'- '.$_POST[$a.'-old'].'<br/><br/>';
 					if($fieldtype)
 					{
 
@@ -159,6 +169,7 @@ class xydac_post_type_use{
 					}
 
 				}
+			//	die();
 	   return $temp;
 		}
 		else

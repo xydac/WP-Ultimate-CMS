@@ -36,6 +36,7 @@ class xydac_ultimate_cms_configuration extends xydac_cms_module{
 		$github = array('name'=>'github_issue',
 				'href'=>"https://github.com/xydac/WP-Ultimate-CMS/issues/new",
 				'label'=>'Log an Issue',
+				'clazz' => 'right',
 				'default'=>false);
 				
 		if(is_array($tab))
@@ -43,6 +44,8 @@ class xydac_ultimate_cms_configuration extends xydac_cms_module{
 		else
 			$tab = $mytab; 
 		$tab['github_issue'] = $github;
+		if(empty(apply_filters('xydac_cms_homeformoption', $this->configurationformfield)))
+			unset($tab['configuration']);
 		return $tab;
 		
 	}
@@ -114,15 +117,15 @@ class xydac_ultimate_cms_configuration extends xydac_cms_module{
 			extract($formcontent);
 				echo "
 			<tr>
-				<th><label for='$name'>$label</label></th>
-				<td>";
+				<th class='leftthcol'><label for='$name'>$label</label></th>
+				<td class='righttdcol'>";
                 
                 if(isset($contenttype) && $contenttype=='array'){
                     echo '<table>';
                     foreach($array as $f=>$ar){
                        extract($ar);
-                        echo"<tr><td>$label</td><td>";
-                        $this->render_formelements($name,$label,$type,$description,$value,$options);
+						echo"<tr><td>$label</td><td>";
+						$this->render_formelements($name,$label,$type,$description,$value,$options);
                         echo"</td></tr>";
                         unset($name);
                         unset($label);

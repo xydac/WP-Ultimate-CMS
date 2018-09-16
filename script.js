@@ -1,6 +1,9 @@
 ;
-/**  Custom Accordian with Jquery */
+/**  Custom Accordian with Jquery * /
 jQuery(document).ready(function() { 
+	jQuery('#accordion').find('.accordion-toggle').each(function(){
+		jQuery(".accordion-content").slideUp('fast');
+	});
     jQuery('#accordion').find('.accordion-toggle').click(function(){
 
       //Expand or collapse this panel
@@ -15,6 +18,7 @@ jQuery(document).ready(function() {
 
     });
   });
+  
 
 /*START TABS */
 jQuery(document).ready(function() { jQuery('ul.xydac-custom-meta li a').each(function(i) { var thisTab = jQuery(this).parent().attr('class').replace(/active /, ''); 
@@ -28,6 +32,7 @@ jQuery('.heading').hide(); jQuery('.xydac-custom-meta').show(); });
 /*END jcarousellite_1.0.1.min.js */
 
 jQuery(document).ready(function($) {
+	if($('a.xydac_add_more').length)
 		$('a.xydac_add_more').click(function () {
 			$.post(ajaxurl, {
 				action: 'xydac_cms_post_type',
@@ -35,18 +40,21 @@ jQuery(document).ready(function($) {
 				field_name: $(this).attr('id'),
 				type: 	$(this).parents('div.xydac_cms_field').attr('rel')
 			}, function(data) {
-				var d = $(data).find('span').last().attr('class');
-				var _id = $(data).find('textarea').attr('id');
+				var d = $(data).last().attr('rel');
 				var w = d.substring(0,d.lastIndexOf('-'));
 				$('div#'+w).append(data);
 				if(typeof(xydac_cms_post_type_sucess)=='function')
 					xydac_cms_post_type_sucess();
 				if(typeof(tinyMCE) !== 'undefined'){
+					var _id = $(data).find('textarea').attr('id');
 					tinyMCE.execCommand('mceAddControl', false, _id);
 					}
+					
+				return false;
 				});
 			return false;
 		});
+	if($('a.xydac_add_more_page').length)
 		$('a.xydac_add_more_page').click(function () {
 			$.post(ajaxurl, {
 				action: 'xydac_cms_page_type',
@@ -63,10 +71,13 @@ jQuery(document).ready(function($) {
 				if(typeof(tinyMCE) !== 'undefined'){
 					tinyMCE.execCommand('mceAddControl', false, _id);
 				}
+				
+				return false;
 				});
 			return false;
 		});
 	});
+
 
 function xydac_loadScript(url, callback){
 

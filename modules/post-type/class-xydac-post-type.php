@@ -14,9 +14,12 @@ include 'class-xydac-post-type-fields.php';
 include 'class-xydac-post-type-use.php';
 include 'class-xydac-post-type-functions.php';
 class xydac_post_type extends xydac_cms_module{
+	
 
 	function __construct()
 	{
+		
+		
 		parent::__construct('post_type',array('module_label'=>'Xydac Post Types',
 				'has_custom_fields'=>true,
 				'uses_active'=>true,
@@ -26,9 +29,10 @@ class xydac_post_type extends xydac_cms_module{
 				'base_path'=>get_bloginfo('wpurl').'/wp-admin/admin.php?page=xydac_ultimate_cms_post_type',
 				'menu_position'=>'top'
 		));
+		
 		new xydac_post_type_use();
 		new xydac_post_type_functions();
-
+		
 
 	}
 

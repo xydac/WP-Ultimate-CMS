@@ -11,7 +11,7 @@ class xydac_page_type_fields extends xydac_ultimate_cms_core{
 		$form_variables = array(
 				'field_label' => array( 'arr_label' => __('Field Label',XYDAC_CMS_NAME) , 'name' => '[field_label]', 'type'=>'string', 'desc'=> __('Label used for Page type Field ',XYDAC_CMS_NAME) , 'default'=>' '),
 				'field_type' => array( 'arr_label' => __('Field Type',XYDAC_CMS_NAME) , 'name' => '[field_type]', 'type'=>'array', 'desc'=> __('Field Type.',XYDAC_CMS_NAME) , 'default'=>' ', 'values'=>$xydac_cms_fields['fieldtypes']['pagetype']),
-				'field_has_multiple' => array( 'arr_label' => __('Field Takes Multiple Input',XYDAC_CMS_NAME) , 'name' => '[field_has_multiple]', 'type'=>'array', 'desc'=> __('Does this Field take multiple values.',XYDAC_CMS_NAME) , 'default'=>' ', 'values'=>array('true'=>'True','false'=>'False')),
+				'field_has_multiple' => array( 'arr_label' => __('Field Takes Multiple Input',XYDAC_CMS_NAME) , 'name' => '[field_has_multiple]', 'type'=>'boolean', 'desc'=> __('Does this Field take multiple values.',XYDAC_CMS_NAME) , 'default'=>' '),
 				'field_desc' => array( 'arr_label' => __('Description for Field',XYDAC_CMS_NAME) , 'name' => '[field_desc]', 'type'=>'string', 'desc'=> __('Enter the short description for the field',XYDAC_CMS_NAME) , 'default'=>' '),
 				'field_val' => array( 'arr_label' => __('Field Value',XYDAC_CMS_NAME) , 'name' => '[field_val]', 'type'=>'string', 'desc'=> __('Please enter the values for the field (This is optional)',XYDAC_CMS_NAME) , 'default'=>' '),
 				'field_order' => array( 'arr_label' => __('Field Order ',XYDAC_CMS_NAME) , 'name' => '[field_order]', 'type'=>'string', 'desc'=> __('Enter 1,2,3.. order in which you want the Custom Field to appear.',XYDAC_CMS_NAME) , 'default'=>' '),

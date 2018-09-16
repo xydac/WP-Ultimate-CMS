@@ -13,7 +13,7 @@ class xydac_snippets_customjs extends xydac_snippets{
     
     function __construct(){        
         $this->name         = 'cutom_js';
-        $this->label        = 'Custom Javascript';
+        $this->label        = 'Frontend Custom Javascript';
         $this->description  = 'You can provide Custom Javascript to be included on your website. These javascript will not be included in admin zone of website.';
         $this->type         = 'textarea';
         $this->order        = 1;

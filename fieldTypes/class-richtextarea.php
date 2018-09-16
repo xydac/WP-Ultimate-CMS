@@ -24,7 +24,9 @@ class richtextarea extends field_type{
 			$r.='</th><td>';
 		}
 		$value = htmlspecialchars_decode($value, ENT_QUOTES);
+		
 		ob_start();
+		$r.='<div class="xydac-custom-meta">';
 		if($pre_arr)
 			wp_editor($value, $pre_arr.'['.$name.']',array('editor_class'=>'xeditor'));
 		else
@@ -35,7 +37,10 @@ class richtextarea extends field_type{
 		$r.=$content;
 		if($create_old)
 			$r.='<input type="hidden" name="'.$name.'-old" value="'.esc_html( $value, 1 ).'" />';
-		$r.='<p><span class="'.$name.'">'.$desc.'</span></p>';
+		if(isset($desc) && strlen($desc)>0)
+		$r.='<a class="xydactooltip" href="#" ><span style="width: 180px;" class="info '.$name.'">'.$desc.'</span></a>';
+		$r.='</div>';
+		$r.='<div rel="'.$name.'" class="clear"></div>';
 		if(isset($tabular) && $tabular){
 			$r.='</td></tr>';
 		}

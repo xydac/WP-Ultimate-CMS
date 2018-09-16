@@ -49,9 +49,9 @@ class xydac_taxonomy_type_manager extends xydac_ultimate_cms_core{
 				'delete_terms' => array( 'arr_label' => __('Delete Terms ',XYDAC_CMS_NAME) , 'name' => '[args][capabilities][delete_terms]', 'type'=>'array', 'desc'=>__('Assign the permissions. who can delete the Taxonomy Terms',XYDAC_CMS_NAME), 'default' => 'manage_categories', 'values'=>array('manage_options' => 'Administrator', 'manage_categories' => 'Editor', 'publish_posts' => 'Author', 'edit_posts' => 'Contributor', 'read' => 'Subscriber')),
 				'assign_terms' => array( 'arr_label' => __('Assign Terms ',XYDAC_CMS_NAME) , 'name' => '[args][capabilities][assign_terms]', 'type'=>'array', 'desc'=>__('Assign the permissions. who can assign the Taxonomy Terms',XYDAC_CMS_NAME), 'default' => 'edit_posts', 'values'=>array('manage_options' => 'Administrator', 'manage_categories' => 'Editor', 'publish_posts' => 'Author', 'edit_posts' => 'Contributor', 'read' => 'Subscriber')),
 				'heading-42' => array('arr_label' => __('Content Details',XYDAC_CMS_NAME) , 'name' => 'xydac_acc_con_details', 'type'=>'heading', 'initialclose'=>true),
-				'content_html' => array( 'arr_label' => __('Content HTML',XYDAC_CMS_NAME) , 'name' => '[content_html]', 'type'=>'textarea', 'desc'=> __('Please Enter the default template for the content.You can use shortcodes.',XYDAC_CMS_NAME), 'default'=>''),
-				'content_css' => array( 'arr_label' => __('Content CSS',XYDAC_CMS_NAME) , 'name' => '[content_css]', 'type'=>'textarea', 'desc'=> __('Please Enter the Custom CSS Styles for this taxonomy ',XYDAC_CMS_NAME), 'default'=>''),
-				'content_js' => array( 'arr_label' => __('Content Javascript',XYDAC_CMS_NAME) , 'name' => '[content_js]', 'type'=>'textarea', 'desc'=> __('Please Enter the Custom Java script for this taxonomy ',XYDAC_CMS_NAME), 'default'=>''),
+				'content_html' => array( 'arr_label' => __('Content HTML',XYDAC_CMS_NAME) , 'name' => '[content_html]' , 'arr_clazz' => 'codemirror_custom_html', 'type'=>'textarea', 'desc'=> __('Please Enter the default template for the content.You can use shortcodes.',XYDAC_CMS_NAME), 'default'=>''),
+				'content_css' => array( 'arr_label' => __('Content CSS',XYDAC_CMS_NAME) , 'name' => '[content_css]' , 'arr_clazz' => 'codemirror_custom_css', 'type'=>'textarea', 'desc'=> __('Please Enter the Custom CSS Styles for this taxonomy ',XYDAC_CMS_NAME), 'default'=>''),
+				'content_js' => array( 'arr_label' => __('Content Javascript',XYDAC_CMS_NAME) , 'name' => '[content_js]' , 'arr_clazz' => 'codemirror_custom_js', 'type'=>'textarea', 'desc'=> __('Please Enter the Custom Java script for this taxonomy ',XYDAC_CMS_NAME), 'default'=>''),
 				'heading-5' => array('name'=>'finalheading','type'=>'heading','initialclose'=>true, 'finalclose'=>true)
 		);
 		add_filter('xydac_core_headfootcolumn',array($this,'headfootcolumn'));
@@ -59,17 +59,48 @@ class xydac_taxonomy_type_manager extends xydac_ultimate_cms_core{
 		add_action('xydac_core_insert_update',array($this,'xydac_core_insert_update'));
 		add_action('xydac_core_delete',array($this,'xydac_core_delete'));
 		add_action('xydac_core_bulkaction',array($this,'xydac_core_bulkaction'));
+
+		add_action('xydac_core_rightfoot',array($this,'xydac_core_rightfoot'));
+
 		//add_filter('xydac_core_rowactions',array($this,'xydac_core_rowactions'));
 		add_filter('xydac_core_doactions',array($this,'xydac_core_doactions'));
 		add_filter('xydac_core_insert',array($this,'xydac_core_insert'),10,1);
 		//parent::__construct(xydac()->modules->taxonomy_type->get_module_name(),xydac()->modules->taxonomy_type->get_module_label(),xydac()->modules->taxonomy_type->get_base_path(),xydac()->modules->taxonomy_type->get_registered_option('main'),$form_variables,true,false);
-		$args = array('enableactivation'=>false,'xydac_core_show_additional' => true,'custom_css_id'=>'content_css','custom_jss_id'=>'content_js');
+		$args = array('enableactivation'=>false,'xydac_core_show_additional' => false,'custom_css_id'=>'content_css','custom_jss_id'=>'content_js');
 		parent::__construct(xydac()->modules->taxonomy_type,'main',$form_variables,$args);
 		//parent::__construct("xydac_taxonomy",__("Custom Taxonomy Type",XYDAC_CMS_NAME),XYDAC_CMS_TAXONOMY_TYPE_PATH,XYDAC_CMS_TAXONOMY_TYPE_OPTION,$form_variables,true,false);
 	}
 	function xydac_core_leftdiv()
 	{
 		return "id=accordion";
+	}
+	function xydac_core_rightfoot()
+	{	
+		?>
+			<div class="editbox">
+				<h3>Quick Help</h3>
+				Taxonomy is used for categorizing objects. in WordPress Category and tags are two default taxonomies, which are used to categorized posts. 
+				<ol>
+					<li><strong>Category</strong> has the tendency to categorize hierarchically.</li>
+					<li><strong>Tags</strong> can categorize only on tag basis.</li>
+				</ol>
+				This section allows you to create such custom taxonomies and associate them with whatever Post types you want.
+				<br/>
+				<ol>
+					<li>Use Custom Fields to add more information to taxonomy</li>
+					<li>You can use shortcodes <code>[xy_{name of taxonomy}]</code> to fetch the extra information on Archive Page/Widget/Content.</li>
+					<li>Enable Options>Rewrite to get Pretty URLs</li>
+					<li>Add custom HTML template/ CSS/ Javascript for the Taxonomy Pages.</li>
+				</ol>
+				
+
+				
+				Check out More Details at 
+				<a href="https://xydac.com/ultimate-cms/custom-taxonomy/">
+				https://xydac.com/ultimate-cms/custom-taxonomy/</a>
+			</div>
+		<?php
+		
 	}
 	function xydac_core_insert_update()
 	{

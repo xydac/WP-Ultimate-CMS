@@ -28,11 +28,15 @@ class link extends field_type{
 				$val_link = get_post_meta($post->ID, $this->temp_link->name.'-'.$val, true);
 			}
 		}
-		$r="<div>";
-		$r.= text::get_text_input(array('name'=>$this->temp_title->name.'-'.$val,'tabular'=>$tabular,'label'=>$this->label.__(' Title',XYDAC_CMS_NAME),'desc'=>$this->desc),$val_title,"xydac_custom[".$this->name.'-'.$val."]",true);
-		$r.= text::get_text_input(array('name'=>$this->temp_link->name.'-'.$val,'tabular'=>$tabular,'label'=>$this->label.__(' Link',XYDAC_CMS_NAME),'desc'=>$this->desc),$val_link,"xydac_custom[".$this->name.'-'.$val."]",true);
+		$r='<label>'.$this->label.'</label>';
+		$r.="<div  class='xydac-custom-meta'>";
+		if(isset($desc) && strlen($desc)>0)
+			$r.='<a class="xydactooltip" href="#" ><span style="width: 180px;" class="info '.$name.'">'.$desc.'</span></a>';
+		$r.= text::get_text_input(array('name'=>$this->temp_title->name.'-'.$val,'tabular'=>$tabular,'label'=>__('Title',XYDAC_CMS_NAME),'desc'=>$this->desc),$val_title,"xydac_custom[".$this->name.'-'.$val."]",true);
+		$r.= text::get_text_input(array('name'=>$this->temp_link->name.'-'.$val,'tabular'=>$tabular,'label'=>__('Link',XYDAC_CMS_NAME),'desc'=>$this->desc),$val_link,"xydac_custom[".$this->name.'-'.$val."]",true);
 		$r.='<p><span class="'.$this->name.'-a">&nbsp;</span></p>';//do not remove this -a, this is just for ajax script
 		$r.="</div>";
+		$r.='<div rel="'.$this->name.'-a" class="clear"></div>';
 		return $r;
 	}
 
@@ -86,8 +90,12 @@ class link extends field_type{
 		}
 		ksort($data);
 		$e='';
-		foreach($data as $k=>$v)
-			$e.='<a href="'.$v.'">'.$k.'</a></li>';
+		foreach($data as $k=>$v){
+			if(strpos($v,'http')!=0)
+				$e.='<a href="'.$v.'">'.$k.'</a>';
+			else
+				$e.=$k.': '.$v.'<br/>';
+		}
 		return $e;
 
 	}
