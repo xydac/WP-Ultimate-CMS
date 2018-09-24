@@ -95,7 +95,7 @@ class xydac_post_type_manager extends xydac_ultimate_cms_core{
 	{	if($this->xydac_core_editmode && isset($this->xydac_editdata['name'])){
 			$fields = xydac()->modules->post_type->get_field($this->xydac_editdata['name']);
 			echo '<div class="editbox">';
-			echo '<h3>'.__("Available Short codes").'</h3>';
+			echo '<h3>'.__("Available Short codes", XYDAC_CMS_NAME).'</h3>';
 			foreach($fields as $k=>$field){
 				echo '<pre>[xydac_field]'.$field['field_name'].'[/xydac_field]</pre>';//
 			}

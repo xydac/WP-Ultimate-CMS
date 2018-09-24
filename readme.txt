@@ -56,17 +56,22 @@ The automatic plugin installer should work for most people. Manual installation 
 == Screenshots ==
 
 1. Ultimate CMS Menu
-2. Archive Maker top
-3. Archive Maker Bottom
-4. Post Type Manager
-5. Page Type Manager
+2. Module Manager
+3. Post Type Manager Add
+4. Post Type Manager Edit
+5. Post Type Manager Fields
 6. Taxonomy Manager
-7. Taxonomy Field Types Screen
-8. Post Types Fields
+7. Post Type Backend Custom Field Form
+8. Taxonomy Rewrite Option
 
 
 == Changelog ==
 
+
+= 2.0.1 =
+* Minor Change for UI
+* Allowed default posts and tags to be added for custom fields
+* Updated screenshots and banner
 
 = 2.0.0 =
 * Revamped design to be responsive

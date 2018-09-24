@@ -10,7 +10,9 @@ class xydac_post_type_use{
 		add_action('admin_init',array($this,'custom_meta_admin'));
 		add_action('save_post',array($this,'custom_meta_save'));
 		add_action('wp_ajax_xydac_cms_post_type', array($this,'xydac_cms_ajax' ));
+
 	}
+
 
 	function xydac_cms_ajax()
 	{

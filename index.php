@@ -5,7 +5,7 @@ Plugin URI: http://xydac.com/ultimate-cms/
 Description: This is an Easy to use Plugin to Create, Customize, Manage Custom Post Type,Custom Page Type, Custom Archives, Custom Taxonomies.
 Author: XYDAC
 Author URI: http://xydac.com/
-Version: 2.0.0
+Version: 2.0.1
 License: GPL2*/
 
 if ( !defined( 'XYDAC_CMS_NAME' ) )define('XYDAC_CMS_NAME',"ultimate-cms");

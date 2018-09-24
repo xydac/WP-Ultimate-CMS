@@ -33,8 +33,46 @@ class xydac_post_type extends xydac_cms_module{
 		new xydac_post_type_use();
 		new xydac_post_type_functions();
 		
-
+		//- Future Enhacement for add ing custom rest endpoint	
+		//add_action('rest_api_init',array($this,'rest_api_init'));
+		
 	}
+	//- Future Enhacement for add ing custom rest endpoint
+/*
+	function getData($request){
+		/*var_dump($request->get_method());
+		var_dump($request->get_query_params());
+		var_dump($request->get_route());* /
+		$data = get_posts( array(
+			'post_type'      => 'cars',
+			'post_status'    => 'publish',
+			'posts_per_page' => 20,
+		) );
+		
+		foreach($data as $k=>$d){
+			$data[$k]->{'meta'} = get_post_meta($d->ID);
+		}
+
+		// @TODO do your magic here
+		return new WP_REST_Response( $data, 200 );
+	}
+
+	
+	function rest_api_init(){
+		$cpts = stripslashes_deep($this->get_active());
+		if (is_array($cpts) && !empty($cpts))
+			foreach ($cpts  as $k=>$cpt )
+			{
+				if($cpt['name'] !='post' && $cpt['name'] !='page'){
+					register_rest_route( 'xydac/v1', $cpt['name'], array(
+						'methods' => 'GET',
+						'callback' => array($this, 'getData')
+					));
+				}
+			}
+		
+	}
+	*/
 
 	function init(){
 		$cpts = stripslashes_deep($this->get_active());
