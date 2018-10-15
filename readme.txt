@@ -10,13 +10,14 @@ Stable tag: trunk
 This is an Easy to use Plugin to Create, Customize, Manage Custom Post Type,Custom Page Type, Custom Archives, Custom Taxonomies, Custom Shortcode, Custom WordPress tweaks and settings.
 
 == Description ==
-The plugin is divided in four parts:
+The plugin is divided in five parts:
 
 * Archive Manager
 * Post Type Manager
 * Page Type Manager
 * Taxonomy Manager
 * Shortcode Manager
+* Forms
 
 
 One of the major component of the plugin are Custom Field Types without which no Custom Field would have existed.It is basically a generalization of custom field types, so that any PHP developer can create the own custom field types and also share it with different people.
@@ -67,6 +68,10 @@ The automatic plugin installer should work for most people. Manual installation 
 
 == Changelog ==
 
+= 2.1.0 =
+* Adding Xydac Forms
+* Adding Mod add Xydac Forms Action for Send Email on form submission.
+* Text Field :: Adding placeholder to text box.
 
 = 2.0.1 =
 * Minor Change for UI

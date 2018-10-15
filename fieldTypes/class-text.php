@@ -24,9 +24,9 @@ class text extends field_type{
 		}
 		$r.='<p class="xydac-custom-meta">';
 		if($pre_arr)
-			$r.='<input type="text" name="'.$pre_arr.'['.$name.']'.'" id="'.$name.'" value="'.esc_html( $value, 1 ).'" />';
+			$r.='<input type="text" placeholder="'.$label.'" name="'.$pre_arr.'['.$name.']'.'" id="'.$name.'" value="'.esc_html( $value, 1 ).'" />';
 		else
-			$r.='<input type="text" name="'.$name.'" id="'.$name.'" value="'.esc_html( $value, 1 ).'" />';
+			$r.='<input type="text" placeholder="'.$label.'" name="'.$name.'" id="'.$name.'" value="'.esc_html( $value, 1 ).'" />';
 		if($create_old)
 			$r.='<input type="hidden" name="'.$name.'-old" value="'.esc_html( $value, 1 ).'" />';
 		

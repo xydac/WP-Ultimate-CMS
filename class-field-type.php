@@ -51,13 +51,18 @@ abstract class field_type{
 				$x_multiple = (isset($field['field_has_multiple']) && $field['field_has_multiple']=='true') ?	true: false;
 			}
 		}
+		
 		if(is_array($attr))
 			extract($attr);
 			
 		$this->abspath = WP_PLUGIN_DIR."/".XYDAC_CMS_NAME."/fieldTypes/";
 		$this->name = $name;
 		(isset($label))? $this->label= $label : $this->label= $name;
+		if(isset($field_label))
+			$this->label= $field_label;
 		isset($desc)? $this->desc = $desc: $this->desc = '';
+		if(isset($field_desc))
+			$this->desc= $field_desc;
 		isset($helptext)? $this->helptext = $help: $this->helptext = '';
 		isset($ver)? $this->ver = $ver : $this->ver = "1.0";
 		isset($flabel)? $this->ftype = $ftype : $this->ftype = "new_field";
