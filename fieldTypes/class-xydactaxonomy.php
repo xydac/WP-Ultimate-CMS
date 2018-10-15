@@ -52,6 +52,29 @@ class xydactaxonomy extends field_type{
 			return $s;
 	}
 
+	public function saving(&$temp,$post_id,$val,$oval='')
+	{
+		if(esc_attr(stripslashes($val))==esc_attr(stripslashes($oval)))
+			return;
+		if($this->hasmultiple)
+		{
+			$v= esc_attr(stripslashes($val));
+			if(empty($oval) && !empty($v))
+				array_push($temp,add_post_meta($post_id, $this->name, $v));
+			else if(!empty($oval) && empty($v))
+				array_push($temp,delete_post_meta($post_id, $this->name, $oval)); 
+			else
+				array_push($temp,update_post_meta($post_id, $this->name, esc_attr(stripslashes($val)),esc_attr(stripslashes($oval))));
+			
+		}
+		else{
+			array_push($temp,update_post_meta($post_id, $this->name, esc_attr(stripslashes($val)),esc_attr(stripslashes($oval))));
+			wp_set_post_terms( $post_id, $val, $this->value, false ) ;
+		}
+
+	}
+
+
 
 }
 
