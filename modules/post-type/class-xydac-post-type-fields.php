@@ -18,7 +18,7 @@ class xydac_post_type_fields extends xydac_ultimate_cms_core{
 		);
 		
 		add_filter('xydac_core_leftdiv',array($this,'xydac_core_leftdiv'));
-		add_action('xydac_core_head',array($this,'core_head'),1);
+		//add_action('xydac_core_head',array($this,'core_head'),1);
 		add_action('xydac_core_righthead',array($this,'right_head'));
 		add_filter('xydac_core_field_name',array($this,'field_name'));
 		add_filter('xydac_core_headfootcolumn',array($this,'headfootcolumn'));
@@ -44,9 +44,9 @@ class xydac_post_type_fields extends xydac_ultimate_cms_core{
 		$headfootcolumn = array('field_name'=>__("Name",XYDAC_CMS_NAME),
 							'[field_label]'=>__("Label",XYDAC_CMS_NAME),
 							'[field_type]'=>__("Type",XYDAC_CMS_NAME),
-							'[field_has_multiple]'=>__("Multiple",XYDAC_CMS_NAME),
-							'[field_desc]'=>__("Description",XYDAC_CMS_NAME),
-							'[field_val]'=>__("Value",XYDAC_CMS_NAME),
+							//'[field_has_multiple]'=>__("Multiple",XYDAC_CMS_NAME),
+							//'[field_desc]'=>__("Description",XYDAC_CMS_NAME),
+							//'[field_val]'=>__("Value",XYDAC_CMS_NAME),
 							'[field_order]'=>__("Field Order",XYDAC_CMS_NAME)
 						);
 		return $headfootcolumn;
