@@ -2,7 +2,7 @@
 /*
 Plugin Name: Ultimate CMS
 Plugin URI: http://xydac.com/ultimate-cms/
-Description: This is an Easy to use Plugin to Create, Customize, Manage Custom Post Type,Custom Page Type, Custom Archives, Custom Taxonomies.
+Description: Ultimate Tool for working with  Custom Post Type, Page Type, Custom Archives, Taxonomies, Forms. Enhances WordPress for All kinds of Custom Types.
 Author: XYDAC
 Author URI: http://xydac.com/
 Version: 2.1.0
