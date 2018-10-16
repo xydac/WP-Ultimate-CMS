@@ -20,7 +20,7 @@ if ( !defined( 'DS' ) )define('DS', DIRECTORY_SEPARATOR);
 global $xydac_cms_fields;
 
 require_once ABSPATH . 'wp-admin'.DS.'includes'.DS.'plugin.php' ;
-add_action('plugins_loaded', create_function('','deactivate_plugins("ultimate-taxonomy-manager'.DS.'ultimate-taxonomy-manager.php");'));
+//add_action('plugins_loaded', create_function('','deactivate_plugins("ultimate-taxonomy-manager'.DS.'ultimate-taxonomy-manager.php");'));
 //File includes
 require_once 'class-field-type.php';
 require_once 'class-xydac-ultimate-cms-core.php';
