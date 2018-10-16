@@ -9,7 +9,7 @@ class text extends field_type{
 		$this->basic = true;
 		$this->ftype = 'text';
 		$this->flabel = __('Text Box',XYDAC_CMS_NAME);
-		$this->compaitable = array('pagetype','posttype','taxonomy');
+		$this->compaitable = array('pagetype','posttype','taxonomy', 'forms');
 	}
 	public static function get_text_input( $args = array(), $value = false, $pre_arr=false, $create_old = false )
 	{

@@ -316,6 +316,8 @@ function xydac_fieldtypes_init()
 				$xydac_fields['fieldtypes']['pagetype'][$temp->ftype] = $temp->flabel;
 			if(is_array($temp->compaitable) && in_array('taxonomy',$temp->compaitable))
 				$xydac_fields['fieldtypes']['taxonomy'][$temp->ftype] = $temp->flabel;
+			if(is_array($temp->compaitable) && in_array('forms',$temp->compaitable))
+				$xydac_fields['fieldtypes']['forms'][$temp->ftype] = $temp->flabel;
 	}
 	
 	$xydac_fields['adminscript'] = $adminscript;

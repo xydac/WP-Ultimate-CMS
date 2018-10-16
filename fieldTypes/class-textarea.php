@@ -9,7 +9,7 @@ class textarea extends field_type{
 		$this->basic = true;
 		$this->ftype = 'textarea';
 		$this->flabel = __('Text Area',XYDAC_CMS_NAME);
-		$this->compaitable = array('pagetype','posttype','taxonomy');
+		$this->compaitable = array('pagetype','posttype','taxonomy', 'forms');
 	}
 	public static function get_textarea_input( $args = array(), $value = false, $pre_arr=false, $create_old = false )
 	{

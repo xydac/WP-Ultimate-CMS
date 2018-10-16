@@ -9,7 +9,7 @@ class checkbox extends field_type{
 		$this->basic = true;
 		$this->ftype = 'checkbox';
 		$this->flabel = __('Check Box',XYDAC_CMS_NAME);
-		$this->compaitable = array('pagetype','posttype','taxonomy');
+		$this->compaitable = array('pagetype','posttype','taxonomy', 'forms');
 	}
 	public static function get_checkbox_input( $args = array(), $value = false, $pre_arr=false, $create_old = false )
 	{
