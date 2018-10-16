@@ -847,3 +847,25 @@ Settings page
 	width: 85%;
 }
 
+.CodeMirror {
+	border: 1px solid #eee;	
+}
+.editbox .CodeMirror {
+	min-height: 500px;
+}
+.editbox textarea {
+	width: 100%;
+	display: block;
+}
+.importlogs{
+	width: 80%;
+    min-height: 600px;
+    margin-top: 10px;
+    background: #000;
+    color: #00ec00;
+    padding: 10px;
+}
+.importlogs p{
+	padding:0;
+	margin: 0;
+}

@@ -35,6 +35,13 @@ class xydac_mods_formaction_sendmail{
         
         if($main['sendmail']['active']){
             $message = $data;
+            $to = $main['sendmail']['to'];
+            $subject = $main['sendmail']['subject'];
+            $headers[] = 'Content-Type: text/html; charset=UTF-8';
+            
+            if(isset($main['sendmail']['from']))
+                $headers[] = 'From: '.$main['sendmail']['from'];
+
             if(isset($main['sendmail']['template']) && !empty($main['sendmail']['template'])){
                 $message = $main['sendmail']['template'];
                 foreach ($data as $key => $value) {
@@ -42,9 +49,11 @@ class xydac_mods_formaction_sendmail{
                 }
             }
             
-            
-            $status = wp_mail($main['sendmail']['to'],$main['sendmail']['subject'],$message);
-            set_transient( 'xydac_forms_message', $status, 60*60*12 );
+            $status = wp_mail($to, $subject, $message, $headers);
+            if($status)
+                set_transient( 'xydac_forms_message', "Message Sent Successfully", 60*60*12 );
+            else
+                set_transient( 'xydac_forms_message', "Message Not Sent", 60*60*12 );
         }
     }
 }

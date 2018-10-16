@@ -160,6 +160,7 @@ class xydac_post_type_use{
 						$field_name = $b[0];
 					$fieldtype = xydac()->modules->post_type->get_field_type($post->post_type,$field_name);//xydac_cms_get_cpt_fieldtype($post->post_type,$field_name);
 					//echo 'Starting '.$t.': '.$a.'- '.$_POST[$a.'-old'].'<br/><br/>';
+					
 					if($fieldtype)
 					{
 

@@ -72,6 +72,8 @@ The automatic plugin installer should work for most people. Manual installation 
 * Adding Xydac Forms
 * Adding Mod add Xydac Forms Action for Send Email on form submission.
 * Text Field :: Adding placeholder to text box.
+* Adding Option to Import/Export anything.
+
 
 = 2.0.1 =
 * Minor Change for UI

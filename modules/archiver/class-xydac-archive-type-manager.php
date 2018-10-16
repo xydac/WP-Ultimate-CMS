@@ -48,6 +48,16 @@ class xydac_archive_type_manager extends xydac_ultimate_cms_core{
 				Check out More Details at  
 				<a href="https://xydac.com/ultimate-cms/archive-type/">
 				https://xydac.com/ultimate-cms/archive-type/</a>
+
+				<h3>Available Short Codes</h3>
+				<p>You case use these shortcodes to get respective values in Custom HTML section of the loop </p>
+				<ol>
+					<li>[x_permalink]- Permalink of post</li>
+					<li>[x_title] - Title of the post</li>
+					<li>[x_excerpt] - Excerpt of the post</li>
+					<li>[x_date] - Date on which post was published</li>
+					<li>[x_time] - Time on which post was published</li>
+				</ol>
 			</div>
 		<?php
 		

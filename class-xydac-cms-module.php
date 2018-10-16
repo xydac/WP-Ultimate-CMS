@@ -93,6 +93,15 @@ abstract class xydac_cms_module{
 						'label'=>$this->module_label.' Help',
 						'default'=>false) ;
 			}
+			$this->tabs['export']=array('name'=>$this->module_name.'_export',
+						'href'=>$this->base_path.'&export_'.$this->module_name.'=true'.'&sub='.$this->module_name.'_export',
+						'label'=>'Export '.$this->module_label,
+						'default'=>false);
+			
+			$this->tabs['import']=array('name'=>$this->module_name.'_import',
+						'href'=>$this->base_path.'&import_'.$this->module_name.'=true'.'&sub='.$this->module_name.'_import',
+						'label'=>'Import',
+						'default'=>false);
 			//removeapi - 
 			/*
 			if(xydac()->is_xydac_ucms_pro() && $this->xydac_sync){
@@ -310,6 +319,32 @@ abstract class xydac_cms_module{
 		$this->_set_option('active',$xydac_active_options );
 		$message = $this->module_label.__(' Deactivated.',XYDAC_CMS_NAME);
 		return $message;
+	}
+	/**
+	 * Adding Export Object to be able to provide object export capability
+	 */
+	function export_object($type, $namefieldname, $name =''){
+		if ($type!='main')
+		return;
+		$json_outputs = [];
+
+		if($name){
+			$json_output['type'] = 'xydac_'.$this->get_module_name();
+			$json_output['schema'] = $this->get_main_by_name($name);
+			$json_output['fields'] = $this->get_field($name);
+			$json_outputs[0] = $json_output;
+
+		}else {
+			// -- Export Everything for current type
+			foreach ($this->_get_option('main') as $i => $item) {
+				$json_output = [];
+				$json_output['type'] = 'xydac_'.$this->get_module_name();
+				$json_output['schema'] = $item;
+				$json_output['fields'] = $this->get_field($json_output['schema']['name']);
+				$json_outputs[$i] = $json_output;
+			}
+		}
+		return json_encode($json_outputs, JSON_PRETTY_PRINT);
 	}
 	function sync_object($type,$name,$namefieldname){
 		if ($type!='main')
@@ -616,6 +651,18 @@ abstract class xydac_cms_module{
 		include_once(dirname(__FILE__).DS.'modules'.DS.str_replace('_','-',$this->module_name).DS.str_replace('_','-',$this->module_name).'.html');
 		echo "</div>";
 	}
+	function view_import_func($tab){
+		include_once(dirname(__FILE__).DS.'includes'.DS.'includes-tab-import.php');
+	}
+	function startsWith($haystack, $needle)
+	{
+		return strncmp($haystack, $needle, strlen($needle)) === 0;
+	}
+	function view_export_func($tab)
+	{
+		include_once(dirname(__FILE__).DS.'includes'.DS.'includes-tab-export.php');
+	}
+
 	//default field page
 	function view_fields_func($tab)
 	{
@@ -625,32 +672,32 @@ abstract class xydac_cms_module{
 			$selectdata = $this->get_main_names();
 			xydac()->log('view_fields_func',$selectdata);
 			?>
-<form name='manage_<?php echo $this->module_name ?>_fields'
-	action='<?php echo $formaction ?>' method='get'>
-	<h3>
-		<?php echo __('Select the ',XYDAC_CMS_NAME).$this->module_label.__(' To manage ',XYDAC_CMS_NAME); ?>
-	</h3>
-	<select name='manage_<?php echo $this->module_name ?>'
-		id='manage_<?php echo $this->module_name ?>'>
-		<?php foreach ($selectdata  as $name=>$label) {?>
-		<option value="<?php echo $label; ?>">
-			<?php echo $label; ?>
-		</option>
-		<?php } ?>
-	</select> <input type="hidden" name="page"
-		value="xydac_ultimate_cms_<?php echo $this->module_name ?>" /> <input
-		type="hidden" name="sub"
-		value="<?php echo $this->module_name ?>_fields" /> <input
-		type="submit"
-		id="manage_<?php echo $this->module_name ?>_fields_submit"
-		class="button" value="Manage">
-</form>
-<?php }
-else
-{
-	$method = 'xydac_'.$this->module_name.'_fields';
-	new $method($_GET['manage_'.$this->module_name]);
-}
+		<form name='manage_<?php echo $this->module_name ?>_fields'
+			action='<?php echo $formaction ?>' method='get'>
+			<h3>
+				<?php echo __('Select the ',XYDAC_CMS_NAME).$this->module_label.__(' To manage ',XYDAC_CMS_NAME); ?>
+			</h3>
+			<select name='manage_<?php echo $this->module_name ?>'
+				id='manage_<?php echo $this->module_name ?>'>
+				<?php foreach ($selectdata  as $name=>$label) {?>
+				<option value="<?php echo $label; ?>">
+					<?php echo $label; ?>
+				</option>
+				<?php } ?>
+			</select> <input type="hidden" name="page"
+				value="xydac_ultimate_cms_<?php echo $this->module_name ?>" /> <input
+				type="hidden" name="sub"
+				value="<?php echo $this->module_name ?>_fields" /> <input
+				type="submit"
+				id="manage_<?php echo $this->module_name ?>_fields_submit"
+				class="button" value="Manage">
+		</form>
+		<?php }
+		else
+		{
+			$method = 'xydac_'.$this->module_name.'_fields';
+			new $method($_GET['manage_'.$this->module_name]);
+		}
 	
 	}
 	private function getCustomField($resultarr,$var){

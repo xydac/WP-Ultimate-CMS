@@ -12,6 +12,7 @@ if ( !defined( 'XYDAC_CMS_NAME' ) )define('XYDAC_CMS_NAME',"ultimate-cms");
 if ( !defined( 'XYDAC_CMS_USER_API_KEY' ) )define('XYDAC_CMS_USER_API_KEY',"xydac_cms_api_key");
 if ( !defined( 'XYDAC_CMS_OPTIONS' ) )define('XYDAC_CMS_OPTIONS',"XYDAC_CMS_OPTIONS");
 if ( !defined( 'XYDAC_CMS_MODULES' ) )define('XYDAC_CMS_MODULES',"xydac_cms_modules");
+if ( !defined( 'XYDAC_CMS_MODULES_BACKUP' ) )define('XYDAC_CMS_MODULES_BACKUP',"xydac_cms_modules_backup");
 if ( !defined( 'XYDAC_CMS_MODULES_OLD_HASH' ) )define('XYDAC_CMS_MODULES_OLD_HASH',"xydac_cms_modules_old_hash");
 if ( !defined( 'XYDAC_UCMS_FORMOPTION' ) )define('XYDAC_UCMS_FORMOPTION',"XYDAC_UCMS_FORMOPTION");
 
@@ -66,6 +67,7 @@ class xydac_ultimate_cms{
 			self::cms()->dao = new xydac_options_dao();
 			self::cms()->modules = new stdClass();
 			self::cms()->dao->register_option(XYDAC_CMS_MODULES);
+			self::cms()->dao->register_option(XYDAC_CMS_MODULES_BACKUP);
 			self::cms()->dao->register_option(XYDAC_CMS_MODULES.'_active');
             self::cms()->dao->register_option(XYDAC_CMS_MODULES_OLD_HASH);
             self::cms()->options = new xydac_ucmsoption();
@@ -224,7 +226,7 @@ class xydac_ultimate_cms{
 		$role = get_role("administrator");
 		$role->add_cap("manage_xydac_cms");
 		wp_enqueue_script("jquery");
-		wp_enqueue_code_editor( array( 'type' => 'text/html', 'css', 'javscript' ) );
+		wp_enqueue_code_editor( array( 'type' => 'text/html', 'css', 'javscript', 'application/json' ) );
 		add_thickbox();
 		xydac_fieldtypes_init();
 

@@ -41,6 +41,8 @@ class xydac_forms_use{
         }
     }
 
+    
+
 
 	function xydac_forms_shortcode($atts, $text) {
 		
@@ -55,7 +57,7 @@ class xydac_forms_use{
         $message = get_transient( 'xydac_forms_message' );
         delete_transient( 'xydac_forms_message' );
         if($message)
-            echo '<h2>'.$message.'</h2>';
+            echo '<p class="response">'.$message.'</p>';
         echo "<div class='$text'>";
         echo "<form method='post'  action=''>";
     

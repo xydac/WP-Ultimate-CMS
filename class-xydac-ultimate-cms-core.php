@@ -269,6 +269,7 @@ abstract class xydac_ultimate_cms_core{
 		}
 
 	}
+
 	//@todo: Code clean up required on this function
 	
 	function sync($name)
@@ -436,19 +437,23 @@ abstract class xydac_ultimate_cms_core{
 			echo '</div>';
 		}
 		
+	
+		echo '<div class="row-actions visible" style="display:inline">';
 		if($this->xydac_core_show_fields)
-		{
-			echo '<div class="row-actions visible" style="display:inline">';
-				echo '<span class="info"> | <a href="'.$this->baselink."&manage_".$this->xydac_core_name."=".$name."&sub=".$this->xydac_core_name.'_fields">'."Fields".'</a></span>';
-			echo '</div>';
-		}
+			echo '<span class="info"> | <a href="'.$this->baselink."&manage_".$this->xydac_core_name."=".$name."&sub=".$this->xydac_core_name.'_fields">'."Fields".'</a></span>';
+		if($this->type == 'main')
+			echo '<span class="export"> | <a href="'.$this->baselink."&export_".$this->xydac_core_name."=true&"."&sub=".$this->xydac_core_name."_export&".$this->xydac_core_name."_name=".$name.'">'."Export".'</a></span>';	
+		echo '</div>';
+		
 		echo '<div class="row-actions" style="display:inline">';
 			foreach($rowactions as $actionname=>$actionlink)
 				echo '<span class="'.strtolower($actionname).'"> | <a href="'.$actionlink.$name.'">'.$actionname.'</a></span>';
+			
 			if($this->xydac_core_show_delete)
 				echo '<span class="delete"> | <a href="'.$this->baselink."&delete_".$this->xydac_core_name."=true&".$this->xydac_core_name."_name=".$name.'">'."Delete".'</a></span>';
 			if($this->xydac_core_show_sync)
 				echo '<span class="sync"> | <a href="'.$this->baselink."&sync_".$this->xydac_core_name."=true&".$this->xydac_core_name."_name=".$name.'">'."Sync".'</a></span>';
+
 		echo '</div>';
 	}
 
@@ -490,7 +495,7 @@ abstract class xydac_ultimate_cms_core{
 			<div class="form-field form-required <?php if(isset($_POST['xydac_form_'.$this->xydac_core_name.'_update_submit']) || isset($_POST['xydac_form_'.$this->xydac_core_name.'_add_submit'])) if(isset($_POST['xydac_form_'.$this->xydac_core_name][$this->namefield_name]) && empty($_POST['xydac_form_'.$this->xydac_core_name][$this->namefield_name])) echo 'form-invalid';?>"  >
 				<label for='<?php echo $this->xydac_core_name.'['.$this->namefield_name.']'; ?>'><?php _e('The Name of the ',XYDAC_CMS_NAME);?><?php echo $this->xydac_core_label; ?></label>
 				<input type='text' name='xydac_form_<?php echo $this->xydac_core_name.'['.$this->namefield_name.']'; ?>' <?php if($this->xydac_core_editmode) echo "readonly"; ?> class='name' id='<?php echo $this->xydac_core_name.'['.$this->namefield_name.']'; ?>' value="<?php if($this->xydac_core_editmode) echo $this->xydac_editdata[$this->namefield_name]; ?>" />
-				<p><?php echo $this->xydac_core_label;  _e('Name identifies your ',XYDAC_CMS_NAME); echo $this->xydac_core_label; _e('among others. It is usually all lowercase and contains only letters, numbers, and hyphens.',XYDAC_CMS_NAME); ?></p>
+				<p><?php echo $this->xydac_core_label;  _e(' Name identifies your ',XYDAC_CMS_NAME); echo $this->xydac_core_label; _e(' among others. It is usually all lowercase and contains only letters, numbers, and hyphens.',XYDAC_CMS_NAME); ?></p>
 			</div>
 			</div>
 			<?php if(!($this->xydac_core_editmode || $this->xydac_core_show_additional)){
