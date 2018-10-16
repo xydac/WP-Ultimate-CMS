@@ -7,9 +7,13 @@ class xydac_module_manager_manager extends xydac_ultimate_cms_core{
 		$this->base_path = get_bloginfo('wpurl').'/wp-admin/admin.php?page=xydac_ultimate_cms&sub=modulemanager';
 		add_filter('xydac_core_headfootcolumn',array($this,'headfootcolumn'));
 		//parent::__construct("xydac_module_manager","Modules",$this->base_path,xydac()->allModules,$form_variables,true,true,array("active"=>XYDAC_CMS_ACTIVEM_OPTIONS,"show_link"=>"false"));
-		$args = array('xydac_core_show_additional' => false,'xydac_core_show_left'=>false,
-				'xydac_core_show_doaction'=>false,'show_link'=>false,
-				'xydac_core_show_delete'=>false,'xydac_core_show_sync'=>false);
+		$args = array('xydac_core_show_additional' => false,
+				'xydac_core_show_left'=>false,
+				'xydac_core_show_doaction'=>false,
+				'show_link'=>false,
+				'xydac_core_show_export'=> false,
+				'xydac_core_show_delete'=>false,
+				'xydac_core_show_sync'=>false);
 		add_filter('xydac_core_rowdata', array($this,'xydac_core_rowdata_func'));
 		add_action('xydac_core_head',array($this,'xydac_core_head_func'));
 		parent::__construct(xydac()->modules->module_manager,'main',$form_variables,$args);

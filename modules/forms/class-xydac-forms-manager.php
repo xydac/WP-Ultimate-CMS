@@ -63,7 +63,7 @@ class xydac_forms_manager extends xydac_ultimate_cms_core{
 				<p>Xydac Forms allows your to create Custom Forms. You can use the form in frontend using shortcode on any page</p>
 				<p>Individual forms can be customized based on needs. Edit <strong>Custom HTML</strong> section to create any html form. To add the fields anywhere add <strong>[CONTENT]</strong>.</p>
                 <p>Individual form's css and javsscript can be update in respective sections.</p>
-				
+				<h4><a href="admin.php?page=xydac_ultimate_cms"> Note that you need to Activate Mods with Form Action</a></h4>
                 
 			</div>
 		<?php

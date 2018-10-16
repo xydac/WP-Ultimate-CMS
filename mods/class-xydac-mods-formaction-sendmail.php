@@ -2,7 +2,7 @@
 /*
 Module Name:	Form Action - Send Mail
 Type:			Mod
-Description:	Adds Xydac Forms action to send mail when form is submitted
+Description:	Adds Xydac Forms action to send mail when form is submitted. If not activated, you won't be able to send email as Form Submit Action.
 Author:			deepak.seth
 Author URI:		http://www.xydac.com/
 Version:		1.0
@@ -38,7 +38,7 @@ class xydac_mods_formaction_sendmail{
             $to = $main['sendmail']['to'];
             $subject = $main['sendmail']['subject'];
             $headers[] = 'Content-Type: text/html; charset=UTF-8';
-            
+
             if(isset($main['sendmail']['from']))
                 $headers[] = 'From: '.$main['sendmail']['from'];
 

@@ -30,6 +30,7 @@ abstract class xydac_ultimate_cms_core{
 	var $xydac_core_show_delete;//Is used to show/hide delete row action.
 	var $xydac_core_show_sync;//Is used to show/hide sync rowaction.
 	var $xydac_core_show_fields;//Is used to show/hide fields rowaction.
+	var $xydac_core_show_export;//Is used to show/hide Export rowaction
 	/**
 	 * array used to store additional data
 	 *  $xydac_core_show_additional
@@ -65,6 +66,8 @@ abstract class xydac_ultimate_cms_core{
 			$this->xydac_core_show_doaction = isset($xydac_core_show_doaction)?$xydac_core_show_doaction : true;
 			$this->xydac_core_show_delete = isset($xydac_core_show_delete)?$xydac_core_show_delete : true;
 			$this->xydac_core_show_sync = isset($xydac_core_show_sync)?$xydac_core_show_sync : true;
+			$this->xydac_core_show_export = isset($xydac_core_show_export)?$xydac_core_show_export : true;
+			
 			$this->xydac_core_show_fields = $obj->has_custom_fields() && $this->type=='main';
 		//removeapi - if(!xydac()->is_xydac_ucms_pro())
 			$this->xydac_core_show_sync = false;
@@ -441,7 +444,7 @@ abstract class xydac_ultimate_cms_core{
 		echo '<div class="row-actions visible" style="display:inline">';
 		if($this->xydac_core_show_fields)
 			echo '<span class="info"> | <a href="'.$this->baselink."&manage_".$this->xydac_core_name."=".$name."&sub=".$this->xydac_core_name.'_fields">'."Fields".'</a></span>';
-		if($this->type == 'main')
+		if($this->type == 'main' && $this->xydac_core_show_export)
 			echo '<span class="export"> | <a href="'.$this->baselink."&export_".$this->xydac_core_name."=true&"."&sub=".$this->xydac_core_name."_export&".$this->xydac_core_name."_name=".$name.'">'."Export".'</a></span>';	
 		echo '</div>';
 		
