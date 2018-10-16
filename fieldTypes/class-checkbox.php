@@ -1,84 +1,96 @@
-<?php 
+<?php
 //@TODO: change the code for saving
-class checkbox extends field_type{
+class checkbox extends field_type
+{
 
-	public function __construct($name,$args = array())
-	{
-		parent::__construct($name,$args);
-		$this->ver = 1.0;
-		$this->basic = true;
-		$this->ftype = 'checkbox';
-		$this->flabel = __('Check Box',XYDAC_CMS_NAME);
-		$this->compaitable = array('pagetype','posttype','taxonomy', 'forms');
-	}
-	public static function get_checkbox_input( $args = array(), $value = false, $pre_arr=false, $create_old = false )
-	{
-		extract( $args );
-		$r = '';
-		if(isset($tabular) && $tabular){
-			$r.='<tr class="form-field"><th scope="row" valign="top">';
-		}
-		
-		if($value)
-			$value = explode(',',$value);
-		else
-			$value=array();
+    public function __construct($name, $args = array())
+    {
+        parent::__construct($name, $args);
+        $this->ver = 1.0;
+        $this->basic = true;
+        $this->ftype = 'checkbox';
+        $this->flabel = __('Check Box', XYDAC_CMS_NAME);
+        $this->compaitable = array('pagetype', 'posttype', 'taxonomy', 'forms');
+    }
+    public static function get_checkbox_input($args = array(), $value = false, $pre_arr = false, $create_old = false)
+    {
+        extract($args);
+        $r = '';
+        if (isset($tabular) && $tabular) {
+            $r .= '<tr class="form-field"><th scope="row" valign="top">';
+        }
 
-		$labelName = ($pre_arr) ? $pre_arr."[".$name."]"."[".$key."]" : "[".$name."]"."[".$key."]";	
-		$r.='<label for="'.$labelName.'">'.$label.'</label>';
-		if(isset($tabular) && $tabular){
-			$r.='</th><td>';
-		}
+        if ($value) {
+            $value = explode(',', $value);
+        } else {
+            $value = array();
+        }
 
-		$r.='<p class="xydac-custom-meta">';
-		if($pre_arr)
-		{
-			if(is_array($options))
-				foreach ( $options as $key=>$option )
-				if ( in_array($key,$value))
-					$r.="<input id='".$key."' type='checkbox' name='".$pre_arr."[".$name."]"."[".$key."]' value='".$key."' checked='checked'/><label class='checkbox'  for='".$key."'>".$option."</label>";
-				else
-					$r.="<input id='".$key."' type='checkbox' name='".$pre_arr."[".$name."]"."[".$key."]' value='".$key."'/><label class='checkbox' for='".$key."'>".$option."</label>";
+        $labelName = ($pre_arr) ? $pre_arr . "[" . $name . "]" . "[" . $key . "]" : "[" . $name . "]" . "[" . $key . "]";
+        $r .= '<label for="' . $labelName . '">' . $label . '</label>';
+        if (isset($tabular) && $tabular) {
+            $r .= '</th><td>';
+        }
 
-		}
-		else
-		{
-			if(is_array($options))
-				foreach ( $options as $key=>$option )
-				if ( in_array($key,$value))
-					$r.="<input id='".$key."' type='checkbox' name='".$name."[".$key."]' value='".$key."' checked='checked'/><label class='checkbox'  for='".$key."'>".$option."</label>";
-				else
-					$r.="<input id='".$key."' type='checkbox' name='".$name."[".$key."]' value='".$key."'/><label class='checkbox' for='".$key."'>".$option."</label>";
+        $r .= '<p class="xydac-custom-meta">';
+        if ($pre_arr) {
+            if (is_array($options)) {
+                foreach ($options as $key => $option) {
+                    if (in_array($key, $value)) {
+                        $r .= "<input id='" . $key . "' type='checkbox' name='" . $pre_arr . "[" . $name . "]" . "[" . $key . "]' value='" . $key . "' checked='checked'/><label class='checkbox'  for='" . $key . "'>" . $option . "</label>";
+                    } else {
+                        $r .= "<input id='" . $key . "' type='checkbox' name='" . $pre_arr . "[" . $name . "]" . "[" . $key . "]' value='" . $key . "'/><label class='checkbox' for='" . $key . "'>" . $option . "</label>";
+                    }
+                }
+            }
 
-		}
-		
-		if($create_old)
-			$r.='<input type="hidden" name="'.'['.$name.'-old]'.'" value="'.esc_html( $value, 1 ).'" />';
-		$r.='</p>';
-		if(isset($desc) && strlen($desc)>0)
-		$r.='<a class="xydactooltip" href="#" ><span style="width: 180px;" class="info '.$name.'">'.$desc.'</span></a>';
-		$r.='<div rel="'.$name.'" class="clear"></div>';
-		if(isset($tabular) && $tabular){
-			$r.='</td></tr>';
-		}
-		return $r;
-	}
-	function get_input($no='false',$val=false,$tabular=false)
-	{
-		if(is_string($no))
-			$no = substr(uniqid(),0,8);
-		return self::get_checkbox_input(array('name'=>$this->name."-".$no,'tabular'=>$tabular,'label'=>$this->label,'desc'=>$this->desc,'options'=>$this->get_options()),$val,"xydac_custom",true);
-	}
-	function saving(&$temp,$post_id,$val,$oval='')
-	{
-		$str="";
-		if(is_array($val))
-			foreach($val as $k=>$v)
-			$str.=$k.",";
-		$val = substr($str,0,-1);
-		
-		array_push($temp,update_post_meta($post_id, $this->name, esc_attr($val),esc_attr($oval)));
-	}
+        } else {
+            if (is_array($options)) {
+                foreach ($options as $key => $option) {
+                    if (in_array($key, $value)) {
+                        $r .= "<input id='" . $key . "' type='checkbox' name='" . $name . "[" . $key . "]' value='" . $key . "' checked='checked'/><label class='checkbox'  for='" . $key . "'>" . $option . "</label>";
+                    } else {
+                        $r .= "<input id='" . $key . "' type='checkbox' name='" . $name . "[" . $key . "]' value='" . $key . "'/><label class='checkbox' for='" . $key . "'>" . $option . "</label>";
+                    }
+                }
+            }
+
+        }
+
+        if ($create_old) {
+            $r .= '<input type="hidden" name="' . '[' . $name . '-old]' . '" value="' . esc_html($value, 1) . '" />';
+        }
+
+        $r .= '</p>';
+        if (isset($desc) && strlen($desc) > 0) {
+            $r .= '<a class="xydactooltip" href="#" ><span style="width: 180px;" class="info ' . $name . '">' . $desc . '</span></a>';
+        }
+
+        $r .= '<div rel="' . $name . '" class="clear"></div>';
+        if (isset($tabular) && $tabular) {
+            $r .= '</td></tr>';
+        }
+        return $r;
+    }
+    public function get_input($no = 'false', $val = false, $tabular = false)
+    {
+        if (is_string($no)) {
+            $no = substr(uniqid(), 0, 8);
+        }
+
+        return self::get_checkbox_input(array('name' => $this->name . "-" . $no, 'tabular' => $tabular, 'label' => $this->label, 'desc' => $this->desc, 'options' => $this->get_options()), $val, "xydac_custom", true);
+    }
+    public function saving(&$temp, $post_id, $val, $oval = '')
+    {
+        $str = "";
+        if (is_array($val)) {
+            foreach ($val as $k => $v) {
+                $str .= $k . ",";
+            }
+        }
+
+        $val = substr($str, 0, -1);
+
+        array_push($temp, update_post_meta($post_id, $this->name, esc_attr($val), esc_attr($oval)));
+    }
 }
-
-?>

@@ -1,137 +1,146 @@
-<?php 
+<?php
 
-class image extends field_type{
+class image extends field_type
+{
 
-	public function __construct($name,$args = array())
-	{
-		parent::__construct($name,$args);
-		$this->ver = 1.0;
-		$this->basic = true;
-		$this->ftype = 'image';
-		$this->flabel = __('Image',XYDAC_CMS_NAME);
-		$this->compaitable = array('pagetype','posttype','taxonomy');
-	}
+    public function __construct($name, $args = array())
+    {
+        parent::__construct($name, $args);
+        $this->ver = 1.0;
+        $this->basic = true;
+        $this->ftype = 'image';
+        $this->flabel = __('Image', XYDAC_CMS_NAME);
+        $this->compaitable = array('pagetype', 'posttype', 'taxonomy');
+    }
 
-	public static function get_image_input( $args = array(), $value = false, $pre_arr=false, $create_old = false )
-	{
-		$r = '';
-		if($value){
-			if (preg_match('/\A(?:\b(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)[-A-Z0-9+&@#\/%=~_|$?!:,.]*[A-Z0-9+&@#\/%=~_|$])\Z/i', $value))
-			{
-				$img_src = wp_specialchars_decode($value,ENT_QUOTES);
-			}
-			else
-			{
-				preg_match_all('/src="([^"]*)"/i', wp_specialchars_decode($value,ENT_QUOTES), $result);
-				$result = $result[0][0];
-				$img_src = substr($result,5,-1);
-					
-			}
-		}
-		else
-			$img_src = '../wp-includes/images/blank.gif';
-		extract( $args );
-		if(isset($tabular) && $tabular){
-			$r.='<tr class="form-field"><th scope="row" valign="top">';
-			$r.='<label for="'.$name.'" style="display:inline">'.$label.'</label><p>';
-			$r.='</th><td>';
-		}
-		if(!isset($tabular) || (isset($tabular) &&!$tabular)){
-			$r.='<label for="'.$name.'" style="display:inline">'.$label.'</label><p>';
-		}
-		$r.="<div class='xydac-custom-meta' style='position:relative;'><fieldset style='width:70%;float:left;height:75px;margin-bottom:20px;'>";
-		
-		$r.='<a href="media-upload.php?type=image&TB_iframe=true&width=640&height=513" class="thickbox xydac_image button-secondary" id="xydac_cpt_add_image_'.$name.'" name="'.$name.'"  title="Add an Image">Add Image</a>';
-		$r.='&nbsp;';
-		$r.='<a href="#" class="xydac_image  button-secondary" id="xydac_cpt_remove_image_'.$name.'" name="'.$name.'" title="Remove Image">Remove Image</a>';
+    public static function get_image_input($args = array(), $value = false, $pre_arr = false, $create_old = false)
+    {
+        $r = '';
+        if ($value) {
+            if (preg_match('/\A(?:\b(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)[-A-Z0-9+&@#\/%=~_|$?!:,.]*[A-Z0-9+&@#\/%=~_|$])\Z/i', $value)) {
+                $img_src = wp_specialchars_decode($value, ENT_QUOTES);
+            } else {
+                preg_match_all('/src="([^"]*)"/i', wp_specialchars_decode($value, ENT_QUOTES), $result);
+                $result = $result[0][0];
+                $img_src = substr($result, 5, -1);
 
-		if($pre_arr)
-			$r.="<p><input type='text' id='".$name."' name='".$pre_arr.'['.$name.']'."' value='".esc_html( $value, 1 )."' /></p>";
-		else
-			$r.="<p><input type='text' id='".$name."' name='".$name."' value='".esc_html( $value, 1 )."' /></p>";
+            }
+        } else {
+            $img_src = '../wp-includes/images/blank.gif';
+        }
 
+        extract($args);
+        if (isset($tabular) && $tabular) {
+            $r .= '<tr class="form-field"><th scope="row" valign="top">';
+            $r .= '<label for="' . $name . '" style="display:inline">' . $label . '</label><p>';
+            $r .= '</th><td>';
+        }
+        if (!isset($tabular) || (isset($tabular) && !$tabular)) {
+            $r .= '<label for="' . $name . '" style="display:inline">' . $label . '</label><p>';
+        }
+        $r .= "<div class='xydac-custom-meta' style='position:relative;'><fieldset style='width:70%;float:left;height:75px;margin-bottom:20px;'>";
 
-		$r.='</p>';
-		if(isset($desc) && strlen($desc)>0)
-		$r.='<a class="xydactooltip" href="#" ><span style="width: 180px;" class="info '.$name.'">'.$desc.'</span></a>';
-		
-		$r.="</fieldset>";
-		$r.="<img src='".$img_src."' id='".$name."' width='75px' height='75px' style='float:right;margin-right:5px;'/>";
-		
-		if($create_old)
-			$r.='<input type="hidden" name="'.$name.'-old" value="'.esc_html( $value, 1 ).'" />';
-		$r.= "</div>";
-		$r.='<div rel="'.$name.'" class="clear"></div>';
-		if(isset($tabular) && $tabular){
-			$r.='</td></tr>';
-		}
+        $r .= '<a href="media-upload.php?type=image&TB_iframe=true&width=640&height=513" class="thickbox xydac_image button-secondary" id="xydac_cpt_add_image_' . $name . '" name="' . $name . '"  title="Add an Image">Add Image</a>';
+        $r .= '&nbsp;';
+        $r .= '<a href="#" class="xydac_image  button-secondary" id="xydac_cpt_remove_image_' . $name . '" name="' . $name . '" title="Remove Image">Remove Image</a>';
 
-		return $r;
-	}
-	function get_input($no='false',$val=false,$tabular=false)
-	{
-		if(is_string($no))
-			$no = substr(uniqid(),0,8);
-		return self::get_image_input(array('name'=>$this->name."-".$no,'tabular'=>$tabular,'label'=>$this->label,'desc'=>$this->desc),$val,"xydac_custom",true);
-	}
+        if ($pre_arr) {
+            $r .= "<p><input type='text' id='" . $name . "' name='" . $pre_arr . '[' . $name . ']' . "' value='" . esc_html($value, 1) . "' /></p>";
+        } else {
+            $r .= "<p><input type='text' id='" . $name . "' name='" . $name . "' value='" . esc_html($value, 1) . "' /></p>";
+        }
 
+        $r .= '</p>';
+        if (isset($desc) && strlen($desc) > 0) {
+            $r .= '<a class="xydactooltip" href="#" ><span style="width: 180px;" class="info ' . $name . '">' . $desc . '</span></a>';
+        }
 
+        $r .= "</fieldset>";
+        $r .= "<img src='" . $img_src . "' id='" . $name . "' width='75px' height='75px' style='float:right;margin-right:5px;'/>";
 
-	public function output($vals,$atts)
-	{
-	 //$atts = stripslashes_deep($atts);
-	 extract(shortcode_atts(array(
-	 		'pre' => '',
-	 		'before_element'=>'',
-	 		'after_element'=>'',
-	 		'post' => '',
-	 ), $atts));
+        if ($create_old) {
+            $r .= '<input type="hidden" name="' . $name . '-old" value="' . esc_html($value, 1) . '" />';
+        }
 
-		$s = "";
-		foreach($vals as $val)
-		{
-			$val = wp_specialchars_decode($val,ENT_QUOTES);
-			if (preg_match('/\A(?:\b(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)[-A-Z0-9+&@#\/%=~_|$?!:,.]*[A-Z0-9+&@#\/%=~_|$])\Z/i', $val))
-				$val='<img src="'.$val.'" />';
-			else
-				$val=do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES));
-			$s.=wp_specialchars_decode($before_element).do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES)).wp_specialchars_decode($after_element);
-		}
-		return wp_specialchars_decode($pre).$s.wp_specialchars_decode($post);
+        $r .= "</div>";
+        $r .= '<div rel="' . $name . '" class="clear"></div>';
+        if (isset($tabular) && $tabular) {
+            $r .= '</td></tr>';
+        }
 
-	}
-	public function taxonomy_output($val,$atts)
-	{
-		//$atts = wp_specialchars_decode(stripslashes_deep($atts),ENT_QUOTES);
-	 extract(shortcode_atts(array(
-	 		$this->name.'_before'=>'',
-	 		$this->name.'_after'=>'',
-	 		'pre' =>'',
-	 		'post'=>'',
-	 		'rawdata'=>'0'
-	 ), $atts));
-	 	
-		$s = "";
-		if(empty($val))return;
-		if($rawdata=='1')
-		{	
-			$arr = array();
-			preg_match( '/src="([^"]*)"/i', wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES), $arr ) ;
-			if(isset($arr[1]))
-				return $arr[1];		
-		}
-		if (preg_match('/\A(?:\b(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)[-A-Z0-9+&@#\/%=~_|$?!:,.]*[A-Z0-9+&@#\/%=~_|$])\Z/i', $val))
-			$val='<img src="'.$val.'" />';
-		else
-			$val=do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES));
-		$s.=wp_specialchars_decode(${$this->name.'_before'}).do_shortcode(wp_specialchars_decode(stripslashes_deep($val),ENT_QUOTES)).wp_specialchars_decode(${$this->name.'_after'});
-		
-		return wp_specialchars_decode($pre).$s.wp_specialchars_decode($post);
-	}
-	public function adminscript()
-	{
-		add_thickbox();
-		$r = <<<XYDACSCRIPT
+        return $r;
+    }
+    public function get_input($no = 'false', $val = false, $tabular = false)
+    {
+        if (is_string($no)) {
+            $no = substr(uniqid(), 0, 8);
+        }
+
+        return self::get_image_input(array('name' => $this->name . "-" . $no, 'tabular' => $tabular, 'label' => $this->label, 'desc' => $this->desc), $val, "xydac_custom", true);
+    }
+
+    public function output($vals, $atts)
+    {
+        //$atts = stripslashes_deep($atts);
+        extract(shortcode_atts(array(
+            'pre' => '',
+            'before_element' => '',
+            'after_element' => '',
+            'post' => '',
+        ), $atts));
+
+        $s = "";
+        foreach ($vals as $val) {
+            $val = wp_specialchars_decode($val, ENT_QUOTES);
+            if (preg_match('/\A(?:\b(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)[-A-Z0-9+&@#\/%=~_|$?!:,.]*[A-Z0-9+&@#\/%=~_|$])\Z/i', $val)) {
+                $val = '<img src="' . $val . '" />';
+            } else {
+                $val = do_shortcode(wp_specialchars_decode(stripslashes_deep($val), ENT_QUOTES));
+            }
+
+            $s .= wp_specialchars_decode($before_element) . do_shortcode(wp_specialchars_decode(stripslashes_deep($val), ENT_QUOTES)) . wp_specialchars_decode($after_element);
+        }
+        return wp_specialchars_decode($pre) . $s . wp_specialchars_decode($post);
+
+    }
+    public function taxonomy_output($val, $atts)
+    {
+        //$atts = wp_specialchars_decode(stripslashes_deep($atts),ENT_QUOTES);
+        extract(shortcode_atts(array(
+            $this->name . '_before' => '',
+            $this->name . '_after' => '',
+            'pre' => '',
+            'post' => '',
+            'rawdata' => '0',
+        ), $atts));
+
+        $s = "";
+        if (empty($val)) {
+            return;
+        }
+
+        if ($rawdata == '1') {
+            $arr = array();
+            preg_match('/src="([^"]*)"/i', wp_specialchars_decode(stripslashes_deep($val), ENT_QUOTES), $arr);
+            if (isset($arr[1])) {
+                return $arr[1];
+            }
+
+        }
+        if (preg_match('/\A(?:\b(?:(?:https?|ftp|file):\/\/|www\.|ftp\.)[-A-Z0-9+&@#\/%=~_|$?!:,.]*[A-Z0-9+&@#\/%=~_|$])\Z/i', $val)) {
+            $val = '<img src="' . $val . '" />';
+        } else {
+            $val = do_shortcode(wp_specialchars_decode(stripslashes_deep($val), ENT_QUOTES));
+        }
+
+        $s .= wp_specialchars_decode(${$this->name . '_before'}) . do_shortcode(wp_specialchars_decode(stripslashes_deep($val), ENT_QUOTES)) . wp_specialchars_decode(${$this->name . '_after'});
+
+        return wp_specialchars_decode($pre) . $s . wp_specialchars_decode($post);
+    }
+    public function adminscript()
+    {
+        add_thickbox();
+        $r = <<<XYDACSCRIPT
 
 
 	jQuery(document).ready(function() {
@@ -200,13 +209,13 @@ class image extends field_type{
 				jQuery("img[id='"+xydac_field+"']").attr('src',_x_img);
 XYDACSCRIPT;
 
-		if(isset($this->fieldoptions['accesstype']) && $this->fieldoptions['accesstype']=='taxonomy')
-			$r.= "\n\t\t\t\tjQuery(\"input[type='text'][id='\"+xydac_field+\"']\").attr('value',src);\n";
-		else
-			$r.= "\n\t\t\t\tjQuery(\"input[type='text'][id='\"+xydac_field+\"']\").attr('value',html);\n";
+        if (isset($this->fieldoptions['accesstype']) && $this->fieldoptions['accesstype'] == 'taxonomy') {
+            $r .= "\n\t\t\t\tjQuery(\"input[type='text'][id='\"+xydac_field+\"']\").attr('value',src);\n";
+        } else {
+            $r .= "\n\t\t\t\tjQuery(\"input[type='text'][id='\"+xydac_field+\"']\").attr('value',html);\n";
+        }
 
-
-		$r.= <<<XYDACSCRIPTC
+        $r .= <<<XYDACSCRIPTC
 				tb_remove();
 
 			}
@@ -226,8 +235,7 @@ XYDACSCRIPT;
 	});
 XYDACSCRIPTC;
 
-		return $r;
-	}
+        return $r;
+    }
 
 }
-?>
