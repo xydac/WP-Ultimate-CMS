@@ -1,12 +1,12 @@
 <?php
 /*
-Plugin Name: Ultimate CMS
-Plugin URI: http://xydac.com/ultimate-cms/
-Description: Ultimate Tool for working with  Custom Post Type, Page Type, Custom Archives, Taxonomies, Forms. Enhances WordPress for All kinds of Custom Types.
-Author: XYDAC
-Author URI: http://xydac.com/
-Version: 2.1.0
-License: GPL2*/
+Plugin Name:    Ultimate CMS
+Plugin URI:     http://xydac.com/ultimate-cms/
+Description:    Ultimate Tool for working with  Custom Post Type, Page Type, Custom Archives, Taxonomies, Forms. Enhances WordPress for All kinds of Custom Types.
+Author:         XYDAC
+Author URI:     https://xydac.com/
+Version:        2.1.0
+License:        GPL2*/
 
 if (!defined('XYDAC_CMS_NAME')) {
     define('XYDAC_CMS_NAME', "ultimate-cms");
