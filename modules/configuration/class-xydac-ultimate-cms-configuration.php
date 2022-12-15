@@ -139,7 +139,7 @@ class xydac_ultimate_cms_configuration extends xydac_cms_module{
                     
                     $this->render_formelements($name,$label,$type,$description,$value,$options);
                 }
-                if($type=='text' && empty($value)&&isset($descriptionempty) && !empty($descriptionempty))
+                if(isset($type) && $type=='text' && empty($value)&&isset($descriptionempty) && !empty($descriptionempty))
                         echo "<span class='$name'>$descriptionempty.</span>";
                 elseif(!empty($description)){
                         echo "<span class='$name'>$description.</span>";}

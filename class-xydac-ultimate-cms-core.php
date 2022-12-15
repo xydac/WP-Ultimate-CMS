@@ -569,7 +569,7 @@ abstract class xydac_ultimate_cms_core{
 			</div>
 			<?php do_action("xydac_core_form", $this); ?>
 			
-				<input type="hidden" name="xydac_form_<?php echo $this->xydac_core_name."_old"; ?>" value="<?php echo $this->xydac_editdata[$this->xydac_core_name.'_old'];?>">
+				<input type="hidden" name="xydac_form_<?php echo $this->xydac_core_name."_old"; ?>" value="<?php echo isset($this->xydac_editdata[$this->xydac_core_name.'_old']) ?  $this->xydac_editdata[$this->xydac_core_name.'_old'] : '';?>">
 		<?php } ?>
 		<p class='xydacformsubmit submit ' style="float:right";>
 			<input type="submit"  name="xydac_form_<?php if($this->xydac_core_editmode) echo $this->xydac_core_name.'_update_submit'; else  echo $this->xydac_core_name.'_add_submit'; ?>" class="button-primary" value="<?php if($this->xydac_core_editmode) _e('Update '.$this->xydac_core_label,$this->xydac_core_name); else  _e('Add '.$this->xydac_core_label,$this->xydac_core_name); ?>">

@@ -74,6 +74,7 @@ class xydac_post_type extends xydac_cms_module{
 	}
 	*/
 
+	
 	function init(){
 		$cpts = stripslashes_deep($this->get_active());
 		if (is_array($cpts) && !empty($cpts))
@@ -114,31 +115,35 @@ class xydac_post_type extends xydac_cms_module{
 					if($this->xydac_checkbool($cpt['args']['supports']['revisions'])) array_push($xy_cpt['args']['supports'],'revisions');
 					if($this->xydac_checkbool($cpt['args']['supports']['page-attributes'])) array_push($xy_cpt['args']['supports'],'page-attributes');
 					$xy_cpt['args']['register_meta_box_cb'] = !empty($cpt['args']['register_meta_box_cb']) ? $cpt['args']['register_meta_box_cb'] : '';
-					$xy_cpt['args']['menu_position'] = intval($cpt['args']['menu_position']);
+					$xy_cpt['args']['menu_position'] = isset($cpt['args']['menu_position']) ? intval($cpt['args']['menu_position']) : '';
 					$xy_cpt['args']['menu_icon'] = !empty($cpt['args']['menu_icon']) ? $cpt['args']['menu_icon'] : null;
 					$xy_cpt['args']['permalink_epmask'] = !empty($cpt['args']['permalink_epmask']) ? $cpt['args']['permalink_epmask'] : 'EP_PERMALINK';
 					//$xy_cpt['args']['rewrite'] = false;
-					$xy_cpt['args']['rewrite'] = $this->xydac_checkbool($cpt['args']['rewrite']['val']);
+					$xy_cpt['args']['rewrite'] = isset($cpt['args']['rewrite']['val']) ? $this->xydac_checkbool($cpt['args']['rewrite']['val']) : '';
 				if(isset($cpt['args']['rewrite']['val']) && $this->xydac_checkbool($cpt['args']['rewrite']['val'])){
 					$xy_cpt['args']['rewrite'] =array();
 					$xy_cpt['args']['rewrite']['slug'] = !empty($cpt['args']['rewrite']['slug']) ? $cpt['args']['rewrite']['slug'] :$xy_cpt['name'];
 					$xy_cpt['args']['rewrite']['with_front'] = $this->xydac_checkbool($cpt['args']['rewrite']['with_front']);
 					$xy_cpt['args']['rewrite']['feeds'] = $this->xydac_checkbool($cpt['args']['rewrite']['feeds']);
+					$xy_cpt['args']['rewrite']['ep_mask'] = isset($cpt['args']['rewrite']['ep_mask']) ? $this->xydac_checkbool($cpt['args']['rewrite']['ep_mask']) : EP_PERMALINK;
 					$xy_cpt['args']['rewrite']['pages'] = $this->xydac_checkbool($cpt['args']['rewrite']['pages']);
 				}
 				else
-					$xy_cpt['args']['rewrite'] = $this->xydac_checkbool($cpt['args']['rewrite']['val']);
+					$xy_cpt['args']['rewrite'] = isset($cpt['args']['rewrite']['val']) ? $this->xydac_checkbool($cpt['args']['rewrite']['val']) : '';
 				$xy_cpt['args']['query_var'] = $this->xydac_checkbool($cpt['args']['query_var']);
 				$xy_cpt['args']['can_export'] = $this->xydac_checkbool($cpt['args']['can_export']);
 				$xy_cpt['args']['show_in_nav_menus'] = $this->xydac_checkbool($cpt['args']['show_in_nav_menus']);
 				$xy_cpt['args']['show_in_menu'] = $this->xydac_checkbool($cpt['args']['show_in_menu']);
 				$xy_cpt['args']['has_archive'] = $this->xydac_checkbool($cpt['args']['has_archive']);
 				$xy_cpt['args']['map_meta_cap'] = $this->xydac_checkbool($cpt['args']['map_meta_cap']);
+				$xy_cpt['show_in_rest'] = true;
+				$xy_cpt['rest_base'] = $cpt['name'];
+
 				register_post_type( $xy_cpt['name'], $xy_cpt['args'] );
 				//register_post_type_with_rewrite_rules( $xy_cpt['name'], $xy_cpt['args'], array('front'=>$xy_cpt['name'],'structure'=>$cpt['args']['rewrite']['slug']) );
 					
 				//adding enter_text_here to keep the data in db
-				$xy_cpt['args']['labels']['enter_text_here'] =  $cpt['args']['labels']['enter_text_here'];
+				$xy_cpt['args']['labels']['enter_text_here'] =  isset($cpt['args']['labels']['enter_text_here']) ? $cpt['args']['labels']['enter_text_here'] : '';
 				if(!empty($cpt['def']['cat']) && $this->xydac_checkbool($cpt['def']['cat']))
 					register_taxonomy_for_object_type('category',  $xy_cpt['name']);
 				if(!empty($cpt['def']['cat']) && $this->xydac_checkbool($cpt['def']['tag']))

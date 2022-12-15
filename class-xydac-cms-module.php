@@ -207,6 +207,8 @@ abstract class xydac_cms_module{
 	 */
 	private function _get_option($type,$args=null,$name=null){
 		$backtrace = debug_backtrace();
+		if($this->registered_option == null)
+			return null;
 		xydac()->log("_get_option name: ".$this->registered_option[$type].'_'.$name.", called by :". $backtrace[1]['function']." type:".$type." args:",$args);
 
 		if('field'!=$type && isset($this->registered_option[$type])){
